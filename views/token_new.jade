@@ -1,0 +1,8 @@
+extends layout
+
+block content
+    h1= title
+    form#formAddUser(name="create token",method="post",action="/token/create")
+        input#token(type="text", placeholder="token", name="token")
+        input#meteringPointId(type="text", placeholder="meteringPointId", name="meteringPointId")
+        button#btnSubmit(type="submit") submit

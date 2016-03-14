@@ -48,3 +48,7 @@
 ## build docker image
     docker build -t buzzn-reader .
     docker run -it  -p 80:3000 --rm --name web buzzn-reader
+
+
+## infos
+  http://www.edi-energy.de/files2%5COBIS-Kennzahlen-System%202.2a_20130401.pdf

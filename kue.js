@@ -1,14 +1,18 @@
 var kue = require('kue');
 var jobs = kue.createQueue();
+var rest = require('restler');
+var redis = require('redis');
 
-jobs.process('txt', function(job, done) {
-  console.log(job.data);
+var redisClient = redis.createClient();
 
-  redis.get('token', function(err, token) {
-    rest.post('https://staging.buzzn.net/api/v1/readings',{
+jobs.process('reading', function(job, done) {
+  var reading = job.data.reading;
+
+  redisClient.get('token', function(err, token) {
+    rest.post('http://localhost:3001/api/v1/readings',{
       accessToken: token,
       data: {
-        id: 334
+        reading: reading
       }
     });
   });
