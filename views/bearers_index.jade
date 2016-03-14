@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    h1.
+      User List
+    ul
+        each bearer, i in bearers
+            li
+                a(href="mailto:#{bearer.email}")= bearer.token

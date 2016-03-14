@@ -3,11 +3,10 @@
 
 ## program flow
   express.js app starten (fertig)
-  localhost:3000 aufruffen (fertig)
-  token eingeben (fertig)
-  token an app.buzzn.net senden zur validierung (fertig)
-  wenn token valide ist neuen metering_point auf app.buzzn.net erstellen und ID in lokaler mongodb speichern.
-  reader c programm starten zur auslese der IR schnittstelle
+  localhost:3000/bearers/new aufruffen token eingeben (fertig)
+  token an app.buzzn.net senden zur validierung und lokaler in mongodb speichern (fertig)
+  neuen metering_point auf app.buzzn.net erstellen und metering_point_id lokaler speichern.
+  reader c programm starten zur auslese der IR schnittstelle.
   sekündliche ausgabe wird in lokaler mongodb gespeichert.
   express nimmt sich die ältesten eintrage jede sekunde aus der mongodb und sendet sie an app.buzzn
 

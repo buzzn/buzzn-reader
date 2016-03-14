@@ -2,6 +2,6 @@ extends layout
 
 block content
     h1= title
-    form#formAddUser(name="create user",method="post",action="/current-user")
+    form#formAddUser(name="create Bearer",method="post",action="/bearers/create")
         input#inputUserName(type="text", placeholder="token", name="token")
         button#btnSubmit(type="submit") submit
