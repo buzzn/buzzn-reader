@@ -2,18 +2,13 @@ var express = require('express');
 var router = express.Router();
 var rest = require('restler');
 
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
-var BearerSchema = mongoose.Schema({
-  token: String
-});
-var Bearer = mongoose.model('Bearer', BearerSchema);
-
+var redis = require('redis');
+var redis = redis.createClient();
 
 router.get('/', function(req, res) {
-  Bearer.find({}, function(err, bearers) {
+  redis.get('token', function(err, reply) {
     res.render('bearers_index', {
-      "bearers" : bearers
+      "token" : reply
     });
   });
 });
@@ -27,19 +22,15 @@ router.get('/new', function(req, res) {
 router.post('/create', function(req, res) {
   var token  = req.body.token;
 
-  var bearer = new Bearer({ token: token });
-
   rest.get('https://staging.buzzn.net/api/v1/users/me',{
     accessToken: token
   }).on('success', function(data) {
-    bearer.save(function (err, fluffy) {
-      res.send(token);
-      // res.redirect("index");
+    redis.set('token', token, function(err, reply) {
+      res.redirect("index");
     });
   }).on('fail', function(data) {
     res.send('fail');
   });
-
 
 });
 
