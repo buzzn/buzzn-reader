@@ -23,7 +23,7 @@
     docker build -t buzzn-reader .
     docker run -it  -p 80:3000 --rm --name web buzzn-reader
 
-## neuen token von app.buzzn.net bekommen
+## neuen token von staging.buzzn.net bekommen
   momentan verfallen die token alle paar stunden.
   um sich einen neuen token zu besorgen muss man folgendes machen
 
