@@ -28,6 +28,7 @@
   um sich einen neuen token zu besorgen muss man folgendes machen
 
   in der rails console
+  `
   site      = "https://app.buzzn.net"
   app_id    = "f0bd18be0aa6260e3fef45030cb83be1d142e05418da0b2081de15a01a36ddd4"
   secret    = "2f8a7acd77837ce0ca82d43cef04b5cff5dfefb3ef248c5f91cd87b7c6ba1652"
@@ -35,6 +36,7 @@
   callback  = "urn:ietf:wg:oauth:2.0:oob"
   client    = OAuth2::Client.new(app_id, secret, site: site)
   client.auth_code.authorize_url(scope: scopes, redirect_uri: callback)
+  `
 
   man bekommt ein link als ausgabe. diesen im browser öffnen und auf Authorize klicken.
   dann bekommt man einen Authorization code diesen Authorization code muss noch zu einen access_token umgewandelt werden.
