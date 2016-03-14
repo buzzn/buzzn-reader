@@ -1,5 +1,5 @@
 # buzzn reader
-  buzzn reader ist eine app die die zählerstände an buzzn sendet.
+  buzzn reader ist eine app die die zählerstände ausliest und an staging.buzzn.net sendet.
 
 ## program flow
   - express.js app starten (fertig)
@@ -17,7 +17,7 @@
   npm install
 
 ## run app
-  nodemon npm start
+    nodemon npm start
 
 ## build docker image
     docker build -t buzzn-reader .
@@ -27,7 +27,7 @@
   momentan verfallen die token alle paar stunden.
   um sich einen neuen token zu besorgen muss man folgendes machen
 
-  in der rails console:
+  in der lokalen rails console:
 
     site      = "https://staging.buzzn.net"
     app_id    = "28aaa50aaa47e2a8a0165804ee2d533a388914582e4f42321addb5b28aea34dd"
