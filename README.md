@@ -36,6 +36,7 @@
   - callback  = "urn:ietf:wg:oauth:2.0:oob"
   - client    = OAuth2::Client.new(app_id, secret, site: site)
   - client.auth_code.authorize_url(scope: scopes, redirect_uri: callback)
+  
   `
 
   man bekommt ein link als ausgabe. diesen im browser öffnen und auf Authorize klicken.
