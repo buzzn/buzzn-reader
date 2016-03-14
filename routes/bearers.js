@@ -22,14 +22,14 @@ router.get('/', function(req, res) {
 router.get('/new', function(req, res) {
   res.render('bearers_new', { title: 'Add New BearerToken' });
 });
-// 58d322f0542b9431711616eb27b8e39c500f21130165796a8ed43e9bfc805f6d
+
 
 router.post('/create', function(req, res) {
   var token  = req.body.token;
 
   var bearer = new Bearer({ token: token });
 
-  rest.get('https://app.buzzn.net/api/v1/users/me',{
+  rest.get('https://staging.buzzn.net/api/v1/users/me',{
     accessToken: token
   }).on('success', function(data) {
     bearer.save(function (err, fluffy) {
