@@ -2,13 +2,13 @@
   buzzn reader ist eine app die die zählerstände an buzzn sendet.
 
 ## program flow
-  express.js app starten (fertig)
-  localhost:3000/bearers/new aufruffen token eingeben (fertig)
-  token an app.buzzn.net senden zur validierung und lokaler in mongodb speichern (fertig)
-  neuen metering_point auf app.buzzn.net erstellen und metering_point_id lokaler speichern.
-  reader c programm starten zur auslese der IR schnittstelle.
-  sekündliche ausgabe wird in lokaler mongodb gespeichert.
-  express nimmt sich die ältesten eintrage jede sekunde aus der mongodb und sendet sie an app.buzzn
+  - express.js app starten (fertig)
+  - localhost:3000/bearers/new aufruffen token eingeben (fertig)
+  - token an app.buzzn.net senden zur validierung und lokaler in mongodb speichern (fertig)
+  - neuen metering_point auf app.buzzn.net erstellen und metering_point_id lokaler speichern.
+  - reader c programm starten zur auslese der IR schnittstelle.
+  - sekündliche ausgabe wird in lokaler mongodb gespeichert.
+  - express nimmt sich die ältesten eintrage jede sekunde aus der mongodb und sendet sie an app.buzzn
 
 ## Setup reader
   install node with nvm https://github.com/creationix/nvm
