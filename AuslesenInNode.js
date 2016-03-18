@@ -1,11 +1,16 @@
+var kue = require('kue')
+, queue = kue.createQueue();
+
 var SerialPort = require("serialport").SerialPort
 var serialPort = new SerialPort("/dev/ttyAMA0", {
   baudrate: 9600, dataBits: 7, stopBits: 1, bufferSize : 700
-}); // this is the openImmediately flag [default is true] 
+}); // this is the openImmediately flag [default is true]
 
 var Auslese = ""
 serialPort.on('data', function(data) {
-    console.log(data.toString());}
+  console.log(data.toString());
+  queue.create('reading', { reading: data.toString() }).save();
+}
 );
 
 ////////serialPort.open(function (error) {
