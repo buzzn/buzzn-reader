@@ -6,21 +6,20 @@ var redis = require('redis');
 var redisClient = redis.createClient();
 
 jobs.process('reading', function(job, done) {
-  var reading = job.data.reading;
+  var reading = job.data.reading.replace(/\n|\r/g, "");
+
   console.log(reading)
-//var regex = /([0-9-:.]+)\*(?:[0-9]+)\((.*)\)/g;
-//var m;
-//var obis = {};
-//while ((m = regex.exec(reading))) {
-//  obis[m[1]] = m[2];
-//}
 
-//var meterNummer = obis['0:0.0.0'];
-//var inWh        = obis['1-0:1.8.1']*10000;
-//var outWh       = obis['1-0:2.8.1']*10000;
-
-//console.log(inWh);
-//console.log(outWh);
+ //  var regex = /([0-9-:.]+)\*(?:[0-9]+)\((.*)\)/g;
+ //  var m;
+ //  var obis = {};
+ //  while ((m = regex.exec(reading))) {
+ //   obis[m[1]] = m[2];
+ //  }
+ //
+ // var power = obis['1-0:61.7.0'];
+ // console.log(power);
+ //
 
   // redisClient.mget(['token', 'metering_point_id'], function(err, reply) {
   //   rest.post('https://staging.buzzn.net/api/v1/readings',{
