@@ -6,17 +6,19 @@ var redis = require('redis');
 var redisClient = redis.createClient();
 
 jobs.process('reading', function(job, done) {
-  var reading = job.data.reading.replace(/\n|\r/g, "");
+  console.log(job.data); 
+  //var reading = job.data.reading.replace(/\n|\r/g, "");
 
-  var regex = /([0-9-:.]+)[^(]*\(([^)]+)\)/g;
-  var m;
-  var obis = {};
-  while ((m = regex.exec(reading))) {
-   obis[m[1]] = m[2];
-  }
+  //var regex = /([0-9-:.]+)[^(]*\(([^)]+)\)/g;
+  //var m;
+  //var obis = {};
+  //while ((m = regex.exec(reading))) {
+  // obis[m[1]] = m[2];
+  //}
+ //var power = obis['1-0:61.7.0'];
+ //var power = obis['1-0:41.7.255'];
 
- var power = obis['1-0:61.7.0'];
- console.log(power);
+ //console.log(power);
 
 
   // redisClient.mget(['token', 'metering_point_id'], function(err, reply) {
