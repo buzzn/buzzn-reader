@@ -1,131 +1,120 @@
-{ reading: '0:61.7.2' }
-{ reading: '55*255(0' }
-{ reading: '00000.00' }
-{ reading: '*W)\r\n1-0' }
-{ reading: ':1.7.255' }
-{ reading: '*255(-00' }
-{ reading: '0009.17*' }
-{ reading: 'W)\r\n1-0:' }
-{ reading: '96.5.5*2' }
-{ reading: '55(D2)\r\n' }
-{ reading: '0-0:96.1' }
-{ reading: '.255*255' }
-{ reading: '(1ESY100' }
-{ reading: '3003416)' }
-{ reading: '\r\n!\r\n' }
-{ reading: '/ESY5Q3D' }
-{ reading: 'A1004 V3' }
-{ reading: '.02\r\n\r\n1' }
-{ reading: '-0:0.0.0' }
-{ reading: '*255(100' }
-{ reading: '3003416)' }
-{ reading: '\r\n1-0:1.' }
-{ reading: '8.0*255(' }
-{ reading: '00000000' }
-{ reading: '.9000000' }
-{ reading: '*kWh)\r\n1' }
-{ reading: '-0:21.7.' }
-{ reading: '255*255(' }
-{ reading: '000000.0' }
-{ reading: '0*W)\r\n1-' }
-{ reading: '0:41.7.2' }
-{ reading: '55*255(-' }
-{ reading: '000009.1' }
-{ reading: '3*W)\r\n1-' }
-{ reading: '0:61.7.2' }
-{ reading: '55*255(0' }
-{ reading: '00000.00' }
-{ reading: '*W)\r\n1-0' }
-{ reading: ':1.7.255' }
-{ reading: '*255(-00' }
-{ reading: '0009.13*' }
-{ reading: 'W)\r\n1-0:' }
-{ reading: '96.5.5*2' }
-{ reading: '55(D2)\r\n' }
-{ reading: '0-0:96.1' }
-{ reading: '.255*255' }
-{ reading: '(1ESY100' }
-{ reading: '3003416)' }
-{ reading: '\r\n!\r\n' }
-{ reading: '/ESY5Q3D' }
-{ reading: 'A1004 V3' }
-{ reading: '.02\r\n\r\n1' }
-{ reading: '-0:0.0.0' }
-{ reading: '*255(100' }
-{ reading: '3003416)' }
-{ reading: '\r\n1-0:1.' }
-{ reading: '8.0*255(' }
-{ reading: '00000000' }
-{ reading: '.9000000' }
-{ reading: '*kWh)\r\n1' }
-{ reading: '-0:21.7.' }
-{ reading: '255*255(' }
-{ reading: '000000.0' }
-{ reading: '0*W)\r\n1-' }
-{ reading: '0:41.7.2' }
-{ reading: '55*255(-' }
-{ reading: '000009.0' }
-{ reading: '1*W)\r\n1-' }
-{ reading: '0:61.7.2' }
-{ reading: '55*255(0' }
-{ reading: '00000.00' }
-{ reading: '*W)\r\n1-0' }
-{ reading: ':1.7.255' }
-{ reading: '*255(-00' }
-{ reading: '0009.01*' }
-{ reading: 'W)\r\n1-0:' }
-{ reading: '96.5.5*2' }
-{ reading: '55(D2)\r\n' }
-{ reading: '0-0:96.1' }
-{ reading: '.255*255' }
-{ reading: '(1ESY100' }
-{ reading: '3003416)' }
-{ reading: '\r\n!\r\n' }
-{ reading: '/ESY5Q3D' }
-{ reading: 'A1004 V3' }
-{ reading: '.02\r\n\r\n1' }
-{ reading: '-0:0.0.0' }
-{ reading: '*255(100' }
-{ reading: '3003416)' }
-{ reading: '\r\n1-0:1.' }
-{ reading: '8.0*255(' }
-{ reading: '00000000' }
-{ reading: '.9000000' }
-{ reading: '*kWh)\r\n1' }
-{ reading: '-0:21.7.' }
-{ reading: '255*255(' }
-{ reading: '000000.0' }
-{ reading: '0*W)\r\n1-' }
-{ reading: '0:41.7.2' }
-{ reading: '55*255(-' }
-{ reading: '000009.0' }
-{ reading: '2*W)\r\n1-' }
-{ reading: '0:61.7.2' }
-{ reading: '55*255(0' }
-{ reading: '00000.00' }
-{ reading: '*W)\r\n1-0' }
-{ reading: ':1.7.255' }
-{ reading: '*255(-00' }
-{ reading: '0009.02*' }
-{ reading: 'W)\r\n1-0:' }
-{ reading: '96.5.5*2' }
-{ reading: '55(D2)\r\n' }
-{ reading: '0-0:96.1' }
-{ reading: '.255*255' }
-{ reading: '(1ESY100' }
-{ reading: '3003416)' }
-{ reading: '\r\n!\r\n' }
-{ reading: '/ESY5Q3D' }
-{ reading: 'A1004 V3' }
-{ reading: '.02\r\n\r\n1' }
-{ reading: '-0:0.0.0' }
-{ reading: '*255(100' }
-{ reading: '3003416)' }
-{ reading: '\r\n1-0:1.' }
-{ reading: '8.0*255(' }
-{ reading: '00000000' }
-{ reading: '.9000000' }
-{ reading: '*kWh)\r\n1' }
-{ reading: '-0:21.7.' }
-{ reading: '255*255(' }
-{ reading: '000000.0' }
+.255*255
+(1ESY100
+3003416)
+
+!
+
+/ESY5Q3D
+A1004 V3
+.02
+
+1
+-0:0.0.0
+*255(100
+3003416)
+
+1-0:1.
+8.0*255(
+00000000
+.9000000
+*kWh)
+1
+-0:21.7.255*255(
+000000.0
+0*W)
+1-
+0:41.7.2
+55*255(-
+000008.8
+8*W)
+1-
+0:61.7.2
+55*255(0
+00000.00
+*W)
+1-0
+:1.7.255
+*255(-00
+0008.88*
+W)
+1-0:
+96.5.5*2
+55(D2)
+
+0-0:96.1
+.255*255
+(1ESY100
+3003416)
+
+!
+
+/ESY5Q3D
+A1004 V3
+.02
+
+1
+-0:0.0.0
+*255(100
+3003416)
+
+1-0:1.
+8.0*255(
+00000000
+.9000000
+*kWh)
+1
+-0:21.7.
+255*255(
+000000.0
+0*W)
+1-
+0:41.7.2
+55*255(-
+000008.8
+3*W)
+1-
+0:61.7.2
+55*255(0
+00000.00
+*W)
+1-0
+:1.7.255
+*255(-00
+0008.83*
+W)
+1-0:
+96.5.5*2
+55(D2)
+
+0-0:96.1
+.255*255
+(1ESY100
+3003416)
+
+!
+
+/ESY5Q3D
+A1004 V3
+.02
+
+1
+-0:0.0.0
+*255(100
+3003416)
+
+1-0:1.
+8.0*255(
+00000000
+.9000000
+*kWh)
+1
+-0:21.7.
+255*255(
+000000.0
+0*W)
+1-
+0:41.7.2
+55*255(-
+000008.7
+6*W)
+1-

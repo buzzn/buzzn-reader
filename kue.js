@@ -6,8 +6,8 @@ var redis = require('redis');
 var redisClient = redis.createClient();
 
 jobs.process('reading', function(job, done) {
-  console.log(job.data); 
-  //var reading = job.data.reading.replace(/\n|\r/g, "");
+//  var reading = job.data.reading.replace(/\n|\r/g, "");
+  console.log(job.data.reading); 
 
   //var regex = /([0-9-:.]+)[^(]*\(([^)]+)\)/g;
   //var m;
