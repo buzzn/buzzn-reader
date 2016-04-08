@@ -16,14 +16,22 @@ jobs.process('reading', function(job, done) {
   while ((m = regex.exec(reading))) {
    obis[m[1]] = m[2];
   }
-
   switch(meter) {
     case "easymeter_q3d":
-      var phaseOne   = parseFloat(obis['1-0:21.7.255'].slice(0,-2));
-      var phaseTwo   = parseFloat(obis['1-0:41.7.255'].slice(0,-2));
-      var phaseThree = parseFloat(obis['1-0:61.7.255'].slice(0,-2));
-      var power = phaseOne + phaseTwo + phaseThree
-      var wattHour = parseInt((obis['1-0:1.8.0']).slice(0,-4)*1000);
+//      console.log(reading);
+      //break;
+      try{
+         var phaseOne   = parseFloat(obis['1-0:21.7.255'].slice(0,-2));
+         var phaseTwo   = parseFloat(obis['1-0:41.7.255'].slice(0,-2));
+         var phaseThree = parseFloat(obis['1-0:61.7.255'].slice(0,-2));
+         var power = phaseOne + phaseTwo + phaseThree;
+         var wattHour = parseInt((obis['1-0:1.8.0']).slice(0,-4)*1000);
+      }
+      catch(e){
+         var power = "";
+         var wattHour = "";
+      
+      }
       break;
 
     case "hager_ehz":
@@ -35,9 +43,10 @@ jobs.process('reading', function(job, done) {
       break;
   }
 
-  console.log(power);
-  console.log(wattHour);
-  //
+  if(power!=""){
+     console.log(power);
+     console.log(wattHour);
+  }//
   // redisClient.mget(['token', 'metering_point_id'], function(err, reply) {
   //   rest.post('https://staging.buzzn.net/api/v1/readings',{
   //     accessToken: reply[0],
