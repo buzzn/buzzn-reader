@@ -5,9 +5,11 @@ var redis = require('redis');
 
 var redisClient = redis.createClient();
 
-jobs.process('reading', function(job, done) {
-  var reading = job.data.reading.replace(/\n|\r/g, "");
+var meter = "easymeter_q3d";
 
+jobs.process('reading', function(job, done) {
+
+  var reading = job.data.reading;
   var regex = /([0-9-:.]+)[^(]*\(([^)]+)\)/g;
   var m;
   var obis = {};
@@ -15,10 +17,23 @@ jobs.process('reading', function(job, done) {
    obis[m[1]] = m[2];
   }
 
- var phaseOne   = parseFloat(obis['1-0:21.7.0'].slice(0,-2));
- var phaseTwo   = parseFloat(obis['1-0:41.7.0'].slice(0,-2));
- var phaseThree = parseFloat(obis['1-0:61.7.0'].slice(0,-2));
- var power = phaseOne + phaseTwo + phaseThree
+  switch(meter) {
+    case "easymeter_q3d":
+      var phaseOne   = parseFloat(obis['1-0:21.7.255'].slice(0,-2));
+      var phaseTwo   = parseFloat(obis['1-0:41.7.255'].slice(0,-2));
+      var phaseThree = parseFloat(obis['1-0:61.7.255'].slice(0,-2));
+      var power = phaseOne + phaseTwo + phaseThree
+      break;
+
+    case "hager_ehz":
+      var phaseOne   = parseFloat(obis['1-0:21.7.0'].slice(0,-2));
+      var phaseTwo   = parseFloat(obis['1-0:41.7.0'].slice(0,-2));
+      var phaseThree = parseFloat(obis['1-0:61.7.0'].slice(0,-2));
+      var power = phaseOne + phaseTwo + phaseThree
+      break;
+  }
+
+
 
  console.log(power);
 
