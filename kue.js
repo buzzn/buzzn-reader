@@ -23,6 +23,7 @@ jobs.process('reading', function(job, done) {
       var phaseTwo   = parseFloat(obis['1-0:41.7.255'].slice(0,-2));
       var phaseThree = parseFloat(obis['1-0:61.7.255'].slice(0,-2));
       var power = phaseOne + phaseTwo + phaseThree
+      var wattHour = parseInt((obis['1-0:1.8.0']).slice(0,-4)*1000);
       break;
 
     case "hager_ehz":
@@ -30,20 +31,21 @@ jobs.process('reading', function(job, done) {
       var phaseTwo   = parseFloat(obis['1-0:41.7.0'].slice(0,-2));
       var phaseThree = parseFloat(obis['1-0:61.7.0'].slice(0,-2));
       var power = phaseOne + phaseTwo + phaseThree
+      var wattHour = parseInt(obis['1-0:1.8.1']*1000);
       break;
   }
 
-
-
- console.log(power);
-
-
+  console.log(power);
+  console.log(wattHour);
+  //
   // redisClient.mget(['token', 'metering_point_id'], function(err, reply) {
   //   rest.post('https://staging.buzzn.net/api/v1/readings',{
   //     accessToken: reply[0],
   //     data: {
   //       metering_point_id: reply[1],
-  //       timestamp: Date(job.created_at*1000)
+  //       timestamp: Date(job.created_at*1000),
+  //       watt_hour: watt_hour
+  //       power: power
   //     },
   //   }).on('success', function(data, response) {
   //     console.log('success')
