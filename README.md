@@ -1,49 +1,42 @@
-# buzzn reader
-  buzzn reader ist eine app die die zählerstände ausliest und an staging.buzzn.net sendet.
+# buzzn-reader
+  der buzzn-reader besteht aus folgenden Hardware Teilen:
 
-## program flow
-  - express.js app starten (fertig)
-  - localhost:3000/bearers/new aufruffen token eingeben (fertig)
-  - token an app.buzzn.net senden zur validierung und lokaler in redis speichern (fertig)
-  - neuen metering_point auf app.buzzn.net erstellen und metering_point_id lokaler speichern.
-  - reader c programm starten zur auslese der IR schnittstelle.
-  - sekündliche ausgabe wird in lokaler redis gespeichert.
-  - express nimmt sich die ältesten eintrage jede sekunde aus der redis und sendet sie an app.buzzn
+  - [Raspberry Pi3 / 39,90 € ](https://www.reichelt.de/?ARTICLE=164977&PROVID=2788&wt_mc=amc141526782519998&gclid=Cj0KEQjwrte4BRD-oYi3y5_AhZ4BEiQAzIFxn-gnfEK5rxzGnYoiAz3sbMUnDfI7VhtRcC68r_A2c6UaAuDO8P8HAQ)
+  - [SanDisk microSD 8GB / 6,99 € ](http://www.amazon.de/SanDisk-Speicherkarte-SD-Adapter-Frustfreie-Verpackung/dp/B00MWXUKDK?ie=UTF8&psc=1&redirect=true&ref_=ox_sc_sfl_title_2&smid=A3JWKAKR8XB7XF)
+  - [Raspberry Pi3 Gehäuse / 6,99 € ](http://www.amazon.de/Exclusives-Geh%C3%A4use-Raspberry-Pi-Version/dp/B00WQY2SN0/ref=sr_1_5?ie=UTF8&qid=1461085132&sr=8-5&keywords=Raspberry+Pi+Geh%C3%A4use)
+  - [Raspberry Pi3 Netzteil / 11,99 € ](http://www.amazon.de/3000mAh-Netzteil-Raspberry-ausreichende-Leistungsreserve/dp/B01E75SB2C/ref=sr_1_11?ie=UTF8&qid=1461099559&sr=8-11&keywords=Raspberry+Pi3+netzteil)
+  - [D0-Lesekopf / 25 € ](http://wiki.volkszaehler.org/hardware/controllers/ir-schreib-lesekopf-usb-ausgang#stueckliste_und_preise)
 
-## Setup
+##### buzzn-reader-app
+  die buzzn-reader-app ist das gehirn des buzzn-readers besteht aus vier teilen.
+  webGUI, serialport.js, kue.js und redis.
+
+  - redis starten
+
+  - npm start, startet die webGUI. dort läst sich der token eingeben und speichern. der token wird an das portal zur validierung gesendet und dann lokaler in redis speichern.
+
+  - node serialport, startet das auslesen der SMLs. alle 2 sekunden kommt ein SML von dem smartmeter dieser wird dann in der redis gespeichert
+
+  - node kue, startet den background worker dieser empfängt/verarbeitet die SMLs die von serialport.js kommen. jede sml wird geparst und mittels des access_token an das portal gesendet.
+
+
+## Development Pi Setup
+  - [Raspberry Pi3 OS Ubuntu MATE](https://ubuntu-mate.org/raspberry-pi/)
   install node with nvm https://github.com/creationix/nvm
   install redis
   npm install nodemon -g
   npm install pm2 -g
   npm install
 
-## run app
+## webGUI
     nodemon npm start
     und browser http://localhost:3000 aufruffen.
 
-## run background worker on 4 cores
+
+## kue
     pm2 start kue.js -i 4
     kue-ui ist hier zu sehen http://localhost:3000/kue
 
-## neuen token von staging.buzzn.net bekommen
-  momentan verfallen die token alle paar stunden.
-  um sich einen neuen token zu besorgen muss man folgendes machen
-
-  in der lokalen rails console:
-
-    site      = "https://staging.buzzn.net"
-    app_id    = "28aaa50aaa47e2a8a0165804ee2d533a388914582e4f42321addb5b28aea34dd"
-    secret    = "d85a76a53c37451d7d82b552808b7c183c95f0b9336e8fbc59b042370946f1f9"
-    scopes    = "public read write"
-    callback  = "urn:ietf:wg:oauth:2.0:oob"
-    client    = OAuth2::Client.new(app_id, secret, site: site)
-    client.auth_code.authorize_url(scope: scopes, redirect_uri: callback)
-
-  - man bekommt ein link als ausgabe. diesen im browser öffnen und auf Authorize klicken.
-  - dann bekommt man einen Authorization code diesen Authorization code muss noch zu einen access_token umgewandelt werden.
-  - kopiere den Authorization code und gehe zu https://staging.buzzn.net/api#!/auth/POST_api_version_auth_token_json
-  - und gebe dort den Authorization code ein klick auf "Try it out!"
-  - in der ausgabe sollte jetzt der access_token zu sehen sein.
 
 ## build docker image
     docker build -t buzzn-reader .
