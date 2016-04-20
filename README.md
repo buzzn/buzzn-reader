@@ -1,9 +1,10 @@
 # buzzn-reader
-  der buzzn-reader besteht aus folgenden Hardware Teilen:
+  der buzzn-reader ist ein aus hard und software basierendes Smartmeter auslese modul. viele smartmeter besizten eine optische Datenschnitstelle diese kann mit dem buzzn-reader ausgelesen und an das buzzn-portal gesendet werden.
+  der buzzn-reader besteht aus folgenden Hardware Teilen.
 
   - [Raspberry Pi3 / 39,90 € ](https://www.reichelt.de/?ARTICLE=164977&PROVID=2788&wt_mc=amc141526782519998&gclid=Cj0KEQjwrte4BRD-oYi3y5_AhZ4BEiQAzIFxn-gnfEK5rxzGnYoiAz3sbMUnDfI7VhtRcC68r_A2c6UaAuDO8P8HAQ)
-  - [Raspberry Pi3 Gehäuse / 6,99 € ](http://www.amazon.de/Exclusives-Geh%C3%A4use-Raspberry-Pi-Version/dp/B00WQY2SN0/ref=sr_1_5?ie=UTF8&qid=1461085132&sr=8-5&keywords=Raspberry+Pi+Geh%C3%A4use)
-  - [Raspberry Pi3 Netzteil / 11,99 € ](http://www.amazon.de/3000mAh-Netzteil-Raspberry-ausreichende-Leistungsreserve/dp/B01E75SB2C/ref=sr_1_11?ie=UTF8&qid=1461099559&sr=8-11&keywords=Raspberry+Pi3+netzteil)
+  - [Raspberry Pi3 Netzteil / 11,50 € ](https://www.reichelt.de/Ladegeraete-fuer-USB-Geraete/NT-MUSB-25-SW/3/index.html?&ACTION=3&LA=3&ARTICLE=167078&GROUPID=5158)
+  - [Raspberry Pi3 Gehäuse / 11,99 € ](http://www.amazon.de/Geh%C3%A4use-f%C3%BCr-Raspberry-offizieles-K%C3%BChlk%C3%B6rper/dp/B01CP11RPS/ref=sr_1_4?ie=UTF8&qid=1461138604&sr=8-4&keywords=Official+Raspberry+Pi+Case)
   - [SanDisk microSD 8GB / 6,99 € ](http://www.amazon.de/SanDisk-Speicherkarte-SD-Adapter-Frustfreie-Verpackung/dp/B00MWXUKDK?ie=UTF8&psc=1&redirect=true&ref_=ox_sc_sfl_title_2&smid=A3JWKAKR8XB7XF)
   - [D0-Lesekopf / 25 € ](http://wiki.volkszaehler.org/hardware/controllers/ir-schreib-lesekopf-usb-ausgang#stueckliste_und_preise)
 
