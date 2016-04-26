@@ -1,6 +1,6 @@
 # buzzn-reader
-  der buzzn-reader ist ein aus hard und software basierendes Smartmeter auslese modul. viele smartmeter besizten eine optische Datenschnitstelle diese kann mit dem buzzn-reader ausgelesen und an das buzzn-portal gesendet werden.
-  der buzzn-reader besteht aus folgenden Hardware Teilen.
+  der buzzn-reader ist ein aus Hard und Software basierendes Auslesemodul für elektronische Zähler. viele elektronische Zähler besizten eine optische Datenschnittstelle diese kann mit dem buzzn-reader ausgelesen und an die buzzn-Plattform gesendet werden.
+  Die Inhalte der Nachrichten, die über die optische Schnittstelle versendet werden sind in der sogenannten Smart Meter Language (SML) verfasst. Der buzzn-reader besteht aus folgenden Hardware Teilen.
 
   - [Raspberry Pi3 / 39,90 € ](https://www.reichelt.de/?ARTICLE=164977&PROVID=2788&wt_mc=amc141526782519998&gclid=Cj0KEQjwrte4BRD-oYi3y5_AhZ4BEiQAzIFxn-gnfEK5rxzGnYoiAz3sbMUnDfI7VhtRcC68r_A2c6UaAuDO8P8HAQ)
   - [Raspberry Pi3 Netzteil / 11,50 € ](https://www.reichelt.de/Ladegeraete-fuer-USB-Geraete/NT-MUSB-25-SW/3/index.html?&ACTION=3&LA=3&ARTICLE=167078&GROUPID=5158)
@@ -9,15 +9,15 @@
   - [D0-Lesekopf / 25 € ](http://wiki.volkszaehler.org/hardware/controllers/ir-schreib-lesekopf-usb-ausgang#stueckliste_und_preise)
 
 ##### buzzn-reader-app
-  die buzzn-reader-app ist das gehirn des buzzn-readers und besteht aus mehreren Teilen. webGUI, serialport.js, kue.js und redis.
+  die buzzn-reader-app ist das Gehirn des buzzn-readers und besteht aus mehreren Teilen. webGUI, serialport.js, kue.js und redis.
 
-  - /etc/init.d/redis-server start, startet den redis server zur zwischenspeicherung der SMLs
+  - /etc/init.d/redis-server start, startet den redis server zur Zwischenspeicherung der SML Nachrichten (kurz SMLs)
 
-  - npm start, startet die webGUI. dort läst sich der token eingeben und speichern. der token wird an das portal zur validierung gesendet und dann lokaler in redis speichern.
+  - npm start, startet die webGUI. Dort läst sich der token eingeben und speichern. der token wird an die Plattform zur Validierung gesendet und dann lokaler in redis speichern.
 
-  - node serialport, startet das auslesen der SMLs. alle 2 sekunden kommt eine SML von dem smartmeter diese wird dann an kue gesendet und in der redis zwischengespeichert.
+  - node serialport, startet das Auslesen der SMLs. alle 2 Sekunden kommt eine SML von dem Zähler. Diese wird dann an kue gesendet und in der redis zwischengespeichert.
 
-  - node kue, startet den background worker dieser empfängt/verarbeitet die SMLs die von serialport.js kommen. jede sml wird geparst und mittels des access_token an das portal gesendet.
+  - node kue, startet den background worker dieser empfängt/verarbeitet die SMLs die von serialport.js kommen. Jede SML wird geparst und mittels des access_token an die Plattform gesendet.
 
 
 ## Development
