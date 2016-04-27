@@ -30,7 +30,7 @@ jobs.process('reading', function(job, done) {
       catch(e){
          var power = "";
          var wattHour = "";
-      
+
       }
       break;
 
@@ -47,7 +47,7 @@ jobs.process('reading', function(job, done) {
      console.log(power);
      console.log(wattHour);
   }//
-  // redisClient.mget(['token', 'metering_point_id'], function(err, reply) {
+  // redisClient.mget(['token'], function(err, reply) {
   //   rest.post('https://staging.buzzn.net/api/v1/readings',{
   //     accessToken: reply[0],
   //     data: {
