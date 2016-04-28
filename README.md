@@ -7,7 +7,7 @@
   - [Raspberry Pi3 Gehäuse / 11,99 € ](http://www.amazon.de/Geh%C3%A4use-f%C3%BCr-Raspberry-offizieles-K%C3%BChlk%C3%B6rper/dp/B01CP11RPS/ref=sr_1_4?ie=UTF8&qid=1461138604&sr=8-4&keywords=Official+Raspberry+Pi+Case)
   - [SanDisk microSD 8GB / 6,99 € ](http://www.amazon.de/SanDisk-Speicherkarte-SD-Adapter-Frustfreie-Verpackung/dp/B00MWXUKDK?ie=UTF8&psc=1&redirect=true&ref_=ox_sc_sfl_title_2&smid=A3JWKAKR8XB7XF)
   - [D0-Lesekopf / 25 € ](http://wiki.volkszaehler.org/hardware/controllers/ir-schreib-lesekopf-usb-ausgang#stueckliste_und_preise)
-  - [optional Easymeter Adapter / 3€] (http://wiki.volkszaehler.org/hardware/controllers/ir-schreib-lesekopf_easymeter-adapter)
+  - [Optional Easymeter Adapter / 3€] (http://wiki.volkszaehler.org/hardware/controllers/ir-schreib-lesekopf_easymeter-adapter)
 
 ##### buzzn-reader-app
   die buzzn-reader-app ist das Gehirn des buzzn-readers und besteht aus mehreren Teilen. webGUI, serialport.js, kue.js und redis.
