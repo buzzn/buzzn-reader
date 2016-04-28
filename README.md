@@ -28,21 +28,11 @@
   - npm install nodemon -g
   - npm install pm2 -g
   - npm install
+  - nodemon npm start
+  - node kue
+  - node serialport
+  - browser http://localhost:3000 aufrufen
 
-#### webGUI
-    nodemon npm start
-    und browser http://localhost:3000 aufrufen.
-
-#### kue.js
-    node kue
-    kue-ui ist hier zu sehen http://localhost:3000/kue
-
-#### serialport.js
-    node serialport
-
-## Deployment via docker
-    docker build -t buzzn-reader .
-    docker run -it  -p 80:3000 --rm --name web buzzn-reader
-
-## infos
-  http://www.edi-energy.de/files2%5COBIS-Kennzahlen-System%202.2a_20130401.pdf
+## Production
+    download BuzznReaderOS Image
+    [Image auf die SD Card Brennen](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)

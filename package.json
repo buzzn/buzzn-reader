@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "test": "mocha",
     "start": "node ./bin/www"
   },
   "engines": {
@@ -28,6 +29,9 @@
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
-    "nodemon": "^1.9.1"
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "nodemon": "^1.9.1",
+    "qunit": "^0.9.1"
   }
 }
