@@ -15,10 +15,10 @@ serialPort.on('data', function(data) {
    if(chunk.length < 200)
      return;
 //   chunk += "XXXXXXXXXXXx";
-   queue.create('reading', { reading: chunk.toString() }).save();
+   queue.create('sml', { sml: chunk.toString() }).save();
 //  queue.create('reading', { reading: data.toString() }).save();
-//  queue.create('reading', { reading: "Bezug: " + arr1_8_0[1] + " kW\n" + 
-//  "Einspeisung: " + int2_8_0 + " kW\n" + 
+//  queue.create('reading', { reading: "Bezug: " + arr1_8_0[1] + " kW\n" +
+//  "Einspeisung: " + int2_8_0 + " kW\n" +
 //  "Leistung: " + arr15_7_0[1] + " W\n" }).save();
      chunk = "";
 
