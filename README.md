@@ -24,6 +24,7 @@
 ## Development
   - [Raspberry Pi2 OS Ubuntu MATE](https://ubuntu-mate.org/raspberry-pi/)
   - [install node with nvm](https://github.com/creationix/nvm)
+  - Ein guter Editor unter Raspian ist Bluefish
   - install redis
   - install nvm
   - npm install nodemon -g
