@@ -10,9 +10,11 @@ jobs.process('reading', function(job, done) {
     rest.post('https://staging.buzzn.net/api/v1/readings',{
       accessToken: reply[0],
       data: {
-        timestamp:  Date(job.created_at*1000),
-        watt_hour:  smlParser.wattHour,
-        power:      smlParser.power
+        timestamp: Date(job.created_at*1000),
+        meter_serialnumber: smlParser.meterSerialnumber,
+        watt_hour_a: smlParser.wattHourA,
+        watt_hour_b: smlParser.wattHourB,
+        power: smlParser.power
       },
     }).on('success', function(data, response) {
       console.log('success')

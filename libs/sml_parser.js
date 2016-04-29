@@ -9,7 +9,6 @@ function SmlParser(sml) {
   this.obis = obis;
   this.header = sml.trim().split('\n')[0].slice(1);
 
-
   switch(this.header) {
 
     case "ESY5Q3DA1004 V3.02":
@@ -17,8 +16,9 @@ function SmlParser(sml) {
       var phaseTwo   = parseFloat(this.obis['1-0:41.7.255'].slice(0,-2));
       var phaseThree = parseFloat(this.obis['1-0:61.7.255'].slice(0,-2));
       this.power = phaseOne + phaseTwo + phaseThree;
-      this.wattHour = parseInt((this.obis['1-0:1.8.0']).slice(0,-4)*1000);
       this.meterSerialnumber = this.obis['1-0:0.0.0']
+      this.wattHourA = parseInt((this.obis['1-0:1.8.0']).slice(0,-4)*1000);
+      this.wattHourB = null;
       break;
 
     case "HAG5eHZ010C_EHZ1ZA22":
@@ -26,10 +26,10 @@ function SmlParser(sml) {
       var phaseTwo   = parseFloat(this.obis['1-0:41.7.0'].slice(0,-2));
       var phaseThree = parseFloat(this.obis['1-0:61.7.0'].slice(0,-2));
       this.power = phaseOne + phaseTwo + phaseThree
-      this.wattHour = parseInt(this.obis['1-0:1.8.1']*1000);
       this.meterSerialnumber = this.obis['0:0.0.0']
+      this.wattHourA = parseInt(this.obis['1-0:1.8.1']*1000);
+      this.wattHourB = parseInt(this.obis['1-0:2.8.1']*1000);
       break;
-
   }
 }
 

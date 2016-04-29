@@ -7,6 +7,7 @@ it('does pars a easymeter q3d SML', function() {
 
   var sml = new SmlParser(
   "/ESY5Q3DA1004 V3.02\n\
+  \
   1-0:0.0.0*255(1003003416)\n\
   1-0:1.8.0*255(00000000.9000000*kWh)\n\
   1-0:21.7.255*255(000000.00*W)\n\
@@ -17,9 +18,10 @@ it('does pars a easymeter q3d SML', function() {
   0-0:96.1.255*255(1ESY1003003416)\n\
   !")
 
-  expect(sml.power).to.equal(-8.82);
-  expect(sml.wattHour).to.equal(900);
   expect(sml.meterSerialnumber).to.equal('1003003416');
+  expect(sml.wattHourA).to.equal(900);
+  expect(sml.wattHourB).to.equal(null);
+  expect(sml.power).to.equal(-8.82);
 });
 
 
@@ -52,7 +54,8 @@ it('does pars a hager EHZ SML', function() {
   1-0:96.50.0*7(00)\n\
   !")
 
-  expect(sml.power).to.equal(29);
-  expect(sml.wattHour).to.equal(16986);
   expect(sml.meterSerialnumber).to.equal('1095100000053019');
+  expect(sml.wattHourA).to.equal(16986);
+  expect(sml.wattHourB).to.equal(1574);
+  expect(sml.power).to.equal(29);
 });
