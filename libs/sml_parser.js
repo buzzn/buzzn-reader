@@ -18,7 +18,7 @@ function SmlParser(sml) {
       var phaseThree = parseFloat(this.obis['1-0:61.7.255'].slice(0,-2));
       this.power = phaseOne + phaseTwo + phaseThree;
       this.wattHour = parseInt((this.obis['1-0:1.8.0']).slice(0,-4)*1000);
-      this.meterSerialnumber = this.obis['1-0:0.0.0*255']
+      this.meterSerialnumber = this.obis['1-0:0.0.0']
       break;
 
     case "HAG5eHZ010C_EHZ1ZA22":
@@ -27,7 +27,7 @@ function SmlParser(sml) {
       var phaseThree = parseFloat(this.obis['1-0:61.7.0'].slice(0,-2));
       this.power = phaseOne + phaseTwo + phaseThree
       this.wattHour = parseInt(this.obis['1-0:1.8.1']*1000);
-      this.meterSerialnumber = this.obis['0:0.0.0*255']
+      this.meterSerialnumber = this.obis['0:0.0.0']
       break;
 
   }
