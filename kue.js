@@ -11,7 +11,7 @@ jobs.process('reading', function(job, done) {
       accessToken: reply[0],
       data: {
         timestamp:  Date(job.created_at*1000),
-        watt_hour:  smlParser.wattHour
+        watt_hour:  smlParser.wattHour,
         power:      smlParser.power
       },
     }).on('success', function(data, response) {
