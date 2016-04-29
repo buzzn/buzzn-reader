@@ -2,12 +2,12 @@
   der buzzn-reader ist ein aus Hard und Software basierendes Auslesemodul für elektronische Zähler. viele elektronische Zähler besitzen eine optische Datenschnittstelle diese kann mit dem buzzn-reader ausgelesen und an die buzzn-Plattform gesendet werden.
   Die Inhalte der Nachrichten, die über die optische Schnittstelle versendet werden sind in der sogenannten Smart Meter Language (SML) verfasst. Der buzzn-reader besteht aus folgenden Hardwareteilen. (Entwickelt wird aktuell noch auf dem Raspberry Pi2)
 
-  - [Raspberry Pi3 / 39,90 € ](https://www.reichelt.de/?ARTICLE=164977&PROVID=2788&wt_mc=amc141526782519998&gclid=Cj0KEQjwrte4BRD-oYi3y5_AhZ4BEiQAzIFxn-gnfEK5rxzGnYoiAz3sbMUnDfI7VhtRcC68r_A2c6UaAuDO8P8HAQ)
-  - [Raspberry Pi3 Netzteil / 11,50 € ](https://www.reichelt.de/Ladegeraete-fuer-USB-Geraete/NT-MUSB-25-SW/3/index.html?&ACTION=3&LA=3&ARTICLE=167078&GROUPID=5158)
-  - [Raspberry Pi3 Gehäuse / 11,99 € ](http://www.amazon.de/Geh%C3%A4use-f%C3%BCr-Raspberry-offizieles-K%C3%BChlk%C3%B6rper/dp/B01CP11RPS/ref=sr_1_4?ie=UTF8&qid=1461138604&sr=8-4&keywords=Official+Raspberry+Pi+Case)
+  - [Raspberry Pi2 / 37,50 € ](https://www.reichelt.de/RASPBERRY-PI-2-B/3/index.html?&ACTION=3&LA=446&ARTICLE=152728&artnr=RASPBERRY+PI+2+B&SEARCH=Raspberry+Pi+2)
+  - [Raspberry Pi2 Netzteil / 9,99 € ](http://www.amazon.de/Rydges-High-Quality-Netzteil-Ladeger%C3%A4t-Raspberry/dp/B00GM0305Y/ref=sr_1_5?ie=UTF8&qid=1461920420&sr=8-5&keywords=Raspberry+Pi2+Netzteil)
+  - [Raspberry Pi2 Gehäuse / 7,54 € ](http://www.amazon.de/OneNineDesign-Raspberry-bel%C3%BCftet-europ%C3%A4ische-Fertigung/dp/B00W7S1BFG/ref=sr_1_1?ie=UTF8&qid=1461921764&sr=8-1&keywords=Geh%C3%A4use+Raspberry+Pi2)
   - [SanDisk microSD 8GB / 6,99 € ](http://www.amazon.de/SanDisk-Speicherkarte-SD-Adapter-Frustfreie-Verpackung/dp/B00MWXUKDK?ie=UTF8&psc=1&redirect=true&ref_=ox_sc_sfl_title_2&smid=A3JWKAKR8XB7XF)
   - [D0-Lesekopf / 25 € ](http://wiki.volkszaehler.org/hardware/controllers/ir-schreib-lesekopf-usb-ausgang#stueckliste_und_preise)
-  - [Optional Easymeter Adapter / 3€] (http://wiki.volkszaehler.org/hardware/controllers/ir-schreib-lesekopf_easymeter-adapter)
+  - [Optional Easymeter Adapter / 3€](http://wiki.volkszaehler.org/hardware/controllers/ir-schreib-lesekopf_easymeter-adapter)
 
 ##### buzzn-reader-app
   die buzzn-reader-app ist das Gehirn des buzzn-readers und besteht aus mehreren Teilen. webGUI, serialport.js, kue.js und redis.
@@ -22,9 +22,10 @@
 
 
 ## Development
-  - [Raspberry Pi3 OS Ubuntu MATE](https://ubuntu-mate.org/raspberry-pi/)
-  - install node with nvm https://github.com/creationix/nvm
+  - [Raspberry Pi2 OS Ubuntu MATE](https://ubuntu-mate.org/raspberry-pi/)
+  - [install node with nvm](https://github.com/creationix/nvm)
   - install redis
+  - install nvm
   - npm install nodemon -g
   - npm install pm2 -g
   - npm install
