@@ -22,11 +22,12 @@
 
 
 ## Development
-  - [Raspberry Pi2 OS Ubuntu MATE](https://ubuntu-mate.org/raspberry-pi/)
-  - [install node with nvm](https://github.com/creationix/nvm)
+  - [Raspberry Raspbian Jessie](https://www.raspberrypi.org/downloads/raspbian/)
+  - sudo raspi-config # to expand sd volume
+  - sudo apt-get update
+  - sudo apt-get install npm git redis-server
   - Ein guter Editor unter Raspian ist Bluefish
-  - install redis
-  - install nvm
+
   - npm install nodemon -g
   - npm install pm2 -g
   - npm install
@@ -35,6 +36,20 @@
   - node serialport
   - browser http://localhost:3000 aufrufen
 
-## Production
-    download BuzznReaderOS Image
-    [Image auf die SD Card Brennen](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)
+## Prepare Release
+  sudo pm2 startup systemd -u pi
+
+## Release
+  - Insert SD Card to Clone
+  - Locate SD Card / diskutil list
+  - Unmount the SD Card / diskutil unmountDisk /dev/disk3
+  - Create Image from SD Card / sudo dd if=/dev/disk3 of=./images/buzzn-reader-v1.img
+  - To see progress while it is running just type control-t
+  - zip and upload image to aws s3
+
+## Deploy
+  - download buzzn-reader-pi2.img or create it
+  - Insert a blank 8GB SD Card
+  - Locate SD Card / diskutil list
+  - Unmount the SD Card / diskutil unmountDisk /dev/disk3
+  - Restore from a Cloned Image / sudo dd bs=1m if=./images/buzzn-reader-pi2.img of=/dev/rdisk3
