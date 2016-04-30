@@ -37,7 +37,7 @@
   - browser http://localhost:3000 aufrufen
 
 ## Prepare Release
-  sudo pm2 startup systemd -u pi
+  - sudo pm2 startup systemd -u pi
 
 ## Release
   - Insert SD Card to Clone
