@@ -3,6 +3,7 @@ var jobs = kue.createQueue();
 var rest = require('restler');
 var redis = require('redis');
 var redisClient = redis.createClient();
+var SmlParser = require('libs/sml_parser');
 
 jobs.process('sml', function(job, done) {
   var smlParser = new SmlParser(job.data.sml);
