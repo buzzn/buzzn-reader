@@ -22,7 +22,7 @@
 
 
 ## Development
-  - [Raspberry Raspbian Jessie](https://www.raspberrypi.org/downloads/raspbian/)
+  - [BuzznReaderOS](http://buzzn.s3.amazonaws.com/buzzn-reader-v1.img.zip)
   - sudo raspi-config # to expand sd volume
   - sudo apt-get update
   - sudo apt-get install npm git redis-server
@@ -48,8 +48,9 @@
   - zip and upload image to aws s3
 
 ## Deploy
-  - download buzzn-reader-pi2.img or create it
+  - download [BuzznReaderOS](http://buzzn.s3.amazonaws.com/buzzn-reader-v1.img.zip) or create it
   - Insert a blank 8GB SD Card
   - Locate SD Card / diskutil list
   - Unmount the SD Card / diskutil unmountDisk /dev/disk3
   - Restore from a Cloned Image / sudo dd bs=1m if=./images/buzzn-reader-pi2.img of=/dev/rdisk3
+  - To see progress while it is running just type control-t
