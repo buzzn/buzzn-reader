@@ -4,7 +4,7 @@ var rest = require('restler');
 var redis = require('redis');
 var redisClient = redis.createClient();
 
-jobs.process('reading', function(job, done) {
+jobs.process('sml', function(job, done) {
   var smlParser = new SmlParser(job.data.sml);
   redisClient.mget(['token'], function(err, reply) {
     rest.post('https://staging.buzzn.net/api/v1/readings',{
