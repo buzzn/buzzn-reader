@@ -1,7 +1,0 @@
-extends layout
-
-block content
-    h1= title
-    form#formAddUser(name="create Job",method="post",action="/create_job")
-        textarea#txt(type="text", placeholder="txt", name="txt")
-        button#btnSubmit(type="submit") submit
