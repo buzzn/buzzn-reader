@@ -21,15 +21,15 @@ serialPort.on('data', function(data) {
       var pos1ofSlash = chunk.indexOf("/");
       var sliceChunk  = chunk.slice(100);
       var pos2ofSlash = sliceChunk.indexOf("/");
-      
+
       Length = pos2ofSlash - pos1ofSlash + 100;
 
-      queue.create('reading', { reading: Length.toString() }).save();
+      queue.create('sml', { reading: Length.toString() }).save();
       return;
-   }  
+   }
 
 //   chunk += "XXXXXXXXXXXx";
-   queue.create('reading', { reading: chunk.toString() + " *** " + Length.toString() }).save();
+   queue.create('sml', { reading: chunk.toString() + " *** " + Length.toString() }).save();
 //  queue.create('reading', { reading: data.toString() }).save();
 //  queue.create('reading', { reading: "Bezug: " + arr1_8_0[1] + " kW\n" +
 //  "Einspeisung: " + int2_8_0 + " kW\n" +
