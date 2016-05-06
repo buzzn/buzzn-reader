@@ -27,7 +27,6 @@
   - sudo apt-get update
   - sudo apt-get install npm git redis-server
   - Ein guter Editor unter Raspian ist Bluefish
-
   - npm install nodemon -g
   - npm install pm2 -g
   - npm install
