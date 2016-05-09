@@ -24,12 +24,12 @@ serialPort.on('data', function(data) {
 
       Length = pos2ofSlash - pos1ofSlash + 100;
 
-      queue.create('sml', { reading: Length.toString() }).save();
+      queue.create('sml', { sml: Length.toString() }).save();
       return;
    }
 
 //   chunk += "XXXXXXXXXXXx";
-   queue.create('sml', { reading: chunk.toString() + " *** " + Length.toString() }).save();
+   queue.create('sml', { sml: chunk.toString() + " *** " + Length.toString() }).save();
 //  queue.create('reading', { reading: data.toString() }).save();
 //  queue.create('reading', { reading: "Bezug: " + arr1_8_0[1] + " kW\n" +
 //  "Einspeisung: " + int2_8_0 + " kW\n" +

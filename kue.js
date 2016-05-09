@@ -6,7 +6,8 @@ var redisClient = redis.createClient();
 var SmlParser = require('./libs/sml_parser');
 
 jobs.process('sml', function(job, done) {
-  console.log(job.data.sml)
+  //console.log(job.data.sml)
+console.log(job.data.sml)
 
   // var smlParser = new SmlParser(job.data.sml);
   // redisClient.mget(['token'], function(err, reply) {
