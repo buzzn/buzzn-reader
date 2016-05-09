@@ -7,7 +7,10 @@ var SmlParser = require('./libs/sml_parser');
 
 jobs.process('sml', function(job, done) {
   var smlParser = new SmlParser(job.data.sml);
-  console.log(smlParser.obis);
+  console.log(smlParser.meterSerialnumber);
+  console.log(smlParser.milliwattHourA);
+  console.log(smlParser.milliwattHourB);
+  console.log(smlParser.milliwatt);
 
   // var smlParser = new SmlParser(job.data.sml);
   // redisClient.mget(['token'], function(err, reply) {
