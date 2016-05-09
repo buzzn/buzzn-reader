@@ -3,7 +3,7 @@ var expect = chai.expect;
 var SmlParser = require('../libs/sml_parser');
 
 
-it('does pars a easymeter q3d SML', function() {
+it('does pars a easymeter q3d V3.02 SML', function() {
 
   var sml = new SmlParser(
   "/ESY5Q3DA1004 V3.02\n\
@@ -11,17 +11,40 @@ it('does pars a easymeter q3d SML', function() {
   1-0:0.0.0*255(1003003416)\n\
   1-0:1.8.0*255(00000000.9000000*kWh)\n\
   1-0:21.7.255*255(000000.00*W)\n\
-  1-0:41.7.255*255(-000008.82*W)\n\
+  1-0:41.7.255*255(000008.82*W)\n\
   1-0:61.7.255*255(000000.00*W)\n\
-  1-0:1.7.255*255(-000008.82*W)\n\
+  1-0:1.7.255*255(000008.82*W)\n\
   1-0:96.5.5*255(D2)\n\
   0-0:96.1.255*255(1ESY1003003416)\n\
   !")
 
   expect(sml.meterSerialnumber).to.equal('1003003416');
-  expect(sml.wattHourA).to.equal(900);
-  expect(sml.wattHourB).to.equal(null);
-  expect(sml.power).to.equal(-8.82);
+  expect(sml.milliwattHourA).to.equal(900000);
+  expect(sml.milliwattHourB).to.equal(null);
+  expect(sml.milliwatt).to.equal(8820);
+});
+
+
+it('does pars a easymeter q3d V3.04 SML', function() {
+
+  var sml = new SmlParser(
+  "/ESY5Q3DA1024 V3.04\n\
+  \
+  1-0:0.0.0*255(60328159)\n\
+  1-0:1.8.0*255(00000015.3914783*kWh)\n\
+  1-0:2.8.0*255(00000001.1400000*kWh)\n\
+  1-0:21.7.0*255(000000.00*W)\n\
+  1-0:41.7.0*255(000000.00*W)\n\
+  1-0:61.7.0*255(0000133.24*W)\n\
+  1-0:1.7.0*255(0000133.24*W)\n\
+  1-0:96.5.5*255(E0)\n\
+  0-0:96.1.255*255(1ESY1160328159)\n\
+  !")
+
+  expect(sml.meterSerialnumber).to.equal('60328159');
+  expect(sml.milliwattHourA).to.equal(15391478);
+  expect(sml.milliwattHourB).to.equal(1140000);
+  expect(sml.milliwatt).to.equal(133240);
 });
 
 
@@ -55,7 +78,7 @@ it('does pars a hager EHZ SML', function() {
   !")
 
   expect(sml.meterSerialnumber).to.equal('1095100000053019');
-  expect(sml.wattHourA).to.equal(16986);
-  expect(sml.wattHourB).to.equal(1574);
-  expect(sml.power).to.equal(29);
+  expect(sml.milliwattHourA).to.equal(16986200);
+  expect(sml.milliwattHourB).to.equal(1574000);
+  expect(sml.milliwatt).to.equal(29000);
 });
