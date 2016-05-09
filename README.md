@@ -26,6 +26,7 @@
   - sudo raspi-config # to expand sd volume
   - sudo apt-get update
   - sudo apt-get install npm git redis-server
+  - add "stop-writes-on-bgsave-error no" to /etc/redis.conf
   - Ein guter Editor unter Raspian ist Bluefish
   - npm install nodemon -g
   - npm install pm2 -g
