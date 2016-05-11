@@ -4,6 +4,7 @@ var kue = require('kue');
 var queue = kue.createQueue();
 
 var port = new SerialPort('/dev/ttyUSB0', {
+  databits: 7,
   parser: serialport.parsers.readline('!')
 });
 
