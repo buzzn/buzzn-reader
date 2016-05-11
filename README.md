@@ -47,6 +47,7 @@
   - To see progress while it is running just type control-t
   - zip and upload image to aws s3
 
+
 ## Deploy
   - download [D0ReaderOS](http://buzzn.s3.amazonaws.com/d0-reader-v1.img.zip) or create it
   - Insert a blank 8GB SD Card
