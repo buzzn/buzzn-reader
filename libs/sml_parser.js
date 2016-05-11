@@ -9,10 +9,7 @@ function SmlParser(sml) {
   this.obis = obis;
 
 
-
-
-
-  if (sml.indexOf("ESY5Q3") == 1) {
+  if (sml.indexOf("ESY5Q3") > 0) {
     if (this.obis['1-0:1.7.255'] == undefined) {
       var phaseOne   = parseFloat(this.obis['1-0:21.7.0'].slice(0,-2));
       var phaseTwo   = parseFloat(this.obis['1-0:41.7.0'].slice(0,-2));
@@ -34,7 +31,7 @@ function SmlParser(sml) {
 
 
 
-  } else if (sml.indexOf("ESY5T3") == 1) {
+  } else if (sml.indexOf("ESY5T3") > 0) {
     var phaseOne   = parseFloat(this.obis['1-0:21.7.0'].slice(0,-2));
     var phaseTwo   = parseFloat(this.obis['1-0:41.7.0'].slice(0,-2));
     var phaseThree = parseFloat(this.obis['1-0:61.7.0'].slice(0,-2));
@@ -51,7 +48,7 @@ function SmlParser(sml) {
 
 
 
-  } else if (sml.indexOf("HAG5eHZ") == 1) {
+  } else if (sml.indexOf("HAG5eHZ") > 0) {
     var phaseOne   = parseFloat(this.obis['1-0:21.7.0'].slice(0,-2));
     var phaseTwo   = parseFloat(this.obis['1-0:41.7.0'].slice(0,-2));
     var phaseThree = parseFloat(this.obis['1-0:61.7.0'].slice(0,-2));

@@ -7,7 +7,8 @@ var SmlParser = require('../libs/sml_parser');
 it('does pars a easymeter ESY5Q3DA1004', function() {
 
   var sml = new SmlParser(
-  "/ESY5Q3DA1004 V3.04\n\
+  "\n\
+  /ESY5Q3DA1004 V3.04\n\
   \
   1-0:0.0.0*255(60327685)\n\
   1-0:1.8.0*255(00000000.6400000*kWh)\n\
