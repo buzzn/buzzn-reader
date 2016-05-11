@@ -1,3 +1,5 @@
+[ ![Codeship Status for buzzn/d0-reader](https://codeship.io/projects/16833330-f9ad-0133-be69-0e6ed700efb9/status)](https://codeship.io/projects/151300)
+
 # D0 Reader
   der D0 Reader ist ein aus Hard und Software basierendes Auslesemodul für elektronische Zähler. viele elektronische Zähler besitzen eine optische D0 Datenschnittstelle diese kann mit dem D0 Reader ausgelesen und an die buzzn Platform gesendet werden.
   Die Inhalte der Nachrichten, die über die optische Schnittstelle versendet werden sind in der sogenannten Smart Meter Language (SML) verfasst. Der D0 Reader besteht aus folgenden Hardwareteilen. (Entwickelt wird auf dem Raspberry Pi2)
