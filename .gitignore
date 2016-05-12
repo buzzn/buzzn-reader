@@ -16,7 +16,7 @@
 npm-debug.log
 testem.log
 
-/images
+/images/*
 
 .vagrant
 
