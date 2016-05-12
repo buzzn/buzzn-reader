@@ -41,6 +41,12 @@
 
 ## Prepare Release
   - sudo pm2 startup systemd -u pi
+  - redis-cli flushall
+  - pm2 start bin/www
+  - pm2 start kue.js
+  - pm2 start serialport.js
+
+
 
 ## Release
   - Insert SD Card to Clone
