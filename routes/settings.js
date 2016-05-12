@@ -7,7 +7,20 @@ var redisClient = redis.createClient();
 
 router.get('/edit', function(req, res) {
   redisClient.mget(['host', 'token'], function(err, reply) {
-    res.render('settings_edit', { host: reply[0], token: reply[1]  });
+
+    if(reply[0] == null){
+      var hostValue = "https://app.buzzn.net"
+    }else{
+      var hostValue = reply[0]
+    }
+
+    if(reply[1] == null){
+      var tokenValue = "add_your_token_here"
+    }else{
+      var tokenValue = reply[1]
+    }
+
+    res.render('settings_edit', { host: hostValue, token: tokenValue  });
   });
 
 });
