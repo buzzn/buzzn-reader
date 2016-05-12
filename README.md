@@ -45,8 +45,7 @@
   - pm2 start bin/www
   - pm2 start kue.js
   - pm2 start serialport.js
-
-
+  - pm2 save
 
 ## Release
   - Insert SD Card to Clone
