@@ -33,6 +33,7 @@
   - Ein guter Editor unter Raspian ist Bluefish
   - npm install nodemon -g
   - npm install pm2 -g
+  - sudo pm2 startup systemd -u pi
   - npm install
   - nodemon npm start
   - node kue
@@ -40,7 +41,6 @@
   - browser http://localhost:3000 aufrufen
 
 ## Prepare Release
-  - sudo pm2 startup systemd -u pi
   - redis-cli flushall
   - pm2 start bin/www
   - pm2 start kue.js
