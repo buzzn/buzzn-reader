@@ -11,7 +11,7 @@ var bodyParser = require('body-parser');
 var ui = require('kue-ui');
 
 var routes = require('./routes/index');
-var token = require('./routes/token');
+var settings = require('./routes/settings');
 
 var app = express();
 
@@ -34,7 +34,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/token', token);
+app.use('/settings', settings);
 
 // Mount kue JSON api
 app.use('/api', kue.app);
