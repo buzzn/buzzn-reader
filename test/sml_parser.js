@@ -20,6 +20,9 @@ it('does pars a easymeter ESY5Q3DA1004', function() {
   0-0:96.1.255*255(1ESY1160327685)\n\
   !")
 
+
+  expect(sml.manufacturerName).to.equal('easymeter');
+  expect(sml.productName).to.equal('5q3');
   expect(sml.meterSerialnumber).to.equal('60327685');
   expect(sml.milliwattHourA).to.equal(640000);
   expect(sml.milliwattHourB).to.equal(null);
@@ -47,6 +50,8 @@ it('does pars a easymeter ESY5Q3DA1024', function() {
   0-0:96.1.255*255(1ESY1160328160)\n\
   !")
 
+  expect(sml.manufacturerName).to.equal('easymeter');
+  expect(sml.productName).to.equal('5q3');
   expect(sml.meterSerialnumber).to.equal('60328160');
   expect(sml.milliwattHourA).to.equal(1380000);
   expect(sml.milliwattHourB).to.equal(1140000);
@@ -71,6 +76,8 @@ it('does pars a easymeter ESY5Q3DA3004', function() {
   0-0:96.1.255*255(1ESY1160300829)\n\
   !")
 
+  expect(sml.manufacturerName).to.equal('easymeter');
+  expect(sml.productName).to.equal('5q3');
   expect(sml.meterSerialnumber).to.equal('60300829');
   expect(sml.milliwattHourA).to.equal(360000);
   expect(sml.milliwattHourB).to.equal(null);
@@ -125,6 +132,8 @@ it('does pars a easymeter ESY5T3DC1004', function() {
   0-0:96.1.255*255(1ESY1160009501)\n\
   !")
 
+  expect(sml.manufacturerName).to.equal('easymeter');
+  expect(sml.productName).to.equal('5t3');
   expect(sml.meterSerialnumber).to.equal('60009501');
   expect(sml.milliwattHourA).to.equal(1100000);
   expect(sml.milliwattHourB).to.equal(null);
@@ -151,6 +160,8 @@ it('does pars a easymeter ESY5T3DC1024', function() {
   0-0:96.1.255*255(1ESY1160300856)\n\
   !")
 
+  expect(sml.manufacturerName).to.equal('easymeter');
+  expect(sml.productName).to.equal('5t3');
   expect(sml.meterSerialnumber).to.equal('60300856');
   expect(sml.milliwattHourA).to.equal(1100000);
   expect(sml.milliwattHourB).to.equal(1000000);
@@ -193,7 +204,8 @@ it('does pars a hager HAG5eHZ010C_EHZ1ZA22', function() {
   1-0:96.50.0*6(003D381B2609F5400803010700009F80)\n\
   1-0:96.50.0*7(00)\n\
   !")
-
+  expect(sml.manufacturerName).to.equal('hager');
+  expect(sml.productName).to.equal('ehz');
   expect(sml.meterSerialnumber).to.equal('1095100000053019');
   expect(sml.milliwattHourA).to.equal(16986200);
   expect(sml.milliwattHourB).to.equal(1574000);
