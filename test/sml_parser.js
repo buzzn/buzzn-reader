@@ -32,6 +32,31 @@ it('does pars a easymeter ESY5Q3DA1004', function() {
 
 
 
+it('does pars a broken easymeter ESY5Q3DA1004 SML', function() {
+
+  var sml = new SmlParser(
+  "\n\
+  ddd/ESY5Q3DA1004 V3.04\n\
+  \
+  1-0:0.0.0*255(60327685)\n\
+  1-0:1.8.0*250000.6400000*kWh)\n\
+  1-0:21.7.0*255(000000.10*W)\n\
+  1-0:40*W)\n\
+  1-0:61.7.0*25500000.00*W)\n\
+  1-0:96.5.5*255(60)\n\
+  0-0:96.1.255*255(1ESY1160327685)\n\
+  !")
+
+
+  expect(sml.manufacturerName).to.equal('easymeter');
+  expect(sml.productName).to.equal('5q3');
+  expect(sml.meterSerialnumber).to.equal('60327685');
+  expect(sml.milliwattHourA).to.equal(null);
+  expect(sml.milliwattHourB).to.equal(null);
+  expect(sml.milliwatt).to.equal(null);
+});
+
+
 
 
 it('does pars a easymeter ESY5Q3DA1024', function() {
