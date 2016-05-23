@@ -34,13 +34,15 @@
   - after complete. put SD Card into RaspberryPi
   - sudo raspi-config | expand SDCard volume
   - sudo apt-get update
-  - sudo apt-get install npm git redis-server
+  - sudo apt-get install git redis-server
   - redis-cli, CONFIG SET dir /home/pi, CONFIG SET dbfilename d0-reader.rdb
-  - Ein guter Editor unter Raspian ist Bluefish
-  - npm install nodemon -g
-  - npm install pm2 -g
+  - curl -sL https://deb.nodesource.com/setup | sudo bash -
+  - sudo apt-get install nodejs
+  - sudo npm install pm2 -g
   - sudo pm2 startup systemd -u pi
-  - npm install
+  - git clone https://github.com/buzzn/d0-reader.git
+  - cd /d0-reader
+  - sudo npm install nodemon -g
   - nodemon npm start
   - node kue
   - node serialport
