@@ -25,11 +25,17 @@
 
 
 ## Development
-  - [D0ReaderOS](http://buzzn.s3.amazonaws.com/d0-reader-v1.img.zip)
-  - sudo raspi-config # to expand sd volume
+  - Download and unzip [RASPBIAN JESSIE](https://www.raspberrypi.org/downloads/raspbian/)
+  - Insert a blank 16GB SD Card
+  - diskutil list | Locate SD Card
+  - diskutil unmountDisk /dev/disk3 | Unmount the SD Card
+  - sudo dd bs=1m if=~/Downloads/2016-05-10-raspbian-jessie.img of=/dev/rdisk3 | Burn Image on SDCard
+  - To see progress while it is running just type control-t
+  - after complete. put SD Card into RaspberryPi
+  - sudo raspi-config | expand SDCard volume
   - sudo apt-get update
   - sudo apt-get install npm git redis-server
-  - add "stop-writes-on-bgsave-error no" to /etc/redis.conf
+  - redis-cli, CONFIG SET dir /home/pi, CONFIG SET dbfilename d0-reader.rdb
   - Ein guter Editor unter Raspian ist Bluefish
   - npm install nodemon -g
   - npm install pm2 -g
@@ -40,26 +46,26 @@
   - node serialport
   - browser http://localhost:3000 aufrufen
 
-## Prepare Release
+## Prepare Release | on RaspberryPi
   - redis-cli flushall
   - pm2 start bin/www
   - pm2 start kue.js
   - pm2 start serialport.js
   - pm2 save
 
-## Release
+## Release | on Workstation
   - Insert SD Card to Clone
-  - Locate SD Card / diskutil list
-  - Unmount the SD Card / diskutil unmountDisk /dev/disk3
-  - Create Image from SD Card / sudo dd if=/dev/disk3 of=./images/d0-reader-v1.img
+  - diskutil list | Locate SD Card
+  - diskutil unmountDisk /dev/disk3 | Unmount the SD Card
+  - sudo dd if=/dev/disk3 of=./images/d0-reader-v1.img | Create Image from SD Card
   - To see progress while it is running just type control-t
   - zip and upload image to aws s3
 
-
-## Deploy
-  - download [D0ReaderOS](http://buzzn.s3.amazonaws.com/d0-reader-v1.img.zip) or create it
-  - Insert a blank 8GB SD Card
-  - Locate SD Card / diskutil list
-  - Unmount the SD Card / diskutil unmountDisk /dev/disk3
-  - Restore from a Cloned Image / sudo dd bs=1m if=./images/d0-reader-pi2.img of=/dev/rdisk3
+## Production
+  - download [D0ReaderOS](http://buzzn.s3.amazonaws.com/d0-reader-v1.img.zip)
+  - Insert a blank 16GB SD Card
+  - diskutil list | Locate SD Card
+  - diskutil unmountDisk /dev/disk3 | Unmount the SD Card
+  - sudo dd bs=1m if=./images/d0-reader-pi2.img of=/dev/rdisk3 | Restore from a Cloned Image
   - To see progress while it is running just type control-t
+  - put SD Card into RaspberryPi
