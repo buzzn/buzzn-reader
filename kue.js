@@ -9,7 +9,7 @@ jobs.process('sml', function(job, done) {
   var smlParser = new SmlParser(job.data.sml);
   redisClient.mget(['host', 'token'], function(err, reply) {
     rest.post(reply[0],{
-      accessToken: reply[1],
+      accessToken: reply[1] + "/api/v1/readings",
       data: {
         timestamp: Date(job.created_at),
         meter_serialnumber: smlParser.meterSerialnumber,
