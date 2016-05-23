@@ -73,36 +73,36 @@ function SmlParser(sml) {
 
 
   if (sml.indexOf("ESY5Q3") >= 0) {
-    this.manufacturerName   = 'easymeter';
-    this.productName        = '5q3';
-    this.meterSerialnumber  = this.getObisRaw('1-0:0.0.0');
-    this.milliwatt          = this.getPowerMilliwatt(['1-0:21.7.', '1-0:41.7.', '1-0:61.7.'])
-    this.milliwattHourA     = this.getEasymeterEnergyMilliwattHour('1-0:1.8.0')
-    this.milliwattHourB     = this.getEasymeterEnergyMilliwattHour('1-0:2.8.0')
+    this.manufacturerName     = 'easymeter';
+    this.productName          = '5q3';
+    this.meterSerialnumber    = this.getObisRaw('1-0:0.0.0');
+    this.powerMilliwatt       = this.getPowerMilliwatt(['1-0:21.7.', '1-0:41.7.', '1-0:61.7.'])
+    this.energyAMilliwattHour = this.getEasymeterEnergyMilliwattHour('1-0:1.8.0')
+    this.energyBMilliwattHour = this.getEasymeterEnergyMilliwattHour('1-0:2.8.0')
 
   } else if (sml.indexOf("ESY5T3") >= 0) {
-    this.manufacturerName   = 'easymeter';
-    this.productName        = '5t3';
-    this.meterSerialnumber  = this.getObisRaw('1-0:0.0.0');
-    this.milliwatt          = this.getPowerMilliwatt(['1-0:21.7.', '1-0:41.7.', '1-0:61.7.'])
-    this.milliwattHourA     = this.getEasymeterEnergyMilliwattHour('1-0:1.8.0')
-    this.milliwattHourB     = this.getEasymeterEnergyMilliwattHour('1-0:2.8.0')
+    this.manufacturerName     = 'easymeter';
+    this.productName          = '5t3';
+    this.meterSerialnumber    = this.getObisRaw('1-0:0.0.0');
+    this.powerMilliwatt       = this.getPowerMilliwatt(['1-0:21.7.', '1-0:41.7.', '1-0:61.7.'])
+    this.energyAMilliwattHour = this.getEasymeterEnergyMilliwattHour('1-0:1.8.0')
+    this.energyBMilliwattHour = this.getEasymeterEnergyMilliwattHour('1-0:2.8.0')
 
   } else if (sml.indexOf("HAG5eHZ") >= 0) {
-    this.manufacturerName   = 'hager';
-    this.productName        = 'ehz';
-    this.meterSerialnumber  = this.getObisRaw('0:0.0.0');
-    this.milliwatt          = this.getPowerMilliwatt(['1-0:21.7.', '1-0:41.7.', '1-0:61.7.'])
-    this.milliwattHourA     = this.getHagerEnergyMilliwattHour('1-0:1.8.1')
-    this.milliwattHourB     = this.getHagerEnergyMilliwattHour('1-0:2.8.1')
+    this.manufacturerName     = 'hager';
+    this.productName          = 'ehz';
+    this.meterSerialnumber    = this.getObisRaw('0:0.0.0');
+    this.powerMilliwatt       = this.getPowerMilliwatt(['1-0:21.7.', '1-0:41.7.', '1-0:61.7.'])
+    this.energyAMilliwattHour = this.getHagerEnergyMilliwattHour('1-0:1.8.1')
+    this.energyBMilliwattHour = this.getHagerEnergyMilliwattHour('1-0:2.8.1')
 
   } else {
-    this.manufacturerName = null;
-    this.productName = null;
-    this.meterSerialnumber = null;
-    this.milliwatt = null;
-    this.milliwattHourA = null;
-    this.milliwattHourB = null;
+    this.manufacturerName     = null;
+    this.productName          = null;
+    this.meterSerialnumber    = null;
+    this.powerMilliwatt       = null;
+    this.energyAMilliwattHour = null;
+    this.energyBMilliwattHour = null;
   }
 }
 

@@ -24,9 +24,9 @@ it('does pars a easymeter ESY5Q3DA1004', function() {
   expect(sml.manufacturerName).to.equal('easymeter');
   expect(sml.productName).to.equal('5q3');
   expect(sml.meterSerialnumber).to.equal('60327685');
-  expect(sml.milliwattHourA).to.equal(640000);
-  expect(sml.milliwattHourB).to.equal(null);
-  expect(sml.milliwatt).to.equal(2600);
+  expect(sml.energyAMilliwattHour).to.equal(640000);
+  expect(sml.energyBMilliwattHour).to.equal(null);
+  expect(sml.powerMilliwatt).to.equal(2600);
 });
 
 
@@ -51,9 +51,9 @@ it('does pars a broken easymeter ESY5Q3DA1004 SML', function() {
   expect(sml.manufacturerName).to.equal('easymeter');
   expect(sml.productName).to.equal('5q3');
   expect(sml.meterSerialnumber).to.equal('60327685');
-  expect(sml.milliwattHourA).to.equal(null);
-  expect(sml.milliwattHourB).to.equal(null);
-  expect(sml.milliwatt).to.equal(null);
+  expect(sml.energyAMilliwattHour).to.equal(null);
+  expect(sml.energyBMilliwattHour).to.equal(null);
+  expect(sml.powerMilliwatt).to.equal(null);
 });
 
 
@@ -78,9 +78,9 @@ it('does pars a easymeter ESY5Q3DA1024', function() {
   expect(sml.manufacturerName).to.equal('easymeter');
   expect(sml.productName).to.equal('5q3');
   expect(sml.meterSerialnumber).to.equal('60328160');
-  expect(sml.milliwattHourA).to.equal(1380000);
-  expect(sml.milliwattHourB).to.equal(1140000);
-  expect(sml.milliwatt).to.equal(0);
+  expect(sml.energyAMilliwattHour).to.equal(1380000);
+  expect(sml.energyBMilliwattHour).to.equal(1140000);
+  expect(sml.powerMilliwatt).to.equal(0);
 });
 
 
@@ -104,9 +104,9 @@ it('does pars a easymeter ESY5Q3DA3004', function() {
   expect(sml.manufacturerName).to.equal('easymeter');
   expect(sml.productName).to.equal('5q3');
   expect(sml.meterSerialnumber).to.equal('60300829');
-  expect(sml.milliwattHourA).to.equal(360000);
-  expect(sml.milliwattHourB).to.equal(null);
-  expect(sml.milliwatt).to.equal(0);
+  expect(sml.energyAMilliwattHour).to.equal(360000);
+  expect(sml.energyBMilliwattHour).to.equal(null);
+  expect(sml.powerMilliwatt).to.equal(0);
 });
 
 
@@ -131,9 +131,9 @@ it('does pars a easymeter ESY5Q3DA3024', function() {
   !")
 
   expect(sml.meterSerialnumber).to.equal('60118474');
-  expect(sml.milliwattHourA).to.equal(2070000);
-  expect(sml.milliwattHourB).to.equal(1690000);
-  expect(sml.milliwatt).to.equal(0);
+  expect(sml.energyAMilliwattHour).to.equal(2070000);
+  expect(sml.energyBMilliwattHour).to.equal(1690000);
+  expect(sml.powerMilliwatt).to.equal(0);
 });
 
 
@@ -160,9 +160,9 @@ it('does pars a easymeter ESY5T3DC1004', function() {
   expect(sml.manufacturerName).to.equal('easymeter');
   expect(sml.productName).to.equal('5t3');
   expect(sml.meterSerialnumber).to.equal('60009501');
-  expect(sml.milliwattHourA).to.equal(1100000);
-  expect(sml.milliwattHourB).to.equal(null);
-  expect(sml.milliwatt).to.equal(10);
+  expect(sml.energyAMilliwattHour).to.equal(1100000);
+  expect(sml.energyBMilliwattHour).to.equal(null);
+  expect(sml.powerMilliwatt).to.equal(10);
 });
 
 
@@ -188,9 +188,9 @@ it('does pars a easymeter ESY5T3DC1024', function() {
   expect(sml.manufacturerName).to.equal('easymeter');
   expect(sml.productName).to.equal('5t3');
   expect(sml.meterSerialnumber).to.equal('60300856');
-  expect(sml.milliwattHourA).to.equal(1100000);
-  expect(sml.milliwattHourB).to.equal(1000000);
-  expect(sml.milliwatt).to.equal(3830);
+  expect(sml.energyAMilliwattHour).to.equal(1100000);
+  expect(sml.energyBMilliwattHour).to.equal(1000000);
+  expect(sml.powerMilliwatt).to.equal(3830);
 });
 
 
@@ -232,7 +232,7 @@ it('does pars a hager HAG5eHZ010C_EHZ1ZA22', function() {
   expect(sml.manufacturerName).to.equal('hager');
   expect(sml.productName).to.equal('ehz');
   expect(sml.meterSerialnumber).to.equal('1095100000053019');
-  expect(sml.milliwattHourA).to.equal(16986200);
-  expect(sml.milliwattHourB).to.equal(1574000);
-  expect(sml.milliwatt).to.equal(29000);
+  expect(sml.energyAMilliwattHour).to.equal(16986200);
+  expect(sml.energyBMilliwattHour).to.equal(1574000);
+  expect(sml.powerMilliwatt).to.equal(29000);
 });
