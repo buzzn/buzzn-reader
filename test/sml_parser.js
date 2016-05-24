@@ -21,7 +21,7 @@ it('does pars a easymeter ESY5Q3DA1004', function() {
   !")
 
 
-  expect(sml.manufacturerName).to.equal('easymeter');
+  expect(sml.manufacturerName).to.equal('easy_meter');
   expect(sml.productName).to.equal('5q3');
   expect(sml.meterSerialnumber).to.equal('60327685');
   expect(sml.energyAMilliwattHour).to.equal(640000);
@@ -48,7 +48,7 @@ it('does pars a broken easymeter ESY5Q3DA1004 SML', function() {
   !")
 
 
-  expect(sml.manufacturerName).to.equal('easymeter');
+  expect(sml.manufacturerName).to.equal('easy_meter');
   expect(sml.productName).to.equal('5q3');
   expect(sml.meterSerialnumber).to.equal('60327685');
   expect(sml.energyAMilliwattHour).to.equal(null);
@@ -75,7 +75,7 @@ it('does pars a easymeter ESY5Q3DA1024', function() {
   0-0:96.1.255*255(1ESY1160328160)\n\
   !")
 
-  expect(sml.manufacturerName).to.equal('easymeter');
+  expect(sml.manufacturerName).to.equal('easy_meter');
   expect(sml.productName).to.equal('5q3');
   expect(sml.meterSerialnumber).to.equal('60328160');
   expect(sml.energyAMilliwattHour).to.equal(1380000);
@@ -101,7 +101,7 @@ it('does pars a easymeter ESY5Q3DA3004', function() {
   0-0:96.1.255*255(1ESY1160300829)\n\
   !")
 
-  expect(sml.manufacturerName).to.equal('easymeter');
+  expect(sml.manufacturerName).to.equal('easy_meter');
   expect(sml.productName).to.equal('5q3');
   expect(sml.meterSerialnumber).to.equal('60300829');
   expect(sml.energyAMilliwattHour).to.equal(360000);
@@ -130,6 +130,7 @@ it('does pars a easymeter ESY5Q3DA3024', function() {
   0-0:96.1.255*255(1ESY1160118474)\n\
   !")
 
+  expect(sml.manufacturerName).to.equal('easy_meter');
   expect(sml.meterSerialnumber).to.equal('60118474');
   expect(sml.energyAMilliwattHour).to.equal(2070000);
   expect(sml.energyBMilliwattHour).to.equal(1690000);
@@ -157,7 +158,7 @@ it('does pars a easymeter ESY5T3DC1004', function() {
   0-0:96.1.255*255(1ESY1160009501)\n\
   !")
 
-  expect(sml.manufacturerName).to.equal('easymeter');
+  expect(sml.manufacturerName).to.equal('easy_meter');
   expect(sml.productName).to.equal('5t3');
   expect(sml.meterSerialnumber).to.equal('60009501');
   expect(sml.energyAMilliwattHour).to.equal(1100000);
@@ -185,7 +186,7 @@ it('does pars a easymeter ESY5T3DC1024', function() {
   0-0:96.1.255*255(1ESY1160300856)\n\
   !")
 
-  expect(sml.manufacturerName).to.equal('easymeter');
+  expect(sml.manufacturerName).to.equal('easy_meter');
   expect(sml.productName).to.equal('5t3');
   expect(sml.meterSerialnumber).to.equal('60300856');
   expect(sml.energyAMilliwattHour).to.equal(1100000);
