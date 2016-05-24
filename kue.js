@@ -39,7 +39,7 @@ jobs.process('sml', function(job, done) {
             redisClient.set('meterId', data['data']['id']);
             done();
           }).on('fail', function(data, response) {
-            console.log('fail');
+            console.log('fail: ' + data);
             done(data);
           }).on('error', function(err, response) {
             console.log('error');
