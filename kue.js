@@ -26,6 +26,24 @@ jobs.process('sml', function(job, done) {
           console.log(data['data'])
         }else {
           console.log("no meter found: "  + smlParser.meterSerialnumber)
+          rest.post(host + "/api/v1/meters", {
+            accessToken: token,
+            data: {
+              manufacturer_name: smlParser.manufacturerName,
+              manufacturer_product_name: smlParser.productName,
+              manufacturer_product_serialnumber: smlParser.meterSerialnumber,
+              smart: true
+            },
+          }).on('success', function(data, response) {
+            redisClient.set('meterId', data['data']['id']);
+            done();
+          }).on('fail', function(data, response) {
+            console.log('fail');
+            done(data);
+          }).on('error', function(err, response) {
+            console.log('error');
+            done(err);
+          });
         }
         done();
       }).on('fail', function(data, response) {
