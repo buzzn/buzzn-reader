@@ -25,7 +25,7 @@ jobs.process('sml', function(job, done) {
         if(data['data'].length > 0){
           console.log(data['data'])
         }else {
-          console.log('no meter found')
+          console.log("no meter found: "  + smlParser.meterSerialnumber)
         }
         done();
       }).on('fail', function(data, response) {
