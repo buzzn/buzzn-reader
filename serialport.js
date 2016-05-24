@@ -9,5 +9,5 @@ var port = new SerialPort('/dev/ttyUSB0', {
 });
 
 port.on('data', function (data) {
-  queue.create('sml', { sml: data }).save();
+  queue.create('sml', { sml: data }).removeOnComplete( true ).save()
 });
