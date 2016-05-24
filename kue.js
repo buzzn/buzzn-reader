@@ -7,12 +7,17 @@ var SmlParser = require('./libs/sml_parser');
 
 jobs.process('sml', function(job, done) {
   var smlParser = new SmlParser(job.data.sml);
-  
-  redisClient.mget(['host', 'token', 'meterId'], function(err, reply) {
 
-    if(reply[2] == null){
-      rest.post(reply[0] + "/api/v1/meters", {
-        accessToken: reply[1],
+  redisClient.mget(['host', 'token', 'meterId'], function(err, reply) {
+    var host    = reply[0];
+    var token   = reply[1];
+    var meterId = reply[2];
+
+    console.log(meterId)
+
+    if(meterId == null){
+      rest.post(host + "/api/v1/meters", {
+        accessToken: token,
         data: {
           manufacturer_name: smlParser.manufacturerName,
           manufacturer_product_name: smlParser.productName,
@@ -33,7 +38,7 @@ jobs.process('sml', function(job, done) {
         accessToken: reply[1],
         data: {
           timestamp: Date(job.created_at),
-          meter_id: reply[2],
+          meter_id: meterId,
           energy_a_milliwattHour: smlParser.energyAMilliwattHour,
           energy_b_milliwattHour: smlParser.energyBMilliwattHour,
           power_milliwatt: smlParser.powerMilliwatt
