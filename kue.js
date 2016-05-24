@@ -6,7 +6,7 @@ var redisClient = redis.createClient();
 var SmlParser = require('./libs/sml_parser');
 
 jobs.process('sml', function(job, done) {
-  var smlParser = new SmlParser(job.data.sml);
+  var sml = new SmlParser(job.data.sml);
 
   redisClient.mget(['host', 'token', 'meterId', 'userId'], function(err, reply) {
     var host    = reply[0];
@@ -18,20 +18,20 @@ jobs.process('sml', function(job, done) {
       rest.get(host + "/api/v1/users" + userId + "/meters", {
         accessToken: token,
         data: {
-          manufacturer_product_serialnumber: smlParser.meterSerialnumber
+          manufacturer_product_serialnumber: sml.meterSerialnumber
         },
       }).on('success', function(data, response) {
         if(data['data'].length > 0){
           console.log(data['data'])
-
+          done();
         }else {
-          console.log("no meter found: "  + smlParser.meterSerialnumber)
+          console.log("no meter found: "  + sml.meterSerialnumber)
           rest.post(host + "/api/v1/meters", {
             accessToken: token,
             data: {
-              manufacturer_name: smlParser.manufacturerName,
-              manufacturer_product_name: smlParser.productName,
-              manufacturer_product_serialnumber: smlParser.meterSerialnumber,
+              manufacturer_name: sml.manufacturerName,
+              manufacturer_product_name: sml.productName,
+              manufacturer_product_serialnumber: sml.meterSerialnumber,
               smart: true
             },
           }).on('success', function(data, response) {
@@ -59,9 +59,9 @@ jobs.process('sml', function(job, done) {
         data: {
           timestamp: Date(job.created_at),
           meter_id: meterId,
-          energy_a_milliwattHour: smlParser.energyAMilliwattHour,
-          energy_b_milliwattHour: smlParser.energyBMilliwattHour,
-          power_milliwatt: smlParser.powerMilliwatt
+          energy_a_milliwatt_hour: sml.energyAMilliwattHour,
+          energy_a_milliwatt_hour: sml.energyBMilliwattHour,
+          power_milliwatt: sml.powerMilliwatt
         },
       }).on('success', function(data, response) {
         console.log(data);
