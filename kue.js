@@ -16,7 +16,8 @@ jobs.process('sml', function(job, done) {
         data: {
           manufacturer_name: smlParser.manufacturerName,
           manufacturer_product_name: smlParser.productName,
-          manufacturer_product_serialnumber: smlParser.meterSerialnumber
+          manufacturer_product_serialnumber: smlParser.meterSerialnumber,
+          smart: true
         },
       }).on('success', function(data, response) {
         console.log('success:', data);
