@@ -35,6 +35,7 @@ jobs.process('sml', function(job, done) {
               smart: true
             },
           }).on('success', function(data, response) {
+            console.log("created meter: " data['data']['id'])
             redisClient.set('meterId', data['data']['id']);
             done();
           }).on('fail', function(data, response) {
