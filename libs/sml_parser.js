@@ -73,7 +73,7 @@ function SmlParser(sml) {
 
 
   if (sml.indexOf("ESY5Q3") >= 0) {
-    this.manufacturerName     = 'easymeter';
+    this.manufacturerName     = 'easy_meter';
     this.productName          = '5q3';
     this.meterSerialnumber    = this.getObisRaw('1-0:0.0.0');
     this.powerMilliwatt       = this.getPowerMilliwatt(['1-0:21.7.', '1-0:41.7.', '1-0:61.7.'])
@@ -81,7 +81,7 @@ function SmlParser(sml) {
     this.energyBMilliwattHour = this.getEasymeterEnergyMilliwattHour('1-0:2.8.0')
 
   } else if (sml.indexOf("ESY5T3") >= 0) {
-    this.manufacturerName     = 'easymeter';
+    this.manufacturerName     = 'easy_meter';
     this.productName          = '5t3';
     this.meterSerialnumber    = this.getObisRaw('1-0:0.0.0');
     this.powerMilliwatt       = this.getPowerMilliwatt(['1-0:21.7.', '1-0:41.7.', '1-0:61.7.'])
