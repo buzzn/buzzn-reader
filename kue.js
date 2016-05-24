@@ -8,51 +8,60 @@ var SmlParser = require('./libs/sml_parser');
 jobs.process('sml', function(job, done) {
   var smlParser = new SmlParser(job.data.sml);
 
-  redisClient.mget(['host', 'token', 'meterId'], function(err, reply) {
+  redisClient.mget(['host', 'token', 'meterId', 'userId'], function(err, reply) {
     var host    = reply[0];
     var token   = reply[1];
     var meterId = reply[2];
+    var userId  = reply[3];
 
     if(meterId == null){
-      rest.post(host + "/api/v1/meters", {
-        accessToken: token,
-        data: {
-          manufacturer_name: smlParser.manufacturerName,
-          manufacturer_product_name: smlParser.productName,
-          manufacturer_product_serialnumber: smlParser.meterSerialnumber,
-          smart: true
-        },
-      }).on('success', function(data, response) {
-        redisClient.set('meterId', data['data']['id']);
-        done();
-      }).on('fail', function(data, response) {
-        console.log('fail');
-        done(data);
-      }).on('error', function(err, response) {
-        console.log('error');
-        done(err);
-      });
+      rest.get(host + "/api/v1/users/" + userId + "/meters" {
+        accessToken: token
+      }).on('success', function(data) {
+        console.log(data)
+      }
+
+      // rest.post(host + "/api/v1/meters", {
+      //   accessToken: token,
+      //   data: {
+      //     manufacturer_name: smlParser.manufacturerName,
+      //     manufacturer_product_name: smlParser.productName,
+      //     manufacturer_product_serialnumber: smlParser.meterSerialnumber,
+      //     smart: true
+      //   },
+      // }).on('success', function(data, response) {
+      //   redisClient.set('meterId', data['data']['id']);
+      //   done();
+      // }).on('fail', function(data, response) {
+      //   console.log('fail');
+      //   done(data);
+      // }).on('error', function(err, response) {
+      //   console.log('error');
+      //   done(err);
+      // });
 
     } else {
-      rest.post(host + "/api/v1/readings", {
-        accessToken: token,
-        data: {
-          timestamp: Date(job.created_at),
-          meter_id: meterId,
-          energy_a_milliwattHour: smlParser.energyAMilliwattHour,
-          energy_b_milliwattHour: smlParser.energyBMilliwattHour,
-          power_milliwatt: smlParser.powerMilliwatt
-        },
-      }).on('success', function(data, response) {
-        console.log(data);
-        done();
-      }).on('fail', function(data, response) {
-        console.log('fail');
-        done(data);
-      }).on('error', function(err, response) {
-        console.log('error');
-        done(err);
-      });
+      console.log("token: " + token + "meterId: " + meterId)
+      done();
+      // rest.post(host + "/api/v1/readings", {
+      //   accessToken: token,
+      //   data: {
+      //     timestamp: Date(job.created_at),
+      //     meter_id: meterId,
+      //     energy_a_milliwattHour: smlParser.energyAMilliwattHour,
+      //     energy_b_milliwattHour: smlParser.energyBMilliwattHour,
+      //     power_milliwatt: smlParser.powerMilliwatt
+      //   },
+      // }).on('success', function(data, response) {
+      //   console.log(data);
+      //   done();
+      // }).on('fail', function(data, response) {
+      //   console.log('fail');
+      //   done(data);
+      // }).on('error', function(err, response) {
+      //   console.log('error');
+      //   done(err);
+      // });
     }
   });
 
