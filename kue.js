@@ -15,11 +15,23 @@ jobs.process('sml', function(job, done) {
     var userId  = reply[3];
 
     if(meterId == null){
-      rest.get(host + "/api/v1/users/" + userId + "/meters" {
-        accessToken: token
-      }).on('success', function(data) {
+
+      rest.get(host + "/api/v1/users/" + userId + "/meters", {
+        accessToken: token,
+        data: {
+          manufacturer_product_serialnumber: smlParser.meterSerialnumber
+        },
+      }).on('success', function(data, response) {
         console.log(data)
-      }
+        done();
+      }).on('fail', function(data, response) {
+        console.log('fail');
+        done(data);
+      }).on('error', function(err, response) {
+        console.log('error');
+        done(err);
+      });
+
 
       // rest.post(host + "/api/v1/meters", {
       //   accessToken: token,
