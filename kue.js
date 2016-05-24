@@ -14,7 +14,7 @@ jobs.process('sml', function(job, done) {
     var meterId = reply[2];
     var userId  = reply[3];
 
-    if(meterId == null){
+    if(meterId == '' || meterId == undefined){
 
       rest.get(host + "/api/v1/users/" + userId + "/meters", {
         accessToken: token,
