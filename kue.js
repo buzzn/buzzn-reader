@@ -7,7 +7,7 @@ var SmlParser = require('./libs/sml_parser');
 
 jobs.process('sml', function(job, done) {
   var sml = new SmlParser(job.data.sml);
-
+ console.log(Date(job.created_at*1000))
   redisClient.mget(['host', 'token', 'meterId', 'userId'], function(err, reply) {
     var host    = reply[0];
     var token   = reply[1];
