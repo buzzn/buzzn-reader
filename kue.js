@@ -67,7 +67,7 @@ jobs.process('sml', function(job, done) {
         console.log(data);
         done();
       }).on('fail', function(data, response) {
-        console.log('fail');
+        console.log('fail: ' + JSON.stringify(data));
         done(data);
       }).on('error', function(err, response) {
         console.log('error');
