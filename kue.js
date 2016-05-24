@@ -54,7 +54,6 @@ jobs.process('sml', function(job, done) {
       });
 
     } else {
-      console.log(sml.energyAMilliwattHour);
       rest.post(host + "/api/v1/readings", {
         accessToken: token,
         data: {
