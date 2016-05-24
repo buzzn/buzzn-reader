@@ -22,7 +22,11 @@ jobs.process('sml', function(job, done) {
           manufacturer_product_serialnumber: smlParser.meterSerialnumber
         },
       }).on('success', function(data, response) {
-        console.log(data)
+        if(data['data'].length > 0){
+          console.log(data['data'])
+        }else {
+          console.log('no meter found')
+        }
         done();
       }).on('fail', function(data, response) {
         console.log('fail');
