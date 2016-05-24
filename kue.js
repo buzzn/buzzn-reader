@@ -57,7 +57,7 @@ jobs.process('sml', function(job, done) {
       rest.post(host + "/api/v1/readings", {
         accessToken: token,
         data: {
-          timestamp: Date(job.created_at),
+          timestamp: Date(job.created_at*1000),
           meter_id: meterId,
           energy_a_milliwatt_hour: sml.energyAMilliwattHour,
           energy_b_milliwatt_hour: sml.energyBMilliwattHour,
