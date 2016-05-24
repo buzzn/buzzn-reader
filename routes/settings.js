@@ -6,7 +6,7 @@ var redis = require('redis');
 var redisClient = redis.createClient();
 
 router.get('/edit', function(req, res) {
-  redisClient.mget(['host', 'token'], function(err, reply) {
+  redisClient.mget(['host', 'token', 'meterId'], function(err, reply) {
 
     if(reply[0] == null){
       var hostValue = "https://app.buzzn.net"
