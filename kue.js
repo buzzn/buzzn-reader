@@ -54,13 +54,14 @@ jobs.process('sml', function(job, done) {
       });
 
     } else {
+      console.log(sml.energyAMilliwattHour);
       rest.post(host + "/api/v1/readings", {
         accessToken: token,
         data: {
           timestamp: Date(job.created_at),
           meter_id: meterId,
           energy_a_milliwatt_hour: sml.energyAMilliwattHour,
-          energy_a_milliwatt_hour: sml.energyBMilliwattHour,
+          energy_b_milliwatt_hour: sml.energyBMilliwattHour,
           power_milliwatt: sml.powerMilliwatt
         },
       }).on('success', function(data, response) {
