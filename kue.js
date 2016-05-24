@@ -20,11 +20,11 @@ jobs.process('sml', function(job, done) {
           smart: true
         },
       }).on('success', function(data, response) {
-        console.log('success:', data);
+        done();
       }).on('fail', function(data, response) {
-        console.log("Fail:", data )
+        done(data);
       }).on('error', function(err, response) {
-        console.log('Error:', err);
+        done(err);
       });
 
     } else {
@@ -38,12 +38,11 @@ jobs.process('sml', function(job, done) {
           power_milliwatt: smlParser.powerMilliwatt
         },
       }).on('success', function(data, response) {
-        console.log('success:', data);
         done();
       }).on('fail', function(data, response) {
-        console.log("Fail:", data )
+        done(data);
       }).on('error', function(err, response) {
-        console.log('Error:', err);
+        done(err);
       });
     }
   });
