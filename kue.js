@@ -21,7 +21,7 @@ jobs.process('sml', function(job, done) {
     } else {
       if(meterId == '' || meterId == undefined){
         console.log('No meterId available')
-        console.log('call ' + host + "/api/v1/users/" + userId + "/meters api" + ' for users meter information with serialnumber ' + sml.meterSerialnumber)
+        console.log('call ' + host + "/api/v1/users/" + userId + "/meters api" + ' for users meter information with serialnumber ' + sml.meterSerialnumber);
         rest.get(host + "/api/v1/users/" + userId + "/meters", {
           accessToken: token,
           data: {
@@ -29,9 +29,9 @@ jobs.process('sml', function(job, done) {
           },
         }).on('success', function(data, response) {
           if(data['data'].length > 0){
-            console.log('meter already exist')
-            console.log('save meterId ' + data['data']['id'])
-            redisClient.set('meterId', data['data']['id']);
+            console.log('meter already exist');
+            console.log('save meterId ' + data['data'][0]['id'])
+            redisClient.set('meterId', data['data'][0]['id']);
             done();
           }else {
             console.log("no meter with serialnumber found in user account"  + sml.meterSerialnumber)
