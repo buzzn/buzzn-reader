@@ -15,14 +15,18 @@ jobs.process('sml', function(job, done) {
     var userId  = reply[3];
 
     if(meterId == '' || meterId == undefined){
+      console.log('No meterId available')
+      console.log('call ' + host + "/api/v1/users" + userId + "/meters" + ' for users meter information for finding ' + sml.meterSerialnumber)
       rest.get(host + "/api/v1/users" + userId + "/meters", {
         accessToken: token,
         data: {
           manufacturer_product_serialnumber: sml.meterSerialnumber
         },
       }).on('success', function(data, response) {
+
         if(data['data'].length > 0){
-          console.log(data['data'])
+          console.log('meter already exist')
+
           done();
         }else {
           console.log("no meter found: "  + sml.meterSerialnumber)
@@ -49,7 +53,7 @@ jobs.process('sml', function(job, done) {
         console.log('fail');
         done(data);
       }).on('error', function(err, response) {
-        console.log('error');
+        console.log('error: ');
         done(err);
       });
 
