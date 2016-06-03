@@ -26,7 +26,8 @@ it('does pars a easymeter ESY5Q3DA1004', function() {
   expect(sml.meterSerialnumber).to.equal('60327685');
   expect(sml.energyAMilliwattHour).to.equal(640000);
   expect(sml.energyBMilliwattHour).to.equal(null);
-  expect(sml.powerMilliwatt).to.equal(2600);
+  expect(sml.powerAMilliwatt).to.equal(2600);
+  expect(sml.powerBMilliwatt).to.equal(null);
 });
 
 
@@ -53,13 +54,14 @@ it('does pars a broken easymeter ESY5Q3DA1004 SML', function() {
   expect(sml.meterSerialnumber).to.equal('60327685');
   expect(sml.energyAMilliwattHour).to.equal(null);
   expect(sml.energyBMilliwattHour).to.equal(null);
-  expect(sml.powerMilliwatt).to.equal(null);
+  expect(sml.powerAMilliwatt).to.equal(null);
+  expect(sml.powerBMilliwatt).to.equal(null);
 });
 
 
 
 
-it('does pars a easymeter ESY5Q3DA1024', function() {
+it('does pars a easymeter ESY5Q3DA1024 input', function() {
 
   var sml = new SmlParser(
   "/ESY5Q3DA1024 V3.04\n\
@@ -68,8 +70,8 @@ it('does pars a easymeter ESY5Q3DA1024', function() {
   1-0:1.8.0*255(00000001.3800000*kWh)\n\
   1-0:2.8.0*255(00000001.1400000*kWh)\n\
   1-0:21.7.0*255(000000.00*W)\n\
-  1-0:41.7.0*255(000000.00*W)\n\
-  1-0:61.7.0*255(000000.00*W)\n\
+  1-0:41.7.0*255(000002.00*W)\n\
+  1-0:61.7.0*255(000000.10*W)\n\
   1-0:1.7.0*255(000000.00*W)\n\
   1-0:96.5.5*255(00)\n\
   0-0:96.1.255*255(1ESY1160328160)\n\
@@ -80,13 +82,43 @@ it('does pars a easymeter ESY5Q3DA1024', function() {
   expect(sml.meterSerialnumber).to.equal('60328160');
   expect(sml.energyAMilliwattHour).to.equal(1380000);
   expect(sml.energyBMilliwattHour).to.equal(1140000);
-  expect(sml.powerMilliwatt).to.equal(0);
+  expect(sml.powerAMilliwatt).to.equal(2100);
+  expect(sml.powerBMilliwatt).to.equal(0);
 });
 
 
 
 
-it('does pars a easymeter ESY5Q3DA3004', function() {
+it('does pars a easymeter ESY5Q3DA1024 output', function() {
+
+  var sml = new SmlParser(
+  "/ESY5Q3DA1024 V3.04\n\
+  \
+  1-0:0.0.0*255(60328160)\n\
+  1-0:1.8.0*255(00000001.3800000*kWh)\n\
+  1-0:2.8.0*255(00000001.1400000*kWh)\n\
+  1-0:21.7.0*255(-001000.00*W)\n\
+  1-0:41.7.0*255(000002.00*W)\n\
+  1-0:61.7.0*255(000000.10*W)\n\
+  1-0:1.7.0*255(000000.00*W)\n\
+  1-0:96.5.5*255(00)\n\
+  0-0:96.1.255*255(1ESY1160328160)\n\
+  !")
+
+  expect(sml.manufacturerName).to.equal('easy_meter');
+  expect(sml.productName).to.equal('5q3');
+  expect(sml.meterSerialnumber).to.equal('60328160');
+  expect(sml.energyAMilliwattHour).to.equal(1380000);
+  expect(sml.energyBMilliwattHour).to.equal(1140000);
+  expect(sml.powerAMilliwatt).to.equal(0);
+  expect(sml.powerBMilliwatt).to.equal(997900);
+});
+
+
+
+
+
+it('does pars a easymeter ESY5Q3DA3004 output', function() {
 
   var sml = new SmlParser(
   "/ESY5Q3DA3004 V3.04\n\
@@ -94,8 +126,8 @@ it('does pars a easymeter ESY5Q3DA3004', function() {
   1-0:0.0.0*255(60300829)\n\
   1-0:1.8.0*255(00000000.3600000*kWh)\n\
   1-0:21.7.0*255(000000.00*W)\n\
-  1-0:41.7.0*255(000000.00*W)\n\
-  1-0:61.7.0*255(000000.00*W)\n\
+  1-0:41.7.0*255(-1000.00*W)\n\
+  1-0:61.7.0*255(000300.00*W)\n\
   1-0:1.7.0*255(000000.00*W)\n\
   1-0:96.5.5*255(00)\n\
   0-0:96.1.255*255(1ESY1160300829)\n\
@@ -106,7 +138,8 @@ it('does pars a easymeter ESY5Q3DA3004', function() {
   expect(sml.meterSerialnumber).to.equal('60300829');
   expect(sml.energyAMilliwattHour).to.equal(360000);
   expect(sml.energyBMilliwattHour).to.equal(null);
-  expect(sml.powerMilliwatt).to.equal(0);
+  expect(sml.powerAMilliwatt).to.equal(700000);
+  expect(sml.powerBMilliwatt).to.equal(null);
 });
 
 
@@ -134,7 +167,8 @@ it('does pars a easymeter ESY5Q3DA3024', function() {
   expect(sml.meterSerialnumber).to.equal('60118474');
   expect(sml.energyAMilliwattHour).to.equal(2070000);
   expect(sml.energyBMilliwattHour).to.equal(1690000);
-  expect(sml.powerMilliwatt).to.equal(0);
+  expect(sml.powerAMilliwatt).to.equal(0);
+  expect(sml.powerBMilliwatt).to.equal(0);
 });
 
 
@@ -163,7 +197,8 @@ it('does pars a easymeter ESY5T3DC1004', function() {
   expect(sml.meterSerialnumber).to.equal('60009501');
   expect(sml.energyAMilliwattHour).to.equal(1100000);
   expect(sml.energyBMilliwattHour).to.equal(null);
-  expect(sml.powerMilliwatt).to.equal(10);
+  expect(sml.powerAMilliwatt).to.equal(10);
+  expect(sml.powerBMilliwatt).to.equal(null);
 });
 
 
@@ -191,7 +226,8 @@ it('does pars a easymeter ESY5T3DC1024', function() {
   expect(sml.meterSerialnumber).to.equal('60300856');
   expect(sml.energyAMilliwattHour).to.equal(1100000);
   expect(sml.energyBMilliwattHour).to.equal(1000000);
-  expect(sml.powerMilliwatt).to.equal(3830);
+  expect(sml.powerAMilliwatt).to.equal(3830);
+  expect(sml.powerBMilliwatt).to.equal(0);
 });
 
 
@@ -235,5 +271,6 @@ it('does pars a hager HAG5eHZ010C_EHZ1ZA22', function() {
   expect(sml.meterSerialnumber).to.equal('1095100000053019');
   expect(sml.energyAMilliwattHour).to.equal(16986200);
   expect(sml.energyBMilliwattHour).to.equal(1574000);
-  expect(sml.powerMilliwatt).to.equal(29000);
+  expect(sml.powerAMilliwatt).to.equal(29000);
+  expect(sml.powerBMilliwatt).to.equal(0);
 });

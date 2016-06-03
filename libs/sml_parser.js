@@ -33,17 +33,44 @@ function SmlParser(sml) {
         var phaseOne   = parseFloat(this.obis['1-0:21.7.0'].slice(0,-2));
         var phaseTwo   = parseFloat(this.obis['1-0:41.7.0'].slice(0,-2));
         var phaseThree = parseFloat(this.obis['1-0:61.7.0'].slice(0,-2));
-        return 1000 * (phaseOne + phaseTwo + phaseThree);
+        var powerMilliwatt = 1000 * (phaseOne + phaseTwo + phaseThree);
       }else if (phases255.every(existInSML)) {
         var phaseOne   = parseFloat(this.obis['1-0:21.7.255'].slice(0,-2));
         var phaseTwo   = parseFloat(this.obis['1-0:41.7.255'].slice(0,-2));
         var phaseThree = parseFloat(this.obis['1-0:61.7.255'].slice(0,-2));
-        return 1000 * (phaseOne + phaseTwo + phaseThree);
+        var powerMilliwatt = 1000 * (phaseOne + phaseTwo + phaseThree);
       }else {
-        return null
+        return { a: null, b: null }
       }
-    }else {
-      return null;
+
+      if(powerMilliwatt >= 0 && this.energyBMilliwattHour == null){
+        var powerAMilliwatt = powerMilliwatt;
+        var powerBMilliwatt = null;
+
+      } else if(powerMilliwatt <= 0 && this.energyBMilliwattHour == null) {
+        var powerAMilliwatt = Math.abs(powerMilliwatt);
+        var powerBMilliwatt = null;
+
+      } else if(this.energyAMilliwattHour != null && this.energyBMilliwattHour != null) {
+        if(powerMilliwatt >= 0){
+          var powerAMilliwatt = powerMilliwatt;
+          var powerBMilliwatt = 0;
+        } else {
+          var powerAMilliwatt = 0;
+          var powerBMilliwatt = Math.abs(powerMilliwatt);
+        }
+
+      } else {
+        var powerAMilliwatt = null;
+        var powerBMilliwatt = null;
+      }
+
+      return {
+        a: powerAMilliwatt,
+        b: powerBMilliwatt
+      }
+    } else {
+      return { a: null, b: null }
     }
   };
 
@@ -76,25 +103,31 @@ function SmlParser(sml) {
     this.manufacturerName     = 'easy_meter';
     this.productName          = '5q3';
     this.meterSerialnumber    = this.getObisRaw('1-0:0.0.0');
-    this.powerMilliwatt       = this.getPowerMilliwatt(['1-0:21.7.', '1-0:41.7.', '1-0:61.7.'])
-    this.energyAMilliwattHour = this.getEasymeterEnergyMilliwattHour('1-0:1.8.0')
-    this.energyBMilliwattHour = this.getEasymeterEnergyMilliwattHour('1-0:2.8.0')
+    this.energyAMilliwattHour = this.getEasymeterEnergyMilliwattHour('1-0:1.8.0');
+    this.energyBMilliwattHour = this.getEasymeterEnergyMilliwattHour('1-0:2.8.0');
+    var powerMilliwatt        = this.getPowerMilliwatt(['1-0:21.7.', '1-0:41.7.', '1-0:61.7.']);
+    this.powerAMilliwatt      = powerMilliwatt.a;
+    this.powerBMilliwatt      = powerMilliwatt.b;
 
   } else if (sml.indexOf("ESY5T3") >= 0) {
     this.manufacturerName     = 'easy_meter';
     this.productName          = '5t3';
     this.meterSerialnumber    = this.getObisRaw('1-0:0.0.0');
-    this.powerMilliwatt       = this.getPowerMilliwatt(['1-0:21.7.', '1-0:41.7.', '1-0:61.7.'])
-    this.energyAMilliwattHour = this.getEasymeterEnergyMilliwattHour('1-0:1.8.0')
-    this.energyBMilliwattHour = this.getEasymeterEnergyMilliwattHour('1-0:2.8.0')
+    this.energyAMilliwattHour = this.getEasymeterEnergyMilliwattHour('1-0:1.8.0');
+    this.energyBMilliwattHour = this.getEasymeterEnergyMilliwattHour('1-0:2.8.0');
+    var powerMilliwatt        = this.getPowerMilliwatt(['1-0:21.7.', '1-0:41.7.', '1-0:61.7.']);
+    this.powerAMilliwatt      = powerMilliwatt.a;
+    this.powerBMilliwatt      = powerMilliwatt.b;
 
   } else if (sml.indexOf("HAG5eHZ") >= 0) {
     this.manufacturerName     = 'hager';
     this.productName          = 'ehz';
     this.meterSerialnumber    = this.getObisRaw('0:0.0.0');
-    this.powerMilliwatt       = this.getPowerMilliwatt(['1-0:21.7.', '1-0:41.7.', '1-0:61.7.'])
-    this.energyAMilliwattHour = this.getHagerEnergyMilliwattHour('1-0:1.8.1')
-    this.energyBMilliwattHour = this.getHagerEnergyMilliwattHour('1-0:2.8.1')
+    this.energyAMilliwattHour = this.getHagerEnergyMilliwattHour('1-0:1.8.1');
+    this.energyBMilliwattHour = this.getHagerEnergyMilliwattHour('1-0:2.8.1');
+    var powerMilliwatt        = this.getPowerMilliwatt(['1-0:21.7.', '1-0:41.7.', '1-0:61.7.']);
+    this.powerAMilliwatt      = powerMilliwatt.a;
+    this.powerBMilliwatt      = powerMilliwatt.b;
 
   } else {
     this.manufacturerName     = null;
