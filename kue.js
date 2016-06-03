@@ -72,7 +72,8 @@ jobs.process('sml', function(job, done) {
             meter_id: meterId,
             energy_a_milliwatt_hour: sml.energyAMilliwattHour,
             energy_b_milliwatt_hour: sml.energyBMilliwattHour,
-            power_milliwatt: sml.powerMilliwatt
+            power_a_milliwatt: sml.powerAMilliwatt,
+            power_b_milliwatt: sml.powerBMilliwatt
           },
         }).on('success', function(data, response) {
           console.log(data);
