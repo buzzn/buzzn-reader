@@ -45,9 +45,49 @@ jobs.process('sml', function(job, done) {
                 smart: true
               },
             }).on('success', function(data, response) {
+              var meterId = data['data']['id'];
               console.log("meter created")
-              console.log('save meterId ' + data['data']['id'])
-              redisClient.set('meterId', data['data']['id']);
+              console.log('save meterId ' + meterId)
+              redisClient.set('meterId', meterId);
+
+              if(sml.direction == 'in' || sml.direction == 'in_out'){
+                console.log('create in metering-point')
+                rest.post(host + "/api/v1/metering-points", {
+                  accessToken: token,
+                  data: {
+                    name: 'input'
+                    mode: 'in',
+                    meter_id: meterId,
+                    readable: 'friends'
+                  },
+                }).on('success', function(data, response) {
+                  console.log(data);
+                }).on('fail', function(data, response) {
+                  console.log('fail: ' + JSON.stringify(data));
+                }).on('error', function(err, response) {
+                  console.log('error');
+                });
+              }
+
+              if (sml.direction == 'out' || sml.direction == 'in_out'){
+                console.log('create out metering-point')
+                rest.post(host + "/api/v1/metering-points", {
+                  accessToken: token,
+                  data: {
+                    name: 'output'
+                    mode: 'out',
+                    meter_id: meterId,
+                    readable: 'friends'
+                  },
+                }).on('success', function(data, response) {
+                  console.log(data);
+                }).on('fail', function(data, response) {
+                  console.log('fail: ' + JSON.stringify(data));
+                }).on('error', function(err, response) {
+                  console.log('error');
+                });
+              }
+
               done();
             }).on('fail', function(data, response) {
               done(data);

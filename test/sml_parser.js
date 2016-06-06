@@ -28,6 +28,7 @@ it('does pars a easymeter ESY5Q3DA1004', function() {
   expect(sml.energyBMilliwattHour).to.equal(null);
   expect(sml.powerAMilliwatt).to.equal(2600);
   expect(sml.powerBMilliwatt).to.equal(null);
+  expect(sml.direction).to.equal('in');
 });
 
 
@@ -56,6 +57,7 @@ it('does pars a broken easymeter ESY5Q3DA1004 SML', function() {
   expect(sml.energyBMilliwattHour).to.equal(null);
   expect(sml.powerAMilliwatt).to.equal(null);
   expect(sml.powerBMilliwatt).to.equal(null);
+  expect(sml.direction).to.equal(undefined);
 });
 
 
@@ -84,6 +86,7 @@ it('does pars a easymeter ESY5Q3DA1024 input', function() {
   expect(sml.energyBMilliwattHour).to.equal(1140000);
   expect(sml.powerAMilliwatt).to.equal(2100);
   expect(sml.powerBMilliwatt).to.equal(0);
+  expect(sml.direction).to.equal('in_out');
 });
 
 
@@ -112,6 +115,7 @@ it('does pars a easymeter ESY5Q3DA1024 output', function() {
   expect(sml.energyBMilliwattHour).to.equal(1140000);
   expect(sml.powerAMilliwatt).to.equal(0);
   expect(sml.powerBMilliwatt).to.equal(997900);
+  expect(sml.direction).to.equal('in_out');
 });
 
 
@@ -140,6 +144,7 @@ it('does pars a easymeter ESY5Q3DA3004 output', function() {
   expect(sml.energyBMilliwattHour).to.equal(null);
   expect(sml.powerAMilliwatt).to.equal(700000);
   expect(sml.powerBMilliwatt).to.equal(null);
+  expect(sml.direction).to.equal('out');
 });
 
 
@@ -169,6 +174,7 @@ it('does pars a easymeter ESY5Q3DA3024', function() {
   expect(sml.energyBMilliwattHour).to.equal(1690000);
   expect(sml.powerAMilliwatt).to.equal(0);
   expect(sml.powerBMilliwatt).to.equal(0);
+  expect(sml.direction).to.equal('in_out');
 });
 
 
@@ -199,6 +205,7 @@ it('does pars a easymeter ESY5T3DC1004', function() {
   expect(sml.energyBMilliwattHour).to.equal(null);
   expect(sml.powerAMilliwatt).to.equal(10);
   expect(sml.powerBMilliwatt).to.equal(null);
+  expect(sml.direction).to.equal('in');
 });
 
 
@@ -228,6 +235,7 @@ it('does pars a easymeter ESY5T3DC1024', function() {
   expect(sml.energyBMilliwattHour).to.equal(1000000);
   expect(sml.powerAMilliwatt).to.equal(3830);
   expect(sml.powerBMilliwatt).to.equal(0);
+  expect(sml.direction).to.equal('in_out');
 });
 
 
@@ -273,4 +281,5 @@ it('does pars a hager HAG5eHZ010C_EHZ1ZA22', function() {
   expect(sml.energyBMilliwattHour).to.equal(1574000);
   expect(sml.powerAMilliwatt).to.equal(29000);
   expect(sml.powerBMilliwatt).to.equal(0);
+  expect(sml.direction).to.equal('in_out');
 });

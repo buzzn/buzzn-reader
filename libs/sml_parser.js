@@ -44,14 +44,17 @@ function SmlParser(sml) {
       }
 
       if(powerMilliwatt >= 0 && this.energyBMilliwattHour == null){
+        this.direction = 'in';
         var powerAMilliwatt = powerMilliwatt;
         var powerBMilliwatt = null;
 
       } else if(powerMilliwatt <= 0 && this.energyBMilliwattHour == null) {
+        this.direction = 'out';
         var powerAMilliwatt = Math.abs(powerMilliwatt);
         var powerBMilliwatt = null;
 
       } else if(this.energyAMilliwattHour != null && this.energyBMilliwattHour != null) {
+        this.direction = 'in_out';
         if(powerMilliwatt >= 0){
           var powerAMilliwatt = powerMilliwatt;
           var powerBMilliwatt = 0;
