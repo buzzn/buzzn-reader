@@ -55,7 +55,7 @@ jobs.process('sml', function(job, done) {
                 rest.post(host + "/api/v1/metering-points", {
                   accessToken: token,
                   data: {
-                    name: 'input'
+                    name: 'input',
                     mode: 'in',
                     meter_id: meterId,
                     readable: 'friends'
@@ -74,7 +74,7 @@ jobs.process('sml', function(job, done) {
                 rest.post(host + "/api/v1/metering-points", {
                   accessToken: token,
                   data: {
-                    name: 'output'
+                    name: 'output',
                     mode: 'out',
                     meter_id: meterId,
                     readable: 'friends'
