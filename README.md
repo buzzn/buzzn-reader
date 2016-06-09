@@ -64,10 +64,15 @@
   - zip and upload image to aws s3
 
 ## Production
-  - download [D0ReaderOS](http://buzzn.s3.amazonaws.com/d0-reader-v1.img.zip)
+  - download and unzip [D0ReaderOS](http://buzzn.s3.amazonaws.com/d0-reader-v1.img.zip)
   - Insert a blank 16GB SD Card
   - diskutil list | Locate SD Card
   - diskutil unmountDisk /dev/disk3 | Unmount the SD Card
-  - sudo dd bs=1m if=./images/d0-reader-pi2.img of=/dev/rdisk3 | Restore from a Cloned Image
+  - sudo dd bs=1m if=./images/d0-reader-v1.img of=/dev/rdisk3 | Flash Image to SDCard
   - To see progress while it is running just type control-t
-  - put SD Card into RaspberryPi
+  - connect to RaspberryPi ethernet, power, D0-head, Display and the SD Card
+  - start pi and open browser on pi go to localhost:3000
+  - insert your token and click save
+
+## Extra Infos
+  - [microSD Card Benchmarks](http://www.pidramble.com/wiki/benchmarks/microsd-cards)
