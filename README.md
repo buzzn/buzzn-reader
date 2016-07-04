@@ -65,15 +65,29 @@
   - zip and upload image to aws s3
 
 ## Production
-  - download and unzip [D0ReaderOS](http://buzzn.s3.amazonaws.com/d0-reader-v1.img.zip)
+  - Download and unzip [D0ReaderOS](http://buzzn.s3.amazonaws.com/d0-reader-v1.img.zip)
   - Insert a blank 16GB SD Card
-  - diskutil list | Locate SD Card
-  - diskutil unmountDisk /dev/disk3 | Unmount the SD Card
-  - sudo dd bs=1m if=./images/d0-reader-v1.img of=/dev/rdisk3 | Flash Image to SDCard
+  - Diskutil list | Locate SD Card
+  - Diskutil unmountDisk /dev/disk3 | Unmount the SD Card
+  - Sudo dd bs=1m if=./images/d0-reader-v1.img of=/dev/rdisk3 | Flash Image to SDCard
   - To see progress while it is running just type control-t
-  - connect to RaspberryPi ethernet, power, D0-head, Display and the SD Card
-  - start pi and open browser on pi go to localhost:3000
-  - insert your token and click save
+  - Connect to RaspberryPi ethernet, D0-head, Display and the SD Card
+  - Connect to power.
+  - Check internetconnection and get token from the platform: https://staging.buzzn.net/access_tokens (or https://app.buzzn.net/access_tokens/)
+  - Start pi and open browser on pi go to localhost:3000/settings/edit/
+  - Insert your token and click save
+  - Wait 1 Minute
+  - See new meter at https://staging.buzzn.net/ or https://app.buzzn.net/
+  - Click on new meter (or metering_point)
+  - Click on Aktionen--Zählpunkt bearbeiten (Action--edit meteringpoint properties)
+  - Edit properties
+  - Save
+  
+## Troubleshooting on RasPI 
+  - Does the RasPI start properly? ...
+  - Is the IR measuring Head well connected?
+  - TBD
+  - ...
 
 ## Extra Infos
   - [microSD Card Benchmarks](http://www.pidramble.com/wiki/benchmarks/microsd-cards)
