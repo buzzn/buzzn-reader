@@ -2,8 +2,7 @@ var kue = require('kue');
 var jobs = kue.createQueue();
 var rest = require('restler');
 var redis = require('redis');
-var redisClient = redis.createClient({ host: 'redis', port: 6379 });
-
+var redisClient = redis.createClient(6379,'redis');
 var SmlParser = require('./libs/sml_parser');
 
 jobs.process('sml', function(job, done) {
