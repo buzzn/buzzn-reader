@@ -2,7 +2,7 @@ version: '2'
 services:
   
   redis:
-    image: redis:latest
+    image: hypriot/rpi-redis
     ports:
       - "6379:6379"
 

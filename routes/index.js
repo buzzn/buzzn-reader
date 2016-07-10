@@ -4,7 +4,7 @@ var kue = require('kue')
   , queue = kue.createQueue();
 
 var redis = require('redis');
-var redisClient = redis.createClient();
+var redisClient = redis.createClient(6379, 'redis')
 
 router.get('/', function(req, res, next) {
   redisClient.mget(['user'], function(err, reply) {

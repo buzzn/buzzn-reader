@@ -3,7 +3,7 @@ var router = express.Router();
 var rest = require('restler');
 
 var redis = require('redis');
-var redisClient = redis.createClient();
+var redisClient = redis.createClient(6379, 'redis')
 
 router.get('/edit', function(req, res) {
   redisClient.mget(['host', 'token'], function(err, reply) {
