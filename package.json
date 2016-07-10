@@ -7,7 +7,7 @@
     "start": "node ./bin/www"
   },
   "engines": {
-    "node": "0.12.12"
+    "node": "4.3.2"
   },
   "dependencies": {
     "body-parser": "~1.13.2",

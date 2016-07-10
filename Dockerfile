@@ -1,12 +1,22 @@
 FROM resin/rpi-raspbian:jessie
 MAINTAINER Felix Faerber <ffaerber@gmail.com>
 
-# Define working directory
-WORKDIR /data
+RUN apt-get update -qq && apt-get install wget
+RUN wget https://nodejs.org/dist/v4.3.2/node-v4.3.2-linux-armv7l.tar.gz --no-check-certificate
+RUN tar -xvf node-v4.3.2-linux-armv7l.tar.gz
+RUN cp -R node-v4.3.2-linux-armv7l/. /usr/local/
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    node \
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-# Define default command
-CMD ["bash"]
+# Install app dependencies
+COPY package.json /usr/src/app/
+RUN apt-get install -y build-essential node-gyp
+RUN npm install
+
+# Bundle app source
+COPY . /usr/src/app
+
+EXPOSE 8080
+CMD [ "npm", "start" ]
