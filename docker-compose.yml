@@ -1,14 +1,16 @@
 version: '2'
 services:
-  
+
   redis:
     image: hypriot/rpi-redis
     ports:
       - "6379:6379"
 
-  web:
+  app:
     build: .
     ports:
       - "3000:3000"
     links:
       - redis
+    devices:
+      - "/dev/ttyUSB0"
