@@ -1,5 +1,5 @@
 var kue = require('kue');
-var queue = kue.createQueue();
+var queue = kue.createQueue({ redis: { host: 'redis' }});
 var express = require('express');
 var exphbs  = require('express-handlebars');
 var session = require('express-session')

@@ -1,5 +1,5 @@
 var kue = require('kue');
-var jobs = kue.createQueue();
+var jobs = kue.createQueue({ redis: { host: 'redis' }});
 var rest = require('restler');
 var redis = require('redis');
 var redisClient = redis.createClient(6379,'redis');

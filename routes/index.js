@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var kue = require('kue')
-  , queue = kue.createQueue();
+  , queue = kue.createQueue({ redis: { host: 'redis' }});
 
 var redis = require('redis');
 var redisClient = redis.createClient(6379, 'redis')
