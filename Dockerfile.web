@@ -1,4 +1,4 @@
-FROM d0reader_appbase
+FROM d0reader_base
 
 EXPOSE 3000
 CMD [ "npm", "start" ]

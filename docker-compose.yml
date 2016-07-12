@@ -10,7 +10,7 @@ services:
   appbase:
     build:
       context: .
-      dockerfile: Dockerfile.appbase
+      dockerfile: Dockerfile.base
 
   web:
     build:
