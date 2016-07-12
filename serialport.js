@@ -1,7 +1,7 @@
 var serialport = require('serialport');
 var SerialPort = serialport.SerialPort;
 var kue = require('kue');
-var queue = kue.createQueue();
+var queue = kue.createQueue({ redis: { host: 'redis' }});
 
 var port = new SerialPort('/dev/ttyUSB0', {
   databits: 7,
