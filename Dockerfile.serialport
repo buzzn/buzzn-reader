@@ -1,0 +1,3 @@
+FROM appbase
+
+CMD [ "node", "serialport" ]

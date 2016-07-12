@@ -3,14 +3,39 @@ services:
 
   redis:
     image: hypriot/rpi-redis
+    restart: always
     ports:
-      - "6379:6379"
+      - '6379:6379'
 
-  app:
-    build: .
+  appbase:
+    build:
+      context: .
+      dockerfile: Dockerfile.appbase
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    restart: always
     ports:
-      - "3000:3000"
+      - '80:3000'
+    links:
+      - redis
+
+  kue:
+    build:
+      context: .
+      dockerfile: Dockerfile.kue
+    restart: always
+    links:
+      - redis
+
+  serialport:
+    build:
+      context: .
+      dockerfile: Dockerfile.serialport
+    restart: always
     links:
       - redis
     devices:
-      - "/dev/ttyUSB0"
+      - '/dev/ttyUSB0'
