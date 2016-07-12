@@ -1,11 +1,13 @@
 version: '2'
-services:
 
+services:
   redis:
     image: hypriot/rpi-redis
     restart: always
     ports:
       - '6379:6379'
+    volumes:
+      - ~/:/data
 
   base:
     build:
