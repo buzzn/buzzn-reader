@@ -40,6 +40,8 @@
   - Fork the repository on Github
   - Create a named feature branch (like add_component_x)
   - pull branch and Write you change
+  - Write tests for your change (if applicable)
+  - Run the tests, ensuring they all pass
   - Submit a Pull Request using Github
 
 ## Release
