@@ -37,8 +37,10 @@
   - continue with step 'Development' or 'Release'
 
 ## Development
-  - [Generating an SSH key](https://help.github.com/articles/generating-an-ssh-key/) to push d0-reader app changes to github.
-  - open http://d0reader.local in browser
+  - Fork the repository on Github
+  - Create a named feature branch (like add_component_x)
+  - pull branch and Write you change
+  - Submit a Pull Request using Github
 
 ## Release
   - Insert SD Card to Clone/Release
@@ -48,7 +50,7 @@
   - To see progress while it is running just type control-t
   - zip and upload image to aws s3
   - continue with step 'Production'
-  
+
 ## Production
   - Download and Flash [D0ReaderOS](http://buzzn.s3.amazonaws.com/d0-reader-v1.img.zip)
   - Connect to RaspberryPi ethernet, D0-head, SD Card and Power.
