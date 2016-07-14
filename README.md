@@ -8,10 +8,12 @@
 
   - [Raspberry Pi3 / 37,50 € ](https://www.reichelt.de/RASPBERRY-PI-3/3/index.html?&ACTION=3&LA=446&ARTICLE=164977&artnr=RASPBERRY+PI+3&SEARCH=pi3)
   - [Raspberry Pi3 PSU / 11,50 € ](https://www.reichelt.de/Ladegeraete-fuer-USB-Geraete/NT-MUSB-25-SW/3/index.html?&ACTION=3&LA=517&ARTICLE=167078&GROUPID=5158)
-  - [Raspberry Pi3 Case / 9,90 € ](https://www.amazon.de/offizielles-Geh%C3%A4use-Raspberry-Pi-himbeer/dp/B01CESAU4G/ref=sr_1_2?ie=UTF8&qid=1468406281&sr=8-2&keywords=Geh%C3%A4use+Raspberry+Pi3)
-  - [SanDisk microSD 16GB / 7,99 € ](http://www.amazon.de/SanDisk-Android-microSDHC-Speicherkarte-SD-Adapter/dp/B013UDL5V6/ref=pd_sim_147_7?ie=UTF8&dpID=41yP-zBY53L&dpSrc=sims&preST=_AC_UL160_SR160%2C160_&refRID=0BJQVE54N5Z7GB6JEBXN)
+  - [Raspberry Pi3 Case / 9,90 € ](https://www.amazon.de/dp/B01CESAU4G)
+  - [SanDisk microSD 16GB / 7,99 € ](http://www.amazon.de/dp/B013UDL5V6)
   - [D0-Head / 25 € ](http://wiki.volkszaehler.org/hardware/controllers/ir-schreib-lesekopf-usb-ausgang#stueckliste_und_preise)
   - [Optional Easymeter Adapter / 3€](http://wiki.volkszaehler.org/hardware/controllers/ir-schreib-lesekopf_easymeter-adapter)
+  - [Optional PowerBank / 9€](https://www.amazon.de/dp/B00MWU1GGI)
+  - [Optional LTE Hotspot / 44,90€](https://www.amazon.de/dp/B00HHREHQ2)
 
 ##### d0-reader app
   the d0-reader consists of following Software parts.
@@ -33,7 +35,7 @@
   - git clone https://github.com/buzzn/d0-reader.git
   - cd d0-reader
   - docker-compose build base
-  - docker-compose up
+  - docker-compose up -d
   - continue with step 'Development' or 'Release'
 
 ## Development
@@ -72,3 +74,5 @@
 
 ## Extra Infos
   - [microSD Card Benchmarks](http://www.pidramble.com/wiki/benchmarks/microsd-cards)
+  - [Powerbank](http://smartphone-aufladen.de/blog/wissenswertes/welche-powerbank-eignet-sich-fuer-den-raspberry-pi)
+  - [Docker on ARM](http://blog.hypriot.com/getting-started-with-docker-on-your-arm-device/)
