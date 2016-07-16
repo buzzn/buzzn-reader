@@ -63,7 +63,7 @@
 ## Flash SDCard
   - diskutil list | Locate SD Card
   - diskutil unmountDisk /dev/disk3 | Unmount the SD Card
-  - sudo dd bs=1m if=~/Downloads/pi-image.img of=/dev/rdisk3 | Burn Image on SDCard
+  - sudo dd bs=1M if=~/Downloads/pi-image.img of=/dev/rdisk3 | Burn Image on SDCard
   - To see progress while it is running just type control-t
 
 ## Troubleshooting on RasPI
