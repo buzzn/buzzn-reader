@@ -46,31 +46,46 @@ Auth.prototype.login = function(options, callback) {
 }
 
 Auth.prototype.logout = function(callback) {
-  this.client.del("accessToken");
-  this.client.del("refreshToken");
-  this.client.del("createdAt");
-  this.client.del("expiresIn");
-  this.client.del("username");
-  this.client.del("userId");
-  callback(true)
+  var that = this;
+  var client = that.client, multi;
+  client.multi([
+    ["del", "accessToken"],
+    ["del", "refreshToken"],
+    ["del", "createdAt"],
+    ["del", "expiresIn"],
+    ["del", "username"],
+    ["del", "userId"],
+  ]).exec(function (err, replies) {
+    callback(true)
+  });
 }
 
 Auth.prototype.setToken = function(response, callback) {
-  this.client.set("accessToken", response.access_token);
-  this.client.set("refreshToken", response.refresh_token);
-  this.client.set("createdAt", response.created_at);
-  this.client.set("expiresIn", response.expires_in);
-  this.getToken(function(token) {
-    callback(token)
-  })
+  var that = this;
+  var client = that.client, multi;
+  client.multi([
+    ["set", "accessToken", response.access_token],
+    ["set", "refreshToken", response.refresh_token],
+    ["set", "createdAt", response.created_at],
+    ["set", "expiresIn", response.expires_in],
+  ]).exec(function (err, replies) {
+    that.getToken(function(token) {
+      callback(token)
+    })
+  });
 }
 
 Auth.prototype.setUser = function(response, callback) {
-  this.client.set("userId", response['data']['id']);
-  this.client.set("username", response['data']['attributes']['user-name']);
-  this.getUser(function(user) {
-    callback(user)
-  })
+  var that = this;
+  var client = that.client, multi;
+  client.multi([
+    ["set", "userId", response['data']['id']],
+    ["set", "username", response['data']['attributes']['user-name']],
+  ]).exec(function (err, replies) {
+    that.getUser(function(user) {
+      callback(user)
+    })
+  });
 }
 
 
