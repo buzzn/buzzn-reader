@@ -11,42 +11,73 @@ Auth.prototype.login = function(options, callback) {
   var that = this;
   var options = {
       method: 'POST',
-      uri: this.host + '/oauth/token',
+      uri: that.host + '/oauth/token',
       body: {
         grant_type: 'password',
         username: options.username,
         password: options.password,
-        scope: 'smartmeter',
+        scope: 'full',
       },
       json: true
   };
   request(options)
-    .then(function (token){
-      that.setToken(token, function() {
-        callback(token)
+    .then(function (response){
+      that.setToken(response, function(token) {
+        var options = {
+          method: 'GET',
+          uri: that.host + '/api/v1/users/me',
+          auth: { bearer: token.accessToken },
+          json: true
+        };
+        request(options)
+          .then(function (response){
+            that.setUser(response, function(user) {
+              callback(true)
+            });
+          })
+          .catch(function (err){
+            callback(false)
+          });
       })
     })
     .catch(function (err){
-      callback(err.error)
+      callback(false)
     });
 }
 
-Auth.prototype.setToken = function(token, callback) {
-  this.client.set("accessToken", token.access_token);
-  this.client.set("refreshToken", token.refresh_token);
-  this.client.set("createdAt", token.created_at);
-  this.client.set("expiresIn", token.expires_in);
+Auth.prototype.logout = function(callback) {
+  this.client.del("accessToken");
+  this.client.del("refreshToken");
+  this.client.del("createdAt");
+  this.client.del("expiresIn");
+  this.client.del("username");
+  this.client.del("userId");
+  callback(true)
+}
 
+Auth.prototype.setToken = function(response, callback) {
+  this.client.set("accessToken", response.access_token);
+  this.client.set("refreshToken", response.refresh_token);
+  this.client.set("createdAt", response.created_at);
+  this.client.set("expiresIn", response.expires_in);
   this.getToken(function(token) {
     callback(token)
   })
 }
 
+Auth.prototype.setUser = function(response, callback) {
+  this.client.set("userId", response['data']['id']);
+  this.client.set("username", response['data']['attributes']['user-name']);
+  this.getUser(function(user) {
+    callback(user)
+  })
+}
+
+
 Auth.prototype.getToken = function(callback) {
-  var that = this;
   this.client.mget(['accessToken', 'refreshToken', 'createdAt', 'expiresIn'], function(err, reply) {
     if (err) {
-      console.error(err);
+      callback(null)
     } else {
       var token = {
         accessToken: reply[0],
@@ -55,16 +86,38 @@ Auth.prototype.getToken = function(callback) {
         expiresIn: parseFloat(reply[3]),
         expiresAt: new Date((parseFloat(reply[2]) + parseFloat(reply[3]) ) * 1000 )
       }
-      if (new Date() > token.expiresAt){
-        that.refresh(function(token) {
-          callback(token);
-        })
-      }else{
-        callback(token);
-      }
+      callback(token);
     }
   })
 }
+
+Auth.prototype.getUser = function(callback) {
+  this.client.mget(['userId', 'username'], function(err, reply) {
+    if (err) {
+      callback(null)
+    } else {
+      var user = {
+        userId: reply[0],
+        username: reply[1]
+      }
+      callback(user);
+    }
+  })
+}
+
+Auth.prototype.getActiveToken = function(callback) {
+  var that = this;
+  that.loggedIn(function(token){
+    if(token){
+      callback(token)
+    }else{
+      that.refresh(function(token){
+        callback(token)
+      })
+    }
+  })
+}
+
 
 Auth.prototype.refresh = function(callback) {
   var that = this;
@@ -79,15 +132,27 @@ Auth.prototype.refresh = function(callback) {
         json: true
     };
     request(options)
-      .then(function (token){
-        that.setToken(token, function() {
+      .then(function (response){
+        that.setToken(response, function(token) {
           callback(token)
         })
       })
       .catch(function (err){
-        console.error(err)
+        callback(err)
       });
   });
 }
+
+
+Auth.prototype.loggedIn = function(callback) {
+  this.getToken(function(token) {
+    if (new Date() < token.expiresAt ){
+      callback(token);
+    }else{
+      callback(false);
+    }
+  })
+}
+
 
 module.exports = Auth;
