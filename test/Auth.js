@@ -2,8 +2,12 @@ const Auth = require('../libs/Auth');
 const chai = require('chai');
 const nock = require('nock');
 const sinon = require('sinon');
-const moment = require('moment');
+const Redis = require('redis');
+const config = require('config');
 var expect = chai.expect;
+
+let host  = 'https://app.buzzn.net';
+let redis = Redis.createClient(6379, config.get('redis.host'));
 
 
 describe('Auth', function () {
@@ -15,76 +19,66 @@ describe('Auth', function () {
     auth = new Auth();
     accessToken = 'accessaccessaccessaccessaccessaccessaccessaccessaccess';
     refreshToken = 'refreshrefreshrefreshrefreshrefreshrefreshrefreshrefresh'
-    userId = '3a0c03f5-8167-4b28-ab13-43563456345';
+    userId = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx';
     email = 'ffaerber@gmail.com';
     username = 'ffaerber';
-    password = '12345678';
+    password = 'xxxxxxxx';
   });
 
 
-    it('does not login with incorrect username and password', function (done) {
-      var date = new Date();
-      var username = 'ffaerber@gmail.com';
-      var password = 'xxxxxxxx';
-      var fakeResponse = {  error: "invalid_grant",
-                            error_description: "The provided authorization grant is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client."
-                          }
+  it('does not login with incorrect username and password', function (done) {
+    var date = new Date();
+    var username = 'ffaerber@gmail.com';
+    var password = 'xxxxxxxx';
 
-      nock('https://app.buzzn.net')
-        .post('/oauth/token', {
-          grant_type: 'password',
-          username: username,
-          password: password,
-          scope: 'smartmeter',
-        })
-        .reply(401, fakeResponse);
-
-      var options = {
-          username: username,
-          password: password
-      };
-      auth.login(options, function(response){
-        expect(response).to.equal(false);
-        done();
+    nock('https://app.buzzn.net')
+      .post('/oauth/token', {
+        grant_type: 'password',
+        username: username,
+        password: password,
+        scope: 'smartmeter',
       })
+      .reply(401,
+        {
+          error: "invalid_grant",
+          error_description: "The provided authorization grant is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client."
+        }
+      );
+
+    var options = {
+      username: username,
+      password: password
+    };
+    auth.login(options, function(response){
+      expect(response).to.equal(false);
+      done();
     })
+  })
 
 
   it('does login with correct username and password', function (done) {
-
 
     var fakeToken = { access_token: accessToken,
                       token_type: 'bearer',
                       expires_in: 7200,
                       refresh_token: refreshToken,
-                      scope: 'full',
+                      scope: 'smartmeter',
                       created_at: new Date().getTime()/1000 }
 
-     fakeUser = { data:
-                   { id: userId,
+     var fakeUser = { data:
+                   {
+                     id: userId,
                      type: 'users',
                      links: { self: 'https://app.buzzn.net/api/v1/users/3a0c03f5-8167-4b28-ab13-9849dba87ffd' },
-                     attributes:
-                      { slug: 'ffaerber',
-                        email: 'ffaerber@gmail.com',
-                        'user-name': username,
-                        'first-name': 'Felix',
-                        'last-name': 'Faerber',
-                        'about-me': 'sapere aude',
-                        'md-img': 'https://d682lv2c2abix.cloudfront.net/uploads/profile/image/6bff403e-4e6f-49ef-819f-b4e2ca5e94b1/md_b2031d5872bfc9a4c984e07d798b3cf6.jpg' },
-                     relationships:
-                      { profile: [Object],
-                        groups: [Object],
-                        friends: [Object],
-                        'metering-points': [Object],
-                        devices: [Object] } } }
+                    }
+                }
 
     nock('https://app.buzzn.net')
       .post('/oauth/token', {
         grant_type: 'password',
         username: email,
         password: password,
-        scope: 'full',
+        scope: 'smartmeter',
       })
       .reply(200, fakeToken);
 
@@ -97,26 +91,38 @@ describe('Auth', function () {
         password: password
     };
     auth.login(options, function(status){
-      expect(status).to.equal(true);
-      done()
+      redis.get('user', function (err, user) {
+        expect(status).to.equal(user);
+        done()
+      })
     })
   })
 
 
   it('does get the current active token', function (done) {
-    auth.getToken(function(response) {
-      expect(response.accessToken).to.equal(accessToken);
-      expect(response.refreshToken).to.equal(refreshToken);
-      done()
+    redis.get('token', function (err, token) {
+      if(err){
+        console.error(err);
+      }else{
+        let _token = JSON.parse(token)
+        expect(_token.access_token).to.equal(accessToken);
+        expect(_token.refresh_token).to.equal(refreshToken);
+        expect(_token.created_at).to.equal( new Date().getTime()/1000 );
+        done()
+      }
     })
   })
 
 
   it('does get the current active user', function (done) {
-    auth.getToken(function(response) {
-      expect(response.accessToken).to.equal(accessToken);
-      expect(response.refreshToken).to.equal(refreshToken);
-      done()
+    redis.get('user', function (err, user) {
+      if(err){
+        console.error(err);
+      }else{
+        let _user = JSON.parse(user)
+        expect(_user.data.id).to.equal(userId);
+        done()
+      }
     })
   })
 
@@ -141,11 +147,18 @@ describe('Auth', function () {
       })
       .reply(200, fakeResponse);
 
-    auth.getActiveToken(function(response){
-      expect(response.accessToken).to.equal(newAccessToken);
-      expect(response.refreshToken).to.equal(newRefreshToken);
-      done();
-    })
+      auth.getToken(function(response){
+        redis.get('token', function (err, redisToken) {
+          if (err){
+            console.error(err);
+          }else{
+            let _redisToken = JSON.parse(redisToken)
+            expect(_redisToken.access_token).to.equal(newAccessToken);
+            expect(_redisToken.refresh_token).to.equal(newRefreshToken);
+            done();
+          }
+        })
+      })
   })
 
 
