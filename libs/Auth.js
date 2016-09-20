@@ -1,132 +1,131 @@
-const redis = require('redis');
+const Redis = require('redis');
 const config = require('config');
-const request = require('request-promise');
+const request = require('superagent');
+const async = require("async");
+
+let host  = 'https://app.buzzn.net';
+let redis = Redis.createClient(6379, config.get('redis.host'));
 
 function Auth(host){
-  this.host   = 'https://app.buzzn.net';
-  this.client = redis.createClient(6379, config.get('redis.host'));
 }
 
 Auth.prototype.login = function(options, callback) {
-  var that = this;
-  var options = {
-      method: 'POST',
-      uri: that.host + '/oauth/token',
-      body: {
-        grant_type: 'password',
-        username: options.username,
-        password: options.password,
-        scope: 'full',
-      },
-      json: true
-  };
-  request(options)
-    .then(function (response){
-      that.setToken(response, function(token) {
-        var options = {
-          method: 'GET',
-          uri: that.host + '/api/v1/users/me',
-          auth: { bearer: token.accessToken },
-          json: true
-        };
-        request(options)
-          .then(function (response){
-            that.setUser(response, function(user) {
-              callback(true)
-            });
-          })
-          .catch(function (err){
-            callback(false)
-          });
+  getTokenWithPassword(options, function(token){
+    if (token){
+      getUser(function(user){
+        callback(user)
       })
+    }else{
+      callback(false);
+    }
+  })
+}
+
+
+function getTokenWithPassword(options, callback) {
+  request
+    .post(host + '/oauth/token')
+    .send({
+      grant_type: 'password',
+      username: options.username,
+      password: options.password,
+      scope: 'smartmeter'
     })
-    .catch(function (err){
-      callback(false)
+    .end(function(err, res){
+      if (err || !res.ok) {
+        callback(err.body)
+      } else {
+        let token = JSON.stringify(res.body)
+        redis.set("token", token, function (err, reply) {
+          callback(token)
+        });
+      }
     });
 }
 
+
+function getTokenWithRefreshToken(callback) {
+  redis.get('token', function (err, token) {
+    if(err){
+      console.error(err)
+    }else{
+      let _token = JSON.parse(token)
+      request
+        .post(host + '/oauth/token')
+        .send({
+          grant_type: 'refresh_token',
+          refresh_token: _token.refresh_token
+        })
+        .end(function(err, res){
+          if (err || !res.ok) {
+            console.error(err);
+          } else {
+            let token = JSON.stringify(res.body)
+            redis.set("token", token, function (err, reply) {
+              if(err){
+                console.error(err);
+              }else{
+                callback(token)
+              }
+            });
+          }
+        });
+    }
+  });
+}
+
+
+function getUser(callback) {
+  redis.get('token', function (err, token) {
+    if(err){
+      console.error(err)
+    }else{
+      let _token = JSON.parse(token)
+      request
+        .get(host + '/api/v1/users/me')
+        .set('Authorization', 'Bearer ' + _token.access_token)
+        .end(function(err, res){
+          if (err || !res.ok) {
+            console.error(err);
+          } else {
+            let user = JSON.stringify(res.body)
+            redis.set("user", user, function (err, reply) {
+              callback(user)
+            });
+          }
+        })
+    }
+  })
+}
+
+
+
+
 Auth.prototype.logout = function(callback) {
   var that = this;
-  var client = that.client, multi;
-  client.multi([
+  var _redis = redis, multi;
+  _redis.multi([
     ["del", "accessToken"],
     ["del", "refreshToken"],
     ["del", "createdAt"],
     ["del", "expiresIn"],
     ["del", "username"],
     ["del", "userId"],
+    ["del", "meterId"],
   ]).exec(function (err, replies) {
     callback(true)
   });
 }
 
-Auth.prototype.setToken = function(response, callback) {
-  var that = this;
-  var client = that.client, multi;
-  client.multi([
-    ["set", "accessToken", response.access_token],
-    ["set", "refreshToken", response.refresh_token],
-    ["set", "createdAt", response.created_at],
-    ["set", "expiresIn", response.expires_in],
-  ]).exec(function (err, replies) {
-    that.getToken(function(token) {
-      callback(token)
-    })
-  });
-}
-
-Auth.prototype.setUser = function(response, callback) {
-  var that = this;
-  var client = that.client, multi;
-  client.multi([
-    ["set", "userId", response['data']['id']],
-    ["set", "username", response['data']['attributes']['user-name']],
-  ]).exec(function (err, replies) {
-    that.getUser(function(user) {
-      callback(user)
-    })
-  });
-}
 
 
 Auth.prototype.getToken = function(callback) {
-  this.client.mget(['accessToken', 'refreshToken', 'createdAt', 'expiresIn'], function(err, reply) {
-    if (err) {
-      callback(null)
-    } else {
-      var token = {
-        accessToken: reply[0],
-        refreshToken: reply[1],
-        createdAt: parseFloat(reply[2]),
-        expiresIn: parseFloat(reply[3]),
-        expiresAt: new Date((parseFloat(reply[2]) + parseFloat(reply[3]) ) * 1000 )
-      }
-      callback(token);
-    }
-  })
-}
-
-Auth.prototype.getUser = function(callback) {
-  this.client.mget(['userId', 'username'], function(err, reply) {
-    if (err) {
-      callback(null)
-    } else {
-      var user = {
-        userId: reply[0],
-        username: reply[1]
-      }
-      callback(user);
-    }
-  })
-}
-
-Auth.prototype.getActiveToken = function(callback) {
   var that = this;
   that.loggedIn(function(token){
     if(token){
       callback(token)
     }else{
-      that.refresh(function(token){
+      getTokenWithRefreshToken(function(token){
         callback(token)
       })
     }
@@ -134,34 +133,12 @@ Auth.prototype.getActiveToken = function(callback) {
 }
 
 
-Auth.prototype.refresh = function(callback) {
-  var that = this;
-  this.client.get("refreshToken", function (err, reply) {
-    var options = {
-        method: 'POST',
-        uri: that.host + '/oauth/token',
-        body: {
-          grant_type: 'refresh_token',
-          refresh_token: reply
-        },
-        json: true
-    };
-    request(options)
-      .then(function (response){
-        that.setToken(response, function(token) {
-          callback(token)
-        })
-      })
-      .catch(function (err){
-        callback(err)
-      });
-  });
-}
 
 
 Auth.prototype.loggedIn = function(callback) {
-  this.getToken(function(token) {
-    if (new Date() < token.expiresAt ){
+  redis.get('token', function (err, token) {
+    let _token = JSON.parse(token)
+    if (new Date().getTime() < _token.expiresAt ){
       callback(token);
     }else{
       callback(false);
