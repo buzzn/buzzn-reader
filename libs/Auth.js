@@ -34,6 +34,7 @@ function getTokenWithPassword(options, callback) {
     .end(function(err, res){
       if (err || !res.ok) {
         callback(err.body)
+        console.error(err);
       } else {
         let token = JSON.stringify(res.body)
         redis.set("token", token, function (err, reply) {
@@ -105,13 +106,9 @@ Auth.prototype.logout = function(callback) {
   var that = this;
   var _redis = redis, multi;
   _redis.multi([
-    ["del", "accessToken"],
-    ["del", "refreshToken"],
-    ["del", "createdAt"],
-    ["del", "expiresIn"],
-    ["del", "username"],
-    ["del", "userId"],
-    ["del", "meterId"],
+    ["del", "token"],
+    ["del", "user"],
+    ["del", "meter"],
   ]).exec(function (err, replies) {
     callback(true)
   });
@@ -132,16 +129,21 @@ Auth.prototype.getToken = function(callback) {
   })
 }
 
-
-
-
 Auth.prototype.loggedIn = function(callback) {
   redis.get('token', function (err, token) {
-    let _token = JSON.parse(token)
-    if (new Date().getTime() < _token.expiresAt ){
-      callback(token);
-    }else{
-      callback(false);
+    if(err){
+      console.error(err);
+    } else {
+      if(token){
+        let _token = JSON.parse(token)
+        if (new Date().getTime() < (_token.created_at + _token.expires_in)*1000){
+          callback(token);
+        }else{
+          callback(false);
+        }
+      }else{
+        callback(false);
+      }
     }
   })
 }
