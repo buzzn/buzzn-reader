@@ -27,10 +27,6 @@ describe('Auth', function () {
 
 
   it('does not login with incorrect username and password', function (done) {
-    var date = new Date();
-    var username = 'ffaerber@gmail.com';
-    var password = 'xxxxxxxx';
-
     nock('https://app.buzzn.net')
       .post('/oauth/token', {
         grant_type: 'password',
@@ -38,18 +34,16 @@ describe('Auth', function () {
         password: password,
         scope: 'smartmeter',
       })
-      .reply(401,
-        {
-          error: "invalid_grant",
-          error_description: "The provided authorization grant is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client."
-        }
-      );
+      .reply(401, {
+        error: "invalid_grant",
+        error_description: "The provided authorization grant is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client."
+      });
 
     var options = {
       username: username,
       password: password
     };
-    auth.login(options, function(response){
+    auth.login({ username: username, password: password }, function(response){
       expect(response).to.equal(false);
       done();
     })
@@ -57,22 +51,6 @@ describe('Auth', function () {
 
 
   it('does login with correct username and password', function (done) {
-
-    var fakeToken = { access_token: accessToken,
-                      token_type: 'bearer',
-                      expires_in: 7200,
-                      refresh_token: refreshToken,
-                      scope: 'smartmeter',
-                      created_at: new Date().getTime()/1000 }
-
-     var fakeUser = { data:
-                   {
-                     id: userId,
-                     type: 'users',
-                     links: { self: 'https://app.buzzn.net/api/v1/users/3a0c03f5-8167-4b28-ab13-9849dba87ffd' },
-                    }
-                }
-
     nock('https://app.buzzn.net')
       .post('/oauth/token', {
         grant_type: 'password',
@@ -80,19 +58,28 @@ describe('Auth', function () {
         password: password,
         scope: 'smartmeter',
       })
-      .reply(200, fakeToken);
+      .reply(200, {
+        access_token: accessToken,
+        token_type: 'bearer',
+        expires_in: 7200,
+        refresh_token: refreshToken,
+        scope: 'smartmeter',
+        created_at: new Date().getTime()/1000
+      });
 
     nock('https://app.buzzn.net')
       .get('/api/v1/users/me')
-      .reply(200, fakeUser);
+      .reply(200, {
+        data: {
+          id: userId,
+          type: 'users',
+          links: { self: 'https://app.buzzn.net/api/v1/users/3a0c03f5-8167-4b28-ab13-9849dba87ffd' }
+        }
+      });
 
-    var options = {
-        username: email,
-        password: password
-    };
-    auth.login(options, function(status){
-      redis.get('user', function (err, user) {
-        expect(status).to.equal(user);
+    auth.login({ username: email, password: password }, function(status){
+      redis.get('user', function (err, record) {
+        expect(status).to.equal(record);
         done()
       })
     })
@@ -100,14 +87,14 @@ describe('Auth', function () {
 
 
   it('does get the current active token', function (done) {
-    redis.get('token', function (err, token) {
+    redis.get('token', function (err, record) {
       if(err){
         console.error(err);
       }else{
-        let _token = JSON.parse(token)
-        expect(_token.access_token).to.equal(accessToken);
-        expect(_token.refresh_token).to.equal(refreshToken);
-        expect(_token.created_at).to.equal( new Date().getTime()/1000 );
+        let token = JSON.parse(record)
+        expect(token.access_token).to.equal(accessToken);
+        expect(token.refresh_token).to.equal(refreshToken);
+        expect(token.created_at).to.equal( new Date().getTime()/1000 );
         done()
       }
     })
@@ -115,12 +102,12 @@ describe('Auth', function () {
 
 
   it('does get the current active user', function (done) {
-    redis.get('user', function (err, user) {
+    redis.get('user', function (err, record) {
       if(err){
         console.error(err);
       }else{
-        let _user = JSON.parse(user)
-        expect(_user.data.id).to.equal(userId);
+        let user = JSON.parse(record)
+        expect(user.data.id).to.equal(userId);
         done()
       }
     })
@@ -129,32 +116,33 @@ describe('Auth', function () {
 
 
   it('does get a new token after two hours', function (done) {
-    var date = new Date(2016, 8, 16, 2)
+    var date = new Date(2016,8,16,2)
     clock = sinon.useFakeTimers(date.getTime());
     var newAccessToken = 'newaccessnewaccessnewaccessnewaccessnewaccessnewaccess'
     var newRefreshToken = 'newrefreshnewrefreshnewrefreshnewrefreshnewrefreshnewrefresh'
-    var fakeResponse = {  access_token: newAccessToken,
-                          token_type: 'bearer',
-                          expires_in: 7200,
-                          refresh_token: newRefreshToken,
-                          scope: 'smartmeter',
-                          created_at: new Date().getTime()/1000 }
 
     nock('https://app.buzzn.net')
       .post('/oauth/token', {
         grant_type: 'refresh_token',
         refresh_token: refreshToken
       })
-      .reply(200, fakeResponse);
+      .reply(200, {
+        access_token: newAccessToken,
+        token_type: 'bearer',
+        expires_in: 7200,
+        refresh_token: newRefreshToken,
+        scope: 'smartmeter',
+        created_at: new Date().getTime()/1000
+      });
 
       auth.getToken(function(response){
-        redis.get('token', function (err, redisToken) {
+        redis.get('token', function (err, record) {
           if (err){
             console.error(err);
           }else{
-            let _redisToken = JSON.parse(redisToken)
-            expect(_redisToken.access_token).to.equal(newAccessToken);
-            expect(_redisToken.refresh_token).to.equal(newRefreshToken);
+            let token = JSON.parse(record)
+            expect(token.access_token).to.equal(newAccessToken);
+            expect(token.refresh_token).to.equal(newRefreshToken);
             done();
           }
         })

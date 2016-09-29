@@ -1,7 +1,6 @@
 const Redis = require('redis');
 const config = require('config');
 const request = require('superagent');
-const async = require("async");
 
 let host  = 'https://app.buzzn.net';
 let redis = Redis.createClient(6379, config.get('redis.host'));
@@ -34,7 +33,6 @@ function getTokenWithPassword(options, callback) {
     .end(function(err, res){
       if (err || !res.ok) {
         callback(err.body)
-        console.error(err);
       } else {
         let token = JSON.stringify(res.body)
         redis.set("token", token, function (err, reply) {
