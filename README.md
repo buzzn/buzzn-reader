@@ -12,8 +12,6 @@
   - [SanDisk microSD 16GB / 7,99 € ](http://www.amazon.de/dp/B013UDL5V6)
   - [D0-Head / 25 € ](http://wiki.volkszaehler.org/hardware/controllers/ir-schreib-lesekopf-usb-ausgang#stueckliste_und_preise)
   - [Optional Easymeter Adapter / 3€](http://wiki.volkszaehler.org/hardware/controllers/ir-schreib-lesekopf_easymeter-adapter)
-  - [Optional PowerBank / 9€](https://www.amazon.de/dp/B00MWU1GGI)
-  - [Optional LTE Hotspot / 44,90€](https://www.amazon.de/dp/B00HHREHQ2)
 
 ##### d0-reader app
   the d0-reader consists of following Software parts.
@@ -41,6 +39,8 @@
 ## Development
   - Fork the repository on Github
   - Create a named feature branch (like add_component_x)
+  - npm install -g nodemon
+  - nodeman start
   - pull branch and Write you change
   - Write tests for your change (if applicable)
   - Run the tests, ensuring they all pass
@@ -69,10 +69,7 @@
 ## Troubleshooting on RasPI
   - Does the RasPI start properly? ...
   - Is the IR measuring Head well connected?
-  - TBD
-  - ...
 
 ## Extra Infos
   - [microSD Card Benchmarks](http://www.pidramble.com/wiki/benchmarks/microsd-cards)
-  - [Powerbank](http://smartphone-aufladen.de/blog/wissenswertes/welche-powerbank-eignet-sich-fuer-den-raspberry-pi)
   - [Docker on ARM](http://blog.hypriot.com/getting-started-with-docker-on-your-arm-device/)
