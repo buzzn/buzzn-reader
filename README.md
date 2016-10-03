@@ -22,31 +22,36 @@
   - [serialport](https://github.com/EmergingTechnologyAdvisors/node-serialport). reads incoming SMLs from the usb d0-head and send it to kue.
 
 
-## Create D0ReaderOS
-  - Download, unzip and Flash [Hypriot OS](https://downloads.hypriot.com/hypriotos-rpi-v0.8.0.img.zip)
+## Setup
+  - Download, unzip and Flash [Hypriot OS](https://downloads.hypriot.com/hypriotos-rpi-v1.0.0.img.zip)
   - open SDCard on your Workstation and open device-init.yaml
   - change hostname to d0reader
-  - comment out docker(line 3 to 6)
   - if you want to use WLAN set wifi interfaces.
   - save and put SDCard into RaspberryPi
   - start and log into RaspberryPi via ssh pirate@d0reader.local (password is hypriot)
   - git clone https://github.com/buzzn/d0-reader.git
   - cd d0-reader
-  - docker-compose build base
-  - docker-compose up -d
   - continue with step 'Development' or 'Release'
 
 ## Development
   - Fork the repository on Github
   - Create a named feature branch (like add_component_x)
+  - git checkout add_component_x
+  - docker-compose build base
+  - docker-compose up
+
   - npm install -g nodemon
-  - nodeman start
+  - nodemon start
   - pull branch and Write you change
   - Write tests for your change (if applicable)
   - Run the tests, ensuring they all pass
   - Submit a Pull Request using Github
 
 ## Release
+  - docker-compose build base
+  - docker-compose up -d
+
+## Deploy
   - Insert SD Card to Clone/Release
   - diskutil list | Locate SD Card
   - diskutil unmountDisk /dev/disk3 | Unmount the SD Card
@@ -58,7 +63,7 @@
 ## Production
   - Download and Flash [D0ReaderOS](http://buzzn.s3.amazonaws.com/d0-reader-v1.img.zip)
   - Connect to RaspberryPi ethernet, D0-head, SD Card and Power.
-  - copy access_token from https://app.buzzn.net/access_tokens to http://d0reader.local and click save.
+  - open http://d0reader.local and login.
 
 ## Flash SDCard
   - diskutil list | Locate SD Card
