@@ -1,19 +1,16 @@
 var express = require('express');
 var router = express.Router();
-var kue = require('kue')
-  , queue = kue.createQueue({ redis: { host: 'redis' }});
-
-var redis = require('redis');
-var redisClient = redis.createClient(6379, 'redis')
+var Auth = require('../libs/Auth');
 
 router.get('/', function(req, res, next) {
-  redisClient.mget(['user'], function(err, reply) {
-    if(reply[0] == null){
-      res.redirect('settings/edit');
+  var auth = new Auth();
+  auth.loggedIn(function(token){
+    if(token){
+      res.render('index', { title: 'loggedIn' });
     }else{
-      res.render('index', { title: "Welcome " + reply[0] });
+      res.redirect('auth/new');
     }
-  });
+  })
 });
 
 module.exports = router;
