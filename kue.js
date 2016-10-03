@@ -10,8 +10,10 @@ jobs.process('sml', function(job, done) {
   let reading = new Reading(job.data.sml)
   let auth = new Auth()
   auth.loggedIn(function(token){
+
     if(token && reading.valid){
       accessToken = token.accessToken
+
       request
         .post('https://app.buzzn.net' + '/api/v1/readings')
         .send({
@@ -29,8 +31,10 @@ jobs.process('sml', function(job, done) {
             done();
           }
         });
+
     }else{
-      callback(false)
+      done('not loggedIn');
     }
   })
+
 });
