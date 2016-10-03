@@ -40,9 +40,7 @@
   - docker-compose build base
   - docker-compose up
 
-  - npm install -g nodemon
-  - nodemon start
-  - pull branch and Write you change
+  - Write you changes
   - Write tests for your change (if applicable)
   - Run the tests, ensuring they all pass
   - Submit a Pull Request using Github
