@@ -39,15 +39,16 @@
   - git checkout add_component_x
   - docker-compose build base
   - docker-compose up
-
   - Write you changes
   - Write tests for your change (if applicable)
   - Run the tests, ensuring they all pass
   - Submit a Pull Request using Github
 
 ## Release
-  - docker-compose build base
-  - docker-compose up -d
+  - docker rm $(docker ps -a -q) | Remove all Container
+  - docker rmi $(docker images -a -q) | Remove all Images
+  - docker-compose build base | Build Base Image
+  - docker-compose up -d | StartUp all container as daemons
 
 ## Deploy
   - Insert SD Card to Clone/Release
