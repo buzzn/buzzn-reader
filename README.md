@@ -3,8 +3,8 @@
 
 
 # D0 Reader
-  many smartmeters have an  D0 interface (IrDA) this can be read with the d0reader and sent to the buzzn platform.
-  the d0-reader consists of following Hardware parts.
+  many electricity meters have an  D0 interface (IrDA) this can be read with the d0reader and sent to the buzzn platform.
+  The d0-reader consists of following hardware parts.
 
   - [Raspberry Pi3 / 37,50 € ](https://www.reichelt.de/RASPBERRY-PI-3/3/index.html?&ACTION=3&LA=446&ARTICLE=164977&artnr=RASPBERRY+PI+3&SEARCH=pi3)
   - [Raspberry Pi3 PSU / 11,50 € ](https://www.reichelt.de/Ladegeraete-fuer-USB-Geraete/NT-MUSB-25-SW/3/index.html?&ACTION=3&LA=517&ARTICLE=167078&GROUPID=5158)
@@ -16,7 +16,7 @@
   - [Optional LTE Hotspot / 44,90€](https://www.amazon.de/dp/B00HHREHQ2)
 
 ##### d0-reader app
-  the d0-reader consists of following Software parts.
+  The d0-reader consists of following Software parts.
 
   - [redis](http://redis.io/). Key-value database for storing settings and queuing jobs.
   - web. [Express](https://github.com/expressjs/express) webinterface for change settings. like access_token and hostname.
