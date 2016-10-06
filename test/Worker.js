@@ -193,7 +193,7 @@ describe('Worker', () => {
 
         auth.login({
             username: email,
-            password: 'braunkohle'
+            password: password
         }, (response) => {
             setup = new Setup(rawSML)
             setup.init((response) => {
