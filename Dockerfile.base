@@ -2,9 +2,9 @@ FROM resin/rpi-raspbian:jessie
 MAINTAINER Felix Faerber <ffaerber@gmail.com>
 
 RUN apt-get update -qq && apt-get install vim wget
-RUN wget https://nodejs.org/dist/v6.5.0/node-v6.5.0-linux-armv7l.tar.gz --no-check-certificate
-RUN tar -xvf node-v6.5.0-linux-armv7l.tar.gz
-RUN cp -R node-v6.5.0-linux-armv7l/. /usr/local/
+RUN wget https://nodejs.org/dist/v6.7.0/node-v6.7.0-linux-armv7l.tar.gz --no-check-certificate
+RUN tar -xvf node-v6.7.0-linux-armv7l.tar.gz
+RUN cp -R node-v6.7.0-linux-armv7l/. /usr/local/
 
 # Create app directory
 RUN mkdir -p /usr/src/app
