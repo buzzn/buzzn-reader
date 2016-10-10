@@ -1,168 +1,66 @@
-const config = require('config');
-const Auth = require('../libs/Auth');
-const chai = require('chai');
-const nock = require('nock');
-const sinon = require('sinon');
-const Redis = require('redis');
-var expect = chai.expect;
+const config = require('config')
+const Auth = require('../libs/Auth')
+const Mock = require('./Mock')
 
-let host = 'https://app.buzzn.net';
-let redis = Redis.createClient(6379, config.get('redis.host'));
+const chai = require('chai')
+var expect = chai.expect
 
+const Redis = require('redis')
+let redis = Redis.createClient(6379, config.get('redis.host'))
 
 describe('Auth', () => {
-    var auth, clock, accessToken, refreshToken, userId, email, username, password;
+    var auth, mock
 
     before(() => {
-        var date = new Date(2016, 8, 15)
-        clock = sinon.useFakeTimers(date.getTime());
-        auth = new Auth();
-        accessToken = 'accessaccessaccessaccessaccessaccessaccessaccessaccess';
-        refreshToken = 'refreshrefreshrefreshrefreshrefreshrefreshrefreshrefresh'
-        userId = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx';
-        email = 'ffaerber@gmail.com';
-        username = 'ffaerber';
-        password = 'xxxxxxxx';
-    });
+        mock = new Mock(new Date(2016, 8, 15))
+        auth = new Auth()
+    })
 
+    after(() => {
+        auth.logout(() => {
+            mock.cleanAll()
+        })
+    })
 
     it('does not login with incorrect username and password', (done) => {
-        nock('https://app.buzzn.net')
-            .post('/oauth/token', {
-                grant_type: 'password',
-                username: username,
-                password: password,
-                scope: 'smartmeter',
-            })
-            .reply(401, {
-                error: "invalid_grant",
-                error_description: "The provided authorization grant is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client."
-            });
+        let mockResponse = mock.oauthTokenViaPasswordInvalidGrant()
 
-        var options = {
-            username: username,
-            password: password
-        };
         auth.login({
-            username: username,
-            password: password
+            username: 'ffaerber@gmail.com',
+            password: 'xxxxxxxx'
         }, (response) => {
-            expect(response).to.equal(false);
-            done();
+            // TODO remove null and use mockResponse
+            expect(response).to.equal(null)
+            done()
         })
     })
 
 
     it('does login with correct username and password', (done) => {
-        nock('https://app.buzzn.net')
-            .post('/oauth/token', {
-                grant_type: 'password',
-                username: email,
-                password: password,
-                scope: 'smartmeter',
-            })
-            .reply(200, {
-                access_token: accessToken,
-                token_type: 'bearer',
-                expires_in: 7200,
-                refresh_token: refreshToken,
-                scope: 'smartmeter',
-                created_at: new Date().getTime() / 1000
-            });
-
-        nock('https://app.buzzn.net')
-            .get('/api/v1/users/me')
-            .reply(200, {
-                data: {
-                    id: userId,
-                    type: 'users',
-                    links: {
-                        self: 'https://app.buzzn.net/api/v1/users/3a0c03f5-8167-4b28-ab13-9849dba87ffd'
-                    }
-                }
-            });
+        mock.oauthTokenViaPassword()
+        let mockResponse = mock.usersMe()
 
         auth.login({
-            username: email,
-            password: password
+            username: 'ffaerber@gmail.com',
+            password: 'xxxxxxxx'
         }, (status) => {
-            redis.get('user', (err, record) => {
-                expect(status).to.equal(record);
-                done()
-            })
+            expect(JSON.parse(status)).to.deep.equal(mockResponse)
+            done()
         })
     })
-
-
-    it('does get the current active token', (done) => {
-        redis.get('token', (err, record) => {
-            if (err) {
-                console.error(err);
-            } else {
-                let token = JSON.parse(record)
-                expect(token.access_token).to.equal(accessToken);
-                expect(token.refresh_token).to.equal(refreshToken);
-                expect(token.created_at).to.equal(new Date().getTime() / 1000);
-                done()
-            }
-        })
-    })
-
-
-    it('does get the current active user', (done) => {
-        redis.get('user', (err, record) => {
-            if (err) {
-                console.error(err);
-            } else {
-                let user = JSON.parse(record)
-                expect(user.data.id).to.equal(userId);
-                done()
-            }
-        })
-    })
-
 
 
     it('does get a new token after two hours', (done) => {
-        let date = new Date(2016, 8, 16, 2)
-        clock = sinon.useFakeTimers(date.getTime());
-        let newAccessToken = 'newaccessnewaccessnewaccessnewaccessnewaccessnewaccess'
-        let newRefreshToken = 'newrefreshnewrefreshnewrefreshnewrefreshnewrefreshnewrefresh'
-
-        nock('https://app.buzzn.net')
-            .post('/oauth/token', {
-                grant_type: 'refresh_token',
-                refresh_token: refreshToken
-            })
-            .reply(200, {
-                access_token: newAccessToken,
-                token_type: 'bearer',
-                expires_in: 7200,
-                refresh_token: newRefreshToken,
-                scope: 'smartmeter',
-                created_at: new Date().getTime() / 1000
-            });
+        mock = new Mock(new Date(2016, 8, 16, 2))
+        let mockResponse = mock.oauthTokenViaRefreshToken()
 
         auth.getToken((response) => {
-            redis.get('token', (err, record) => {
-                if (err) {
-                    console.error(err);
-                } else {
-                    let token = JSON.parse(record)
-                    expect(token.access_token).to.equal(newAccessToken);
-                    expect(token.refresh_token).to.equal(newRefreshToken);
-                    done();
-                }
-            })
+            expect(JSON.parse(response)).to.deep.equal(mockResponse)
+            done()
         })
     })
 
 
-    after(() => {
-        auth.logout(() => {
-            nock.cleanAll();
-            clock.restore();
-        })
-    });
+
 
 })

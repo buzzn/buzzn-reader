@@ -1,7 +1,7 @@
-const Reading = require('../libs/Reading');
-const chai = require('chai');
+const Reading = require('../libs/Reading')
+const chai = require('chai')
 
-var expect = chai.expect;
+var expect = chai.expect
 
 describe('Reading', () => {
 
@@ -21,15 +21,15 @@ describe('Reading', () => {
     0-0:96.1.255*255(1ESY1160327685)\n\
     !")
 
-        expect(reading.manufacturerName).to.equal('easy_meter');
-        expect(reading.productName).to.equal('5q3');
-        expect(reading.meterSerialnumber).to.equal('60327685');
-        expect(reading.energyAMilliwattHour).to.equal(640000);
-        expect(reading.energyBMilliwattHour).to.equal(null);
-        expect(reading.powerAMilliwatt).to.equal(2600);
-        expect(reading.powerBMilliwatt).to.equal(null);
-        expect(reading.direction).to.equal('in');
-    });
+        expect(reading.manufacturerName).to.equal('easy_meter')
+        expect(reading.productName).to.equal('5q3')
+        expect(reading.meterSerialnumber).to.equal('60327685')
+        expect(reading.energyAMilliwattHour).to.equal(640000)
+        expect(reading.energyBMilliwattHour).to.equal(null)
+        expect(reading.powerAMilliwatt).to.equal(2600)
+        expect(reading.powerBMilliwatt).to.equal(null)
+        expect(reading.direction).to.equal('in')
+    })
 
 
 
@@ -48,15 +48,15 @@ describe('Reading', () => {
     0-0:96.1.255*255(1ESY1160327685)\n\
     !")
 
-        expect(reading.manufacturerName).to.equal('easy_meter');
-        expect(reading.productName).to.equal('5q3');
-        expect(reading.meterSerialnumber).to.equal('60327685');
-        expect(reading.energyAMilliwattHour).to.equal(null);
-        expect(reading.energyBMilliwattHour).to.equal(null);
-        expect(reading.powerAMilliwatt).to.equal(null);
-        expect(reading.powerBMilliwatt).to.equal(null);
-        expect(reading.direction).to.equal(undefined);
-    });
+        expect(reading.manufacturerName).to.equal('easy_meter')
+        expect(reading.productName).to.equal('5q3')
+        expect(reading.meterSerialnumber).to.equal('60327685')
+        expect(reading.energyAMilliwattHour).to.equal(null)
+        expect(reading.energyBMilliwattHour).to.equal(null)
+        expect(reading.powerAMilliwatt).to.equal(null)
+        expect(reading.powerBMilliwatt).to.equal(null)
+        expect(reading.direction).to.equal(undefined)
+    })
 
 
 
@@ -78,15 +78,15 @@ describe('Reading', () => {
     0-0:96.1.255*255(1ESY1160328160)\n\
     !")
 
-        expect(reading.manufacturerName).to.equal('easy_meter');
-        expect(reading.productName).to.equal('5q3');
-        expect(reading.meterSerialnumber).to.equal('60328160');
-        expect(reading.energyAMilliwattHour).to.equal(1380000);
-        expect(reading.energyBMilliwattHour).to.equal(1140000);
-        expect(reading.powerAMilliwatt).to.equal(2100);
-        expect(reading.powerBMilliwatt).to.equal(0);
-        expect(reading.direction).to.equal('in_out');
-    });
+        expect(reading.manufacturerName).to.equal('easy_meter')
+        expect(reading.productName).to.equal('5q3')
+        expect(reading.meterSerialnumber).to.equal('60328160')
+        expect(reading.energyAMilliwattHour).to.equal(1380000)
+        expect(reading.energyBMilliwattHour).to.equal(1140000)
+        expect(reading.powerAMilliwatt).to.equal(2100)
+        expect(reading.powerBMilliwatt).to.equal(0)
+        expect(reading.direction).to.equal('in_out')
+    })
 
 
 
@@ -107,15 +107,15 @@ describe('Reading', () => {
     0-0:96.1.255*255(1ESY1160328160)\n\
     !")
 
-        expect(reading.manufacturerName).to.equal('easy_meter');
-        expect(reading.productName).to.equal('5q3');
-        expect(reading.meterSerialnumber).to.equal('60328160');
-        expect(reading.energyAMilliwattHour).to.equal(1380000);
-        expect(reading.energyBMilliwattHour).to.equal(1140000);
-        expect(reading.powerAMilliwatt).to.equal(0);
-        expect(reading.powerBMilliwatt).to.equal(997900);
-        expect(reading.direction).to.equal('in_out');
-    });
+        expect(reading.manufacturerName).to.equal('easy_meter')
+        expect(reading.productName).to.equal('5q3')
+        expect(reading.meterSerialnumber).to.equal('60328160')
+        expect(reading.energyAMilliwattHour).to.equal(1380000)
+        expect(reading.energyBMilliwattHour).to.equal(1140000)
+        expect(reading.powerAMilliwatt).to.equal(0)
+        expect(reading.powerBMilliwatt).to.equal(997900)
+        expect(reading.direction).to.equal('in_out')
+    })
 
 
 
@@ -136,15 +136,15 @@ describe('Reading', () => {
     0-0:96.1.255*255(1ESY1160300829)\n\
     !")
 
-        expect(reading.manufacturerName).to.equal('easy_meter');
-        expect(reading.productName).to.equal('5q3');
-        expect(reading.meterSerialnumber).to.equal('60300829');
-        expect(reading.energyAMilliwattHour).to.equal(360000);
-        expect(reading.energyBMilliwattHour).to.equal(null);
-        expect(reading.powerAMilliwatt).to.equal(700000);
-        expect(reading.powerBMilliwatt).to.equal(null);
-        expect(reading.direction).to.equal('out');
-    });
+        expect(reading.manufacturerName).to.equal('easy_meter')
+        expect(reading.productName).to.equal('5q3')
+        expect(reading.meterSerialnumber).to.equal('60300829')
+        expect(reading.energyAMilliwattHour).to.equal(360000)
+        expect(reading.energyBMilliwattHour).to.equal(null)
+        expect(reading.powerAMilliwatt).to.equal(700000)
+        expect(reading.powerBMilliwatt).to.equal(null)
+        expect(reading.direction).to.equal('out')
+    })
 
 
 
@@ -167,14 +167,14 @@ describe('Reading', () => {
     0-0:96.1.255*255(1ESY1160118474)\n\
     !")
 
-        expect(reading.manufacturerName).to.equal('easy_meter');
-        expect(reading.meterSerialnumber).to.equal('60118474');
-        expect(reading.energyAMilliwattHour).to.equal(2070000);
-        expect(reading.energyBMilliwattHour).to.equal(1690000);
-        expect(reading.powerAMilliwatt).to.equal(0);
-        expect(reading.powerBMilliwatt).to.equal(0);
-        expect(reading.direction).to.equal('in_out');
-    });
+        expect(reading.manufacturerName).to.equal('easy_meter')
+        expect(reading.meterSerialnumber).to.equal('60118474')
+        expect(reading.energyAMilliwattHour).to.equal(2070000)
+        expect(reading.energyBMilliwattHour).to.equal(1690000)
+        expect(reading.powerAMilliwatt).to.equal(0)
+        expect(reading.powerBMilliwatt).to.equal(0)
+        expect(reading.direction).to.equal('in_out')
+    })
 
 
 
@@ -197,15 +197,15 @@ describe('Reading', () => {
     0-0:96.1.255*255(1ESY1160009501)\n\
     !")
 
-        expect(reading.manufacturerName).to.equal('easy_meter');
-        expect(reading.productName).to.equal('5t3');
-        expect(reading.meterSerialnumber).to.equal('60009501');
-        expect(reading.energyAMilliwattHour).to.equal(1100000);
-        expect(reading.energyBMilliwattHour).to.equal(null);
-        expect(reading.powerAMilliwatt).to.equal(10);
-        expect(reading.powerBMilliwatt).to.equal(null);
-        expect(reading.direction).to.equal('in');
-    });
+        expect(reading.manufacturerName).to.equal('easy_meter')
+        expect(reading.productName).to.equal('5t3')
+        expect(reading.meterSerialnumber).to.equal('60009501')
+        expect(reading.energyAMilliwattHour).to.equal(1100000)
+        expect(reading.energyBMilliwattHour).to.equal(null)
+        expect(reading.powerAMilliwatt).to.equal(10)
+        expect(reading.powerBMilliwatt).to.equal(null)
+        expect(reading.direction).to.equal('in')
+    })
 
 
 
@@ -227,15 +227,15 @@ describe('Reading', () => {
     0-0:96.1.255*255(1ESY1160300856)\n\
     !")
 
-        expect(reading.manufacturerName).to.equal('easy_meter');
-        expect(reading.productName).to.equal('5t3');
-        expect(reading.meterSerialnumber).to.equal('60300856');
-        expect(reading.energyAMilliwattHour).to.equal(1100000);
-        expect(reading.energyBMilliwattHour).to.equal(1000000);
-        expect(reading.powerAMilliwatt).to.equal(3830);
-        expect(reading.powerBMilliwatt).to.equal(0);
-        expect(reading.direction).to.equal('in_out');
-    });
+        expect(reading.manufacturerName).to.equal('easy_meter')
+        expect(reading.productName).to.equal('5t3')
+        expect(reading.meterSerialnumber).to.equal('60300856')
+        expect(reading.energyAMilliwattHour).to.equal(1100000)
+        expect(reading.energyBMilliwattHour).to.equal(1000000)
+        expect(reading.powerAMilliwatt).to.equal(3830)
+        expect(reading.powerBMilliwatt).to.equal(0)
+        expect(reading.direction).to.equal('in_out')
+    })
 
 
 
@@ -267,14 +267,14 @@ describe('Reading', () => {
     1-0:96.50.0*6(003D381B2609F5400803010700009F80)\n\
     1-0:96.50.0*7(00)\n\
     !")
-        expect(reading.manufacturerName).to.equal('hager');
-        expect(reading.productName).to.equal('ehz');
-        expect(reading.meterSerialnumber).to.equal('1095100000053019');
-        expect(reading.energyAMilliwattHour).to.equal(16986200);
-        expect(reading.energyBMilliwattHour).to.equal(1574000);
-        expect(reading.powerAMilliwatt).to.equal(29000);
-        expect(reading.powerBMilliwatt).to.equal(0);
-        expect(reading.direction).to.equal('in_out');
-    });
+        expect(reading.manufacturerName).to.equal('hager')
+        expect(reading.productName).to.equal('ehz')
+        expect(reading.meterSerialnumber).to.equal('1095100000053019')
+        expect(reading.energyAMilliwattHour).to.equal(16986200)
+        expect(reading.energyBMilliwattHour).to.equal(1574000)
+        expect(reading.powerAMilliwatt).to.equal(29000)
+        expect(reading.powerBMilliwatt).to.equal(0)
+        expect(reading.direction).to.equal('in_out')
+    })
 
-});
+})
