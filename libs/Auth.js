@@ -1,9 +1,9 @@
-const Redis = require('redis');
-const config = require('config');
-const request = require('superagent');
+const Redis = require('redis')
+const config = require('config')
+const request = require('superagent')
 
-let host = 'https://app.buzzn.net';
-let redis = Redis.createClient(6379, config.get('redis.host'));
+let host = 'https://app.buzzn.net'
+let redis = Redis.createClient(6379, config.get('redis.host'))
 
 function Auth(host) {}
 
@@ -14,7 +14,7 @@ Auth.prototype.login = function(options, callback) {
                 callback(user)
             )
         } else {
-            callback(false);
+            callback(null)
         }
     })
 }
@@ -35,9 +35,9 @@ function getTokenWithPassword(options, callback) {
                 let token = JSON.stringify(res.body)
                 redis.set("token", token, (err, reply) =>
                     callback(token)
-                );
+                )
             }
-        });
+        })
 }
 
 function getTokenWithRefreshToken(callback) {
@@ -54,39 +54,39 @@ function getTokenWithRefreshToken(callback) {
                 })
                 .end(function(err, res) {
                     if (err || !res.ok) {
-                        console.error(err);
+                        console.error(err)
                     } else {
                         let token = JSON.stringify(res.body)
                         redis.set("token", token, function(err, reply) {
                             if (err) {
-                                console.error(err);
+                                console.error(err)
                             } else {
                                 callback(token)
                             }
-                        });
+                        })
                     }
-                });
+                })
         }
-    });
+    })
 }
 
 function getUser(callback) {
-    redis.get('token', (err, token) => {
+    redis.get('token', (err, record) => {
         if (err) {
             console.error(err)
         } else {
-            let _token = JSON.parse(token)
+            let token = JSON.parse(record)
             request
                 .get(host + '/api/v1/users/me')
-                .set('Authorization', 'Bearer ' + _token.access_token)
+                .set('Authorization', 'Bearer ' + token.access_token)
                 .end((err, res) => {
                     if (err || !res.ok) {
-                        console.error(err);
+                        console.error(err)
                     } else {
                         let user = JSON.stringify(res.body)
                         redis.set("user", user, (err, reply) => {
                             callback(user)
-                        });
+                        })
                     }
                 })
         }
@@ -94,20 +94,20 @@ function getUser(callback) {
 }
 
 Auth.prototype.logout = function(callback) {
-    var that = this;
+    var that = this
     var _redis = redis,
-        multi;
+        multi
     _redis.multi([
         ["del", "token"],
         ["del", "user"],
         ["del", "meter"],
     ]).exec((err, replies) => {
         callback(true)
-    });
+    })
 }
 
 Auth.prototype.getToken = function(callback) {
-    let that = this;
+    let that = this
     that.loggedIn((token) => {
         if (token) {
             callback(token)
@@ -122,21 +122,21 @@ Auth.prototype.getToken = function(callback) {
 Auth.prototype.loggedIn = function(callback) {
     redis.get('token', function(err, token) {
         if (err) {
-            console.error(err);
+            console.error(err)
         } else {
             if (token) {
                 let _token = JSON.parse(token)
                 if (new Date().getTime() < (_token.created_at + _token.expires_in) * 1000) {
-                    callback(token);
+                    callback(token)
                 } else {
-                    callback(false);
+                    callback(false)
                 }
             } else {
-                callback(false);
+                callback(false)
             }
         }
     })
 }
 
 
-module.exports = Auth;
+module.exports = Auth

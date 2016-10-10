@@ -15,7 +15,7 @@ function Worker(job, done) {
     let reading = new Reading(job.data.sml)
     let auth = new Auth()
     auth.loggedIn((res) => {
-        if (res && reading.valid) {
+        if (res && reading.valid()) {
             let token = JSON.parse(res)
             redis.get('meter', (err, record) => {
                 if (err) {
@@ -36,6 +36,7 @@ function Worker(job, done) {
                             })
                             .end((err, res) => {
                                 if (err || !res.ok) {
+                                    console.error(err);
                                     done(err);
                                 } else {
                                     done(null, res);
