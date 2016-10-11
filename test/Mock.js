@@ -1,5 +1,6 @@
 const nock = require('nock')
 const sinon = require('sinon')
+const Time = require('time');
 
 let accessToken = 'accessaccessaccessaccessaccessaccessaccessaccessaccess'
 let refreshToken = 'refreshrefreshrefreshrefreshrefreshrefreshrefreshrefresh'
@@ -9,10 +10,13 @@ let userId = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx'
 let email = 'ffaerber@gmail.com'
 let password = 'xxxxxxxx'
 let options = {}
+let date = new Time.Date(2016, 8, 20)
 
 function Mock(options) {
     options = options || {};
-    options.date = options.date || new Date(2016, 8, 20);
+
+    date.setTimezone('UTC')
+    options.date = options.date || date
     clock = sinon.useFakeTimers(options.date.getTime())
 }
 
@@ -22,7 +26,6 @@ Mock.prototype.oauthTokenViaPasswordInvalidGrant = function(options) {
         error: "invalid_grant",
         error_description: "The provided authorization grant is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client."
     }
-
     nock('https://app.buzzn.net')
         .post('/oauth/token', {
             grant_type: 'password',
@@ -45,7 +48,6 @@ Mock.prototype.oauthTokenViaPassword = function() {
         scope: 'smartmeter',
         created_at: new Date().getTime() / 1000
     }
-
     nock('https://app.buzzn.net')
         .post('/oauth/token', {
             grant_type: 'password',
@@ -67,7 +69,6 @@ Mock.prototype.oauthTokenViaRefreshToken = function() {
         scope: 'smartmeter',
         created_at: new Date().getTime() / 1000
     }
-
     nock('https://app.buzzn.net')
         .post('/oauth/token', {
             grant_type: 'refresh_token',
@@ -88,7 +89,6 @@ Mock.prototype.usersMe = function() {
             },
         }
     }
-
     nock('https://app.buzzn.net')
         .get('/api/v1/users/me')
         .reply(200, response)
@@ -104,7 +104,6 @@ Mock.prototype.userMetersEmpty = function() {
             total_pages: 1
         }
     }
-
     nock('https://app.buzzn.net')
         .get('/api/v1/users/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/meters')
         .query({
@@ -136,7 +135,6 @@ Mock.prototype.userMeters = function() {
             total_pages: 1
         }
     }
-
     nock('https://app.buzzn.net')
         .get('/api/v1/users/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/meters')
         .query({
@@ -165,7 +163,6 @@ Mock.prototype.createMeter = function() {
             }
         }
     }
-
     nock('https://app.buzzn.net')
         .post('/api/v1/meters', {
             manufacturer_name: 'easy_meter',
@@ -188,7 +185,6 @@ Mock.prototype.createExistingMeter = function() {
             "detail": "manufacturer_product_serialnumber ist bereits vergeben"
         }]
     }
-
     nock('https://app.buzzn.net')
         .post('/api/v1/meters', {
             manufacturer_name: 'easy_meter',
@@ -211,19 +207,18 @@ Mock.prototype.createReading = function() {
                 "self": "https://app.buzzn.net/api/v1/readings/rrrrrrrrrrrrrrrrrrrrrrrrr"
             },
             "attributes": {
-                "energy-a-milliwatt-hour": 640000,
-                "energy-b-milliwatt-hour": null,
-                "power-a-milliwatt": 2600,
-                "power-b-milliwatt": null,
-                "timestamp": "2016-09-20T00:00:00.000Z",
-                "meter-id": "mmmmmmmm-mmmm-mmmm-mmmm-mmmmmmmmmmmm"
+                "timestamp": date.toString(),
+                "meter_id": "mmmmmmmm-mmmm-mmmm-mmmm-mmmmmmmmmmmm",
+                "energy_a_milliwatt_hour": 640000,
+                "energy_b_milliwatt_hour": null,
+                "power_a_milliwatt": 2600,
+                "power_b_milliwatt": null
             }
         }
     }
-
     nock('https://app.buzzn.net')
         .post('/api/v1/readings', {
-            timestamp: '2016-09-19T22:00:00.000Z',
+            timestamp: date.toString(),
             meter_id: "mmmmmmmm-mmmm-mmmm-mmmm-mmmmmmmmmmmm",
             energy_a_milliwatt_hour: 640000,
             energy_b_milliwatt_hour: null,
@@ -244,4 +239,4 @@ Mock.prototype.cleanAll = function() {
 }
 
 
-module.exports = Mock
+module.exports = Mock = Mock
