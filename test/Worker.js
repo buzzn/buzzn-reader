@@ -29,7 +29,7 @@ describe('Worker', () => {
 
         auth = new Auth()
         setup = new Setup(rawSML)
-        mock = new Mock(new Date(2016, 8, 20))
+        mock = new Mock()
     })
 
     after(() => {

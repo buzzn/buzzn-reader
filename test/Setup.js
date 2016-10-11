@@ -11,7 +11,7 @@ describe('Setup', () => {
 
     before(() => {
         auth = new Auth()
-        mock = new Mock(new Date(2016, 8, 15))
+        mock = new Mock()
 
         rawSML =
             "\n\
@@ -45,40 +45,74 @@ describe('Setup', () => {
     })
 
 
-    it('does init Setup with loggedIn true and without meter', (done) => {
+
+    it('does init Setup with loggedIn true and created meter', (done) => {
         mock.oauthTokenViaPassword()
         mock.usersMe()
         mock.userMetersEmpty()
         let mockResponse = mock.createMeter()
-        mock.createReading()
 
         auth.login({
             username: 'ffaerber@gmail.com',
             password: 'xxxxxxxx'
         }, (response) => {
             setup = new Setup(rawSML)
-            setup.init((response) => {
-                expect(JSON.parse(response)).to.deep.equal(mockResponse.data)
-                done()
+            setup.init((error, response) => {
+                if (error) {
+                    console.error(error)
+                } else {
+                    expect(JSON.parse(response)).to.deep.equal(mockResponse.data)
+                    done()
+                }
+
             })
         })
     })
 
 
-    it('does init Setup with loggedIn true and with meter', (done) => {
+
+    it('does not init Setup with loggedIn true and foreign existing meter', (done) => {
         mock.oauthTokenViaPassword()
         mock.usersMe()
-        let mockResponse = mock.userMeters()
-        mock.createReading()
+        mock.userMetersEmpty()
+        let mockResponse = mock.createExistingMeter()
 
         auth.login({
             username: 'ffaerber@gmail.com',
             password: 'xxxxxxxx'
         }, (response) => {
             setup = new Setup(rawSML)
-            setup.init((response) => {
-                expect(JSON.parse(response)).to.deep.equal(mockResponse.data[0])
-                done()
+            setup.init((error, response) => {
+                if (error) {
+                    let firstError = mockResponse.errors[0] // really ugly
+                    expect(error.message).to.deep.equal(firstError.detail)
+                    done()
+                }
+            })
+        })
+    })
+
+
+    it('does init Setup with loggedIn true and with existing meter', (done) => {
+        mock.oauthTokenViaPassword()
+        mock.usersMe()
+        let mockResponse = mock.userMeters()
+            // mock.createReading()
+
+        auth.login({
+            username: 'ffaerber@gmail.com',
+            password: 'xxxxxxxx'
+        }, (response) => {
+            setup = new Setup(rawSML)
+            setup.init((error, response) => {
+                if (error) {
+                    console.error(error)
+                } else {
+                    expect(JSON.parse(response)).to.deep.equal(mockResponse.data[0])
+                    done()
+                }
+
+
             })
         })
     })

@@ -17,8 +17,12 @@ function Setup(rawSML) {
 Setup.prototype.init = function(callback) {
     auth.loggedIn((token) => {
         if (token) {
-            findOrCreateMeter((meter) => {
-                callback(meter)
+            findOrCreateMeter((error, meter) => {
+                if (error) {
+                    callback(error)
+                } else {
+                    callback(null, meter)
+                }
             })
         } else {
             callback(null)
@@ -28,21 +32,31 @@ Setup.prototype.init = function(callback) {
 
 
 function findOrCreateMeter(callback) {
-    findMeter((meter) => {
-        if (meter) {
-            callback(meter)
+    findMeter((error, meter) => {
+        if (error) {
+            if (error.message == 'no meter found') {
+                createMeter((error, meter) => {
+                    if (error) {
+                        callback(error)
+                    } else {
+                        callback(null, meter)
+                    }
+                })
+            } else {
+                callback(error)
+            }
+
         } else {
-            createMeter((meter) => {
-                callback(meter)
-            })
+            callback(null, meter)
         }
+
     })
 }
 
 function createMeter(callback) {
     redis.get('token', (err, record) => {
         if (err) {
-            console.error(err)
+            callback(new Error(err))
         } else {
             let token = JSON.parse(record)
             request
@@ -56,14 +70,15 @@ function createMeter(callback) {
                 })
                 .end(function(err, res) {
                     if (err || !res.ok) {
-                        console.error(err)
+                        let firstError = err.response.body.errors[0] // really ugly
+                        callback(new Error(firstError.detail))
                     } else {
                         let meter = JSON.stringify(res.body.data)
                         redis.set("meter", meter, function(err, reply) {
                             if (err) {
-                                console.error(err)
+                                callback(new Error(err))
                             } else {
-                                callback(meter)
+                                callback(null, meter)
                             }
                         })
                     }
@@ -87,19 +102,19 @@ function findMeter(callback) {
                 })
                 .end(function(err, res) {
                     if (err || !res.ok) {
-                        console.error(err)
+                        callback(new Error(err))
                     } else {
                         if (res.body.data.length > 0) {
                             let meter = JSON.stringify(res.body.data[0])
                             redis.set("meter", meter, function(err, reply) {
                                 if (err) {
-                                    console.error(err)
+                                    callback(new Error(err))
                                 } else {
-                                    callback(meter)
+                                    callback(null, meter)
                                 }
                             })
                         } else {
-                            callback(null) // no meter found
+                            callback(new Error('no meter found'))
                         }
 
                     }
