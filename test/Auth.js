@@ -12,7 +12,7 @@ describe('Auth', () => {
     var auth, mock
 
     before(() => {
-        mock = new Mock(new Date(2016, 8, 15))
+        mock = new Mock()
         auth = new Auth()
     })
 
@@ -51,7 +51,9 @@ describe('Auth', () => {
 
 
     it('does get a new token after two hours', (done) => {
-        mock = new Mock(new Date(2016, 8, 16, 2))
+        mock = new Mock({
+            date: new Date(2016, 8, 20, 2)
+        })
         let mockResponse = mock.oauthTokenViaRefreshToken()
 
         auth.getToken((response) => {

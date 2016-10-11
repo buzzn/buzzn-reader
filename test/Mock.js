@@ -8,14 +8,16 @@ let newRefreshToken = 'newrefreshnewrefreshnewrefreshnewrefreshnewrefreshnewrefr
 let userId = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx'
 let email = 'ffaerber@gmail.com'
 let password = 'xxxxxxxx'
+let options = {}
 
-
-function Mock(date) {
-    clock = sinon.useFakeTimers(date.getTime())
+function Mock(options) {
+    options = options || {};
+    options.date = options.date || new Date(2016, 8, 20);
+    clock = sinon.useFakeTimers(options.date.getTime())
 }
 
 
-Mock.prototype.oauthTokenViaPasswordInvalidGrant = function() {
+Mock.prototype.oauthTokenViaPasswordInvalidGrant = function(options) {
     let response = {
         error: "invalid_grant",
         error_description: "The provided authorization grant is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client."
@@ -172,6 +174,29 @@ Mock.prototype.createMeter = function() {
             smart: true
         })
         .reply(200, response)
+
+    return response
+}
+
+Mock.prototype.createExistingMeter = function() {
+    let response = {
+        "errors": [{
+            "source": {
+                "pointer": "/data/attributes/manufacturer_product_serialnumber"
+            },
+            "title": "Invalid Attribute",
+            "detail": "manufacturer_product_serialnumber ist bereits vergeben"
+        }]
+    }
+
+    nock('https://app.buzzn.net')
+        .post('/api/v1/meters', {
+            manufacturer_name: 'easy_meter',
+            manufacturer_product_name: '5q3',
+            manufacturer_product_serialnumber: '60327685',
+            smart: true
+        })
+        .reply(422, response)
 
     return response
 }
