@@ -215,7 +215,7 @@ Mock.prototype.createReading = function() {
                 "energy-b-milliwatt-hour": null,
                 "power-a-milliwatt": 2600,
                 "power-b-milliwatt": null,
-                "timestamp": "2016-09-12T20:00:00.000+02:00",
+                "timestamp": "2016-09-20T00:00:00.000Z",
                 "meter-id": "mmmmmmmm-mmmm-mmmm-mmmm-mmmmmmmmmmmm"
             }
         }
