@@ -46,11 +46,12 @@ describe('Setup', () => {
 
 
 
-    it('does init Setup with loggedIn true and created meter', (done) => {
+    it('does init Setup with loggedIn true and created meter and inMeteringPoint', (done) => {
         mock.oauthTokenViaPassword()
         mock.usersMe()
         mock.userMetersEmpty()
         let mockResponse = mock.createMeter()
+        mock.createMeteringPoint('in')
 
         auth.login({
             username: 'ffaerber@gmail.com',
@@ -97,7 +98,7 @@ describe('Setup', () => {
         mock.oauthTokenViaPassword()
         mock.usersMe()
         let mockResponse = mock.userMeters()
-            // mock.createReading()
+        mock.createReading()
 
         auth.login({
             username: 'ffaerber@gmail.com',

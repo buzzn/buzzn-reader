@@ -197,6 +197,36 @@ Mock.prototype.createExistingMeter = function() {
     return response
 }
 
+Mock.prototype.createMeteringPoint = function(mode) {
+    let id = mode + "mpmpmp-mpmp-mpmp-mpmp-mpmpmpmpmpmp"
+    let response = {
+        "data": {
+            "id": id,
+            "type": "metering-points",
+            "links": {
+                "self": "https://app.buzzn.net/api/v1/metering-points/" + id
+            },
+            "attributes": {
+                "uid": null,
+                "name": mode + "put",
+                "mode": "in",
+                "meter-id": "mmmmmmmm-mmmm-mmmm-mmmm-mmmmmmmmmmmm",
+                "readable": "friends"
+            }
+        }
+    }
+    nock('https://app.buzzn.net')
+        .post('/api/v1/metering-points', {
+            name: mode + 'put',
+            mode: mode,
+            meter_id: "mmmmmmmm-mmmm-mmmm-mmmm-mmmmmmmmmmmm",
+            readable: 'friends'
+        })
+        .reply(200, response)
+
+    return response
+}
+
 
 Mock.prototype.createReading = function() {
     let response = {

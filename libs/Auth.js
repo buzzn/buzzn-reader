@@ -83,7 +83,7 @@ function getUser(callback) {
                     if (err || !res.ok) {
                         console.error(err)
                     } else {
-                        let user = JSON.stringify(res.body)
+                        let user = JSON.stringify(res.body.data)
                         redis.set("user", user, (err, reply) => {
                             callback(user)
                         })
@@ -101,6 +101,8 @@ Auth.prototype.logout = function(callback) {
         ["del", "token"],
         ["del", "user"],
         ["del", "meter"],
+        ["del", "inMeteringPoint"],
+        ["del", "outMeteringPoint"],
     ]).exec((err, replies) => {
         callback(true)
     })

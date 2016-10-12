@@ -39,12 +39,11 @@ describe('Auth', () => {
     it('does login with correct username and password', (done) => {
         mock.oauthTokenViaPassword()
         let mockResponse = mock.usersMe()
-
         auth.login({
             username: 'ffaerber@gmail.com',
             password: 'xxxxxxxx'
         }, (status) => {
-            expect(JSON.parse(status)).to.deep.equal(mockResponse)
+            expect(JSON.parse(status)).to.deep.equal(mockResponse.data)
             done()
         })
     })
@@ -55,7 +54,6 @@ describe('Auth', () => {
             date: new Date(2016, 8, 20, 2)
         })
         let mockResponse = mock.oauthTokenViaRefreshToken()
-
         auth.getToken((response) => {
             expect(JSON.parse(response)).to.deep.equal(mockResponse)
             done()
