@@ -7,7 +7,7 @@ let refreshToken = 'refreshrefreshrefreshrefreshrefreshrefreshrefreshrefresh'
 let newAccessToken = 'newaccessnewaccessnewaccessnewaccessnewaccessnewaccess'
 let newRefreshToken = 'newrefreshnewrefreshnewrefreshnewrefreshnewrefreshnewrefresh'
 let userId = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx'
-let email = 'ffaerber@gmail.com'
+let username = 'user@email.com'
 let password = 'xxxxxxxx'
 let options = {}
 let date = new Time.Date(2016, 8, 20)
@@ -29,7 +29,7 @@ Mock.prototype.oauthTokenViaPasswordInvalidGrant = function(options) {
     nock('https://app.buzzn.net')
         .post('/oauth/token', {
             grant_type: 'password',
-            username: email,
+            username: username,
             password: password,
             scope: 'smartmeter',
         })
@@ -51,7 +51,7 @@ Mock.prototype.oauthTokenViaPassword = function() {
     nock('https://app.buzzn.net')
         .post('/oauth/token', {
             grant_type: 'password',
-            username: email,
+            username: username,
             password: password,
             scope: 'smartmeter',
         })

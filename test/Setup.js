@@ -5,6 +5,8 @@ const Mock = require('./Mock')
 const chai = require('chai')
 var expect = chai.expect
 
+let username = 'user@email.com'
+let password = 'xxxxxxxx'
 
 describe('Setup', () => {
     var auth, setup, mock, rawSML
@@ -54,8 +56,8 @@ describe('Setup', () => {
         mock.createMeteringPoint('in')
 
         auth.login({
-            username: 'ffaerber@gmail.com',
-            password: 'xxxxxxxx'
+            username: username,
+            password: password
         }, (response) => {
             setup = new Setup(rawSML)
             setup.init((error, response) => {
@@ -79,8 +81,8 @@ describe('Setup', () => {
         let mockResponse = mock.createExistingMeter()
 
         auth.login({
-            username: 'ffaerber@gmail.com',
-            password: 'xxxxxxxx'
+            username: username,
+            password: password
         }, (response) => {
             setup = new Setup(rawSML)
             setup.init((error, response) => {
@@ -101,8 +103,8 @@ describe('Setup', () => {
         mock.createReading()
 
         auth.login({
-            username: 'ffaerber@gmail.com',
-            password: 'xxxxxxxx'
+            username: username,
+            password: password
         }, (response) => {
             setup = new Setup(rawSML)
             setup.init((error, response) => {

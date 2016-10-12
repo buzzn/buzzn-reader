@@ -8,6 +8,9 @@ const expect = chai.expect
 const queue = require('kue').createQueue()
 const _ = require('lodash')
 
+let username = 'user@email.com'
+let password = 'xxxxxxxx'
+
 describe('Worker', () => {
     let auth, setup, mock, rawSML
 
@@ -66,8 +69,8 @@ describe('Worker', () => {
         mock.usersMe()
 
         auth.login({
-            username: 'ffaerber@gmail.com',
-            password: 'xxxxxxxx'
+            username: username,
+            password: password
         }, (response) => {
             queue.createJob('sml', {
                 sml: rawSML
@@ -93,8 +96,8 @@ describe('Worker', () => {
         let mockResponse = mock.createReading()
 
         auth.login({
-            username: 'ffaerber@gmail.com',
-            password: 'xxxxxxxx'
+            username: username,
+            password: password
         }, (response) => {
 
             setup.init((meter) => {

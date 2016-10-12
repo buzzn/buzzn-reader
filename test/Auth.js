@@ -8,6 +8,9 @@ var expect = chai.expect
 const Redis = require('redis')
 let redis = Redis.createClient(6379, config.get('redis.host'))
 
+let username = 'user@email.com'
+let password = 'xxxxxxxx'
+
 describe('Auth', () => {
     var auth, mock
 
@@ -26,8 +29,8 @@ describe('Auth', () => {
         let mockResponse = mock.oauthTokenViaPasswordInvalidGrant()
 
         auth.login({
-            username: 'ffaerber@gmail.com',
-            password: 'xxxxxxxx'
+            username: username,
+            password: password
         }, (response) => {
             // TODO remove null and use mockResponse
             expect(response).to.equal(null)
@@ -40,8 +43,8 @@ describe('Auth', () => {
         mock.oauthTokenViaPassword()
         let mockResponse = mock.usersMe()
         auth.login({
-            username: 'ffaerber@gmail.com',
-            password: 'xxxxxxxx'
+            username: username,
+            password: password
         }, (status) => {
             expect(JSON.parse(status)).to.deep.equal(mockResponse.data)
             done()
