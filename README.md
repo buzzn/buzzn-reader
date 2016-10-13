@@ -30,6 +30,12 @@
   - Run the tests, ensuring they all pass
   - Submit a Pull Request using Github
 
+## debugging on RaspberryPi
+  - docker run --privileged  d0reader_serialport
+  - docker run --privileged -it d0reader_serialport | start
+  - docker rm $(docker ps -a -q) | Remove all Container
+  - docker rmi $(docker images -a -q) | Remove all Images
+
 ## Release
   - Download, unzip and Flash [Hypriot OS](https://downloads.hypriot.com/hypriotos-rpi-v1.0.0.img.zip)
   - open SDCard on your Workstation and open device-init.yaml
@@ -63,8 +69,7 @@
 ## Troubleshooting on RasPI
   - Does the RasPI start properly? ...
   - Is the IR measuring Head well connected?
-  - docker rm $(docker ps -a -q) | Remove all Container
-  - docker rmi $(docker images -a -q) | Remove all Images
+
 
 ## Extra Infos
   - [microSD Card Benchmarks](http://www.pidramble.com/wiki/benchmarks/microsd-cards)

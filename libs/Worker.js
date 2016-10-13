@@ -45,7 +45,15 @@ function Worker(job, done) {
                                 }
                             });
                     } else {
-                        done('noSetup');
+                        done('noSetup. initSetup...')
+                        let setup = new Setup(rawSML)
+                        setup.init((error, response) => {
+                            if (error) {
+                                done(error)
+                            } else {
+                                done(null, response);
+                            }
+                        })
                     }
                 }
             });
