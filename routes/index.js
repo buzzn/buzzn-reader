@@ -3,14 +3,16 @@ var router = express.Router();
 var Auth = require('../libs/Auth');
 
 router.get('/', function(req, res, next) {
-  var auth = new Auth();
-  auth.loggedIn(function(token){
-    if(token){
-      res.render('index', { title: 'loggedIn' });
-    }else{
-      res.redirect('auth/new');
-    }
-  })
+    var auth = new Auth();
+    auth.loggedIn((error, token) => {
+        if (error) {
+            res.redirect('auth/new');
+        } else {
+            res.render('index', {
+                title: 'loggedIn'
+            });
+        }
+    })
 });
 
-module.exports = router;
+module.exports = router;;

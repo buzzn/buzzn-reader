@@ -13,11 +13,12 @@ router.post('/login', function(req, res) {
         username: req.body.username,
         password: req.body.password
     };
-    auth.login(options, function(response) {
-        if (response) {
-            res.redirect('/');
-        } else {
+    auth.login(options, (error, response) => {
+        if (error) {
             res.redirect('new');
+        } else {
+            res.redirect('/');
+
         }
     })
 });
