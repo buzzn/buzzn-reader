@@ -21,8 +21,16 @@
   - [kue](https://github.com/Automattic/kue). background worker for sending readings.
   - [serialport](https://github.com/EmergingTechnologyAdvisors/node-serialport). reads incoming SMLs from the usb d0-head and send it to kue.
 
+## Development on your Workstation
+  - Fork the repository on Github
+  - Create a named feature branch (like add_component_x)
+  - git checkout add_component_x
+  - Write you changes
+  - Write tests for your changes
+  - Run the tests, ensuring they all pass
+  - Submit a Pull Request using Github
 
-## Setup
+## Release
   - Download, unzip and Flash [Hypriot OS](https://downloads.hypriot.com/hypriotos-rpi-v1.0.0.img.zip)
   - open SDCard on your Workstation and open device-init.yaml
   - change hostname to d0reader
@@ -31,27 +39,9 @@
   - start and log into RaspberryPi via ssh pirate@d0reader.local (password is hypriot)
   - git clone https://github.com/buzzn/d0-reader.git
   - cd d0-reader
-  - continue with step 'Development' or 'Release'
-
-## Development
-  - Fork the repository on Github
-  - Create a named feature branch (like add_component_x)
-  - git checkout add_component_x
-  - docker-compose build base
-  - docker-compose up
-  - Write you changes
-  - Write tests for your change (if applicable)
-  - Run the tests, ensuring they all pass
-  - Submit a Pull Request using Github
-
-## Release
-  - docker rm $(docker ps -a -q) | Remove all Container
-  - docker rmi $(docker images -a -q) | Remove all Images
   - docker-compose build base | Build Base Image
   - docker-compose up -d | StartUp all container as daemons
-
-## Deploy
-  - Insert SD Card to Clone/Release
+  - logout and move SDCard from RaspberryPi to your Workstation  
   - diskutil list | Locate SD Card
   - diskutil unmountDisk /dev/disk3 | Unmount the SD Card
   - sudo dd if=/dev/disk3 of=./images/d0-reader-v1.img | Create Image from SD Card
@@ -73,6 +63,8 @@
 ## Troubleshooting on RasPI
   - Does the RasPI start properly? ...
   - Is the IR measuring Head well connected?
+  - docker rm $(docker ps -a -q) | Remove all Container
+  - docker rmi $(docker images -a -q) | Remove all Images
 
 ## Extra Infos
   - [microSD Card Benchmarks](http://www.pidramble.com/wiki/benchmarks/microsd-cards)
