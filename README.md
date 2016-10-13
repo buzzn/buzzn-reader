@@ -29,12 +29,10 @@
   - Write tests for your changes
   - Run the tests, ensuring they all pass
   - Submit a Pull Request using Github
-
-## debugging on RaspberryPi
-  - docker run --privileged  d0reader_serialport
-  - docker run --privileged -it d0reader_serialport | start
-  - docker rm $(docker ps -a -q) | Remove all Container
-  - docker rmi $(docker images -a -q) | Remove all Images
+  ## debugging on RaspberryPi
+    - docker rm $(docker ps -a -q) | Remove all Container
+    - docker rmi $(docker images -a -q) | Remove all Images
+    - docker volume rm $(docker volume ls) | Remove all volumes
 
 ## Release
   - Download, unzip and Flash [Hypriot OS](https://downloads.hypriot.com/hypriotos-rpi-v1.0.0.img.zip)
@@ -45,7 +43,6 @@
   - start and log into RaspberryPi via ssh pirate@d0reader.local (password is hypriot)
   - git clone https://github.com/buzzn/d0-reader.git
   - cd d0-reader
-  - docker-compose build base | Build Base Image
   - docker-compose up -d | StartUp all container as daemons
   - logout and move SDCard from RaspberryPi to your Workstation  
   - diskutil list | Locate SD Card
@@ -69,6 +66,7 @@
 ## Troubleshooting on RasPI
   - Does the RasPI start properly? ...
   - Is the IR measuring Head well connected?
+
 
 
 ## Extra Infos
