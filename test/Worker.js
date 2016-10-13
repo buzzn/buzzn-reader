@@ -64,29 +64,6 @@ describe('Worker', () => {
     })
 
 
-    it('does dont send Reading if meter is not Setup', (done) => {
-        mock.oauthTokenViaPassword()
-        mock.usersMe()
-
-        auth.login({
-            username: username,
-            password: password
-        }, (response) => {
-            queue.createJob('sml', {
-                sml: rawSML
-            }).save()
-            let job = _.last(queue.testMode.jobs)
-            queue.process('sml', (job, done) => {
-                new Worker(job, done)
-            })
-
-            job.on('failed', (errorMessage) => {
-                expect(errorMessage).to.equal('noSetup')
-                done()
-            })
-        })
-    })
-
     it('does send Reading if meter is loggedIn and Setup', (done) => {
         mock.oauthTokenViaPassword()
         mock.usersMe()

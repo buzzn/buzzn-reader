@@ -47,7 +47,7 @@ function Worker(job, done) {
                             });
                     } else {
                         done('noSetup. initSetup...')
-                        let setup = new Setup(rawSML)
+                        let setup = new Setup(job.data.sml)
                         setup.init((error, response) => {
                             if (error) {
                                 done(error)
