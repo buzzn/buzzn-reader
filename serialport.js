@@ -1,16 +1,14 @@
-const config = require('config')
+// const config = require('config')
 const SerialPort = require('serialport')
-const Kue = require('kue')
 
-let jobs = Kue.createQueue({
-    redis: {
-        host: config.get('redis.host')
-    }
-})
+// const Kue = require('kue')
+// let jobs = Kue.createQueue({
+//     redis: {
+//         host: config.get('redis.host')
+//     }
+// })
 
-let port = new SerialPort('/dev/ttyUSB0', {
-    databits: 8
-})
+let port = new SerialPort('/dev/ttyUSB0')
 
 let ReadLine = SerialPort.parsers.ReadLine;
 let parser = port.pipe(ReadLine({
