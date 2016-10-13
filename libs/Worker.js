@@ -1,6 +1,7 @@
 const config = require('config');
 const request = require('superagent');
 const Auth = require('./Auth');
+const Setup = require('./Setup');
 const Reading = require('./Reading');
 const Time = require('time');
 const Redis = require('redis');
