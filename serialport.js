@@ -22,5 +22,7 @@ let parser = port.pipe(readLine({
 parser.on('data', function(data) {
     jobs.create('sml', {
         sml: data
+    }).attempts(5).backoff({
+        type: 'exponential'
     }).removeOnComplete(true).save()
 })
