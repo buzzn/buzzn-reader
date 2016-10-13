@@ -40,7 +40,7 @@ function findOrCreateMeter(callback) {
                     if (error) {
                         callback(error)
                     } else {
-                        async.series([
+                        async.parallel([
                             function(callback) {
                                 if (reading.direction == 'in' || reading.direction == 'in_out') {
                                     createMeteringPoint('in', (error, meteringPoint) => {
