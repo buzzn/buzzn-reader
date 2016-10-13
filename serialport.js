@@ -18,7 +18,8 @@ let parser = port.pipe(ReadLine({
 }))
 
 parser.on('data', function(data) {
-    jobs.create('sml', {
-        sml: data
-    }).removeOnComplete(true).save()
+    console.log(data);
+    // jobs.create('sml', {
+    //     sml: data
+    // }).removeOnComplete(true).save()
 })
