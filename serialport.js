@@ -9,7 +9,7 @@ let jobs = Kue.createQueue({
 })
 
 let port = new SerialPort('/dev/ttyUSB0', {
-    databits: 7
+    databits: 8
 })
 
 let ReadLine = SerialPort.parsers.ReadLine;
