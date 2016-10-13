@@ -40,9 +40,13 @@ describe('Setup', () => {
 
     it('does not init Setup with loggedIn false', (done) => {
         setup = new Setup(rawSML)
-        setup.init((response) => {
-            expect(response).to.equal(null)
-            done()
+        setup.init((error, response) => {
+            if (error) {
+                expect(error.message).to.equal('noAuth')
+                done()
+            } else {
+                console.log(response);
+            }
         })
     })
 
@@ -58,17 +62,21 @@ describe('Setup', () => {
         auth.login({
             username: username,
             password: password
-        }, (response) => {
-            setup = new Setup(rawSML)
-            setup.init((error, response) => {
-                if (error) {
-                    console.error(error)
-                } else {
-                    expect(JSON.parse(response)).to.deep.equal(mockResponse.data)
-                    done()
-                }
+        }, (error, response) => {
+            if (error) {
+                console.error(error);
+            } else {
+                setup = new Setup(rawSML)
+                setup.init((error, response) => {
+                    if (error) {
+                        console.error(error)
+                    } else {
+                        expect(JSON.parse(response)).to.deep.equal(mockResponse.data)
+                        done()
+                    }
+                })
+            }
 
-            })
         })
     })
 
@@ -83,15 +91,19 @@ describe('Setup', () => {
         auth.login({
             username: username,
             password: password
-        }, (response) => {
-            setup = new Setup(rawSML)
-            setup.init((error, response) => {
-                if (error) {
-                    let firstError = mockResponse.errors[0] // really ugly
-                    expect(error.message).to.deep.equal(firstError.detail)
-                    done()
-                }
-            })
+        }, (error, response) => {
+            if (error) {
+                console.error(error)
+            } else {
+                setup = new Setup(rawSML)
+                setup.init((error, response) => {
+                    if (error) {
+                        let firstError = mockResponse.errors[0] // really ugly
+                        expect(error.message).to.deep.equal(firstError.detail)
+                        done()
+                    }
+                })
+            }
         })
     })
 

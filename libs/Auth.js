@@ -23,6 +23,43 @@ Auth.prototype.login = function(options, callback) {
     })
 }
 
+Auth.prototype.getToken = function(callback) {
+    let that = this
+    that.loggedIn((error, token) => {
+        if (error) {
+            getTokenWithRefreshToken((error, token) => {
+                if (error) {
+                    callback(error)
+                } else {
+                    callback(null, token)
+                }
+            })
+        } else {
+            callback(null, token)
+        }
+    })
+}
+
+
+Auth.prototype.loggedIn = function(callback) {
+    redis.get('token', (error, record) => {
+        if (error) {
+            callback(error)
+        } else {
+            let token = JSON.parse(record)
+            if (token) {
+                if (new Date().getTime() < (token.created_at + token.expires_in) * 1000) {
+                    callback(null, token)
+                } else {
+                    callback(new Error('token_expired'))
+                }
+            } else {
+                callback(new Error('noAuth'))
+            }
+        }
+    })
+}
+
 function getTokenWithPassword(options, callback) {
     request
         .post(host + '/oauth/token')
@@ -124,41 +161,7 @@ Auth.prototype.logout = function(callback) {
     })
 }
 
-Auth.prototype.getToken = function(callback) {
-    let that = this
-    that.loggedIn((error, token) => {
-        if (error) {
-            getTokenWithRefreshToken((error, token) => {
-                if (error) {
-                    callback(error)
-                } else {
-                    callback(null, token)
-                }
-            })
-        } else {
-            callback(null, token)
-        }
-    })
-}
 
-Auth.prototype.loggedIn = function(callback) {
-    redis.get('token', (error, token) => {
-        if (error) {
-            callback(error)
-        } else {
-            if (token) {
-                let _token = JSON.parse(token)
-                if (new Date().getTime() < (_token.created_at + _token.expires_in) * 1000) {
-                    callback(token)
-                } else {
-                    callback(new Error('token_expired'))
-                }
-            } else {
-                callback(false)
-            }
-        }
-    })
-}
 
 
 module.exports = Auth

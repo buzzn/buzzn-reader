@@ -59,6 +59,25 @@ describe('Auth', () => {
     })
 
 
+    it('does get currect token', (done) => {
+        redis.get('token', (error, record) => {
+            if (error) {
+                console.error(error);
+            } else {
+                let token = JSON.parse(record)
+                auth.getToken((error, response) => {
+                    if (error) {
+                        console.error(error);
+                    } else {
+                        expect(response).to.deep.equal(token)
+                        done()
+                    }
+                })
+            }
+        })
+    })
+
+
     it('does get a new token after two hours', (done) => {
         mock = new Mock({
             date: new Date(2016, 8, 20, 2)

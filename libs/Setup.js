@@ -16,8 +16,10 @@ function Setup(rawSML) {
 }
 
 Setup.prototype.init = function(callback) {
-    auth.loggedIn((token) => {
-        if (token) {
+    auth.loggedIn((error, token) => {
+        if (error) {
+            callback(error)
+        } else {
             findOrCreateMeter((error, meter) => {
                 if (error) {
                     callback(error)
@@ -25,8 +27,6 @@ Setup.prototype.init = function(callback) {
                     callback(null, meter)
                 }
             })
-        } else {
-            callback(null)
         }
     })
 }
@@ -121,9 +121,9 @@ function createMeter(callback) {
 }
 
 function findMeter(callback) {
-    redis.mget(['user', 'token'], function(err, reply) {
-        if (err) {
-            console.error(err)
+    redis.mget(['user', 'token'], function(error, reply) {
+        if (error) {
+            console.error(error)
         } else {
             let user = JSON.parse(reply[0])
             let token = JSON.parse(reply[1])
