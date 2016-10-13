@@ -29,10 +29,12 @@
   - Write tests for your changes
   - Run the tests, ensuring they all pass
   - Submit a Pull Request using Github
-  ## debugging on RaspberryPi
-    - docker rm $(docker ps -a -q) | Remove all Container
-    - docker rmi $(docker images -a -q) | Remove all Images
-    - docker volume rm $(docker volume ls) | Remove all volumes
+
+## debugging on RaspberryPi
+  - docker-compose up --build | rebuild all images
+  - docker rm $(docker ps -a -q) | Remove all Container
+  - docker rmi $(docker images -a -q) | Remove all Images
+  - docker volume rm $(docker volume ls) | Remove all volumes
 
 ## Release
   - Download, unzip and Flash [Hypriot OS](https://downloads.hypriot.com/hypriotos-rpi-v1.0.0.img.zip)

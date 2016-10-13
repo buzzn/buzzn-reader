@@ -31,10 +31,13 @@ describe('Auth', () => {
         auth.login({
             username: username,
             password: password
-        }, (response) => {
-            // TODO remove null and use mockResponse
-            expect(response).to.equal(null)
-            done()
+        }, (error, response) => {
+            if (error) {
+                expect(error).to.deep.equal(mockResponse)
+                done()
+            } else {
+                console.log(response);
+            }
         })
     })
 
@@ -45,9 +48,13 @@ describe('Auth', () => {
         auth.login({
             username: username,
             password: password
-        }, (status) => {
-            expect(JSON.parse(status)).to.deep.equal(mockResponse.data)
-            done()
+        }, (error, response) => {
+            if (error) {
+                console.error(error);
+            } else {
+                expect(JSON.parse(response)).to.deep.equal(mockResponse.data)
+                done()
+            }
         })
     })
 
@@ -57,9 +64,13 @@ describe('Auth', () => {
             date: new Date(2016, 8, 20, 2)
         })
         let mockResponse = mock.oauthTokenViaRefreshToken()
-        auth.getToken((response) => {
-            expect(JSON.parse(response)).to.deep.equal(mockResponse)
-            done()
+        auth.getToken((error, response) => {
+            if (error) {
+                console.error(error);
+            } else {
+                expect(JSON.parse(response)).to.deep.equal(mockResponse)
+                done()
+            }
         })
     })
 

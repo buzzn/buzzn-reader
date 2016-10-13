@@ -8,13 +8,17 @@ let redis = Redis.createClient(6379, config.get('redis.host'))
 function Auth(host) {}
 
 Auth.prototype.login = function(options, callback) {
-    getTokenWithPassword(options, (token) => {
-        if (token) {
-            getUser((user) =>
-                callback(user)
-            )
+    getTokenWithPassword(options, (error, token) => {
+        if (error) {
+            callback(error)
         } else {
-            callback(null)
+            getUser((error, user) => {
+                if (error) {
+                    callback(error)
+                } else {
+                    callback(null, user)
+                }
+            })
         }
     })
 }
@@ -30,20 +34,21 @@ function getTokenWithPassword(options, callback) {
         })
         .end((err, res) => {
             if (err || !res.ok) {
-                callback(err.body)
+                callback(res.body)
             } else {
                 let token = JSON.stringify(res.body)
                 redis.set("token", token, (err, reply) =>
-                    callback(token)
+                    callback(null, token)
                 )
             }
         })
 }
 
 function getTokenWithRefreshToken(callback) {
-    redis.get('token', (err, token) => {
-        if (err) {
+    redis.get('token', (error, token) => {
+        if (error) {
             console.error(err)
+            callback(new Error(error))
         } else {
             let _token = JSON.parse(token)
             request
@@ -55,13 +60,15 @@ function getTokenWithRefreshToken(callback) {
                 .end(function(err, res) {
                     if (err || !res.ok) {
                         console.error(err)
+                        callback(new Error(err))
                     } else {
                         let token = JSON.stringify(res.body)
                         redis.set("token", token, function(err, reply) {
                             if (err) {
                                 console.error(err)
+                                callback(new Error(err))
                             } else {
-                                callback(token)
+                                callback(null, token)
                             }
                         })
                     }
@@ -71,24 +78,29 @@ function getTokenWithRefreshToken(callback) {
 }
 
 function getUser(callback) {
-    redis.get('token', (err, record) => {
-        if (err) {
-            console.error(err)
+    redis.get('token', (error, record) => {
+        if (error) {
+            callback(error)
         } else {
             let token = JSON.parse(record)
-            request
-                .get(host + '/api/v1/users/me')
-                .set('Authorization', 'Bearer ' + token.access_token)
-                .end((err, res) => {
-                    if (err || !res.ok) {
-                        console.error(err)
-                    } else {
-                        let user = JSON.stringify(res.body.data)
-                        redis.set("user", user, (err, reply) => {
-                            callback(user)
-                        })
-                    }
-                })
+            if (token) {
+                request
+                    .get(host + '/api/v1/users/me')
+                    .set('Authorization', 'Bearer ' + token.access_token)
+                    .end((err, res) => {
+                        if (err || !res.ok) {
+                            console.error(err)
+                            callback(new Error(err))
+                        } else {
+                            let user = JSON.stringify(res.body.data)
+                            redis.set("user", user, (err, reply) => {
+                                callback(null, user)
+                            })
+                        }
+                    })
+            } else {
+                callback(false)
+            }
         }
     })
 }
@@ -103,35 +115,43 @@ Auth.prototype.logout = function(callback) {
         ["del", "meter"],
         ["del", "inMeteringPoint"],
         ["del", "outMeteringPoint"],
-    ]).exec((err, replies) => {
-        callback(true)
+    ]).exec((error, replies) => {
+        if (error) {
+            callback(error)
+        } else {
+            callback(null, replies)
+        }
     })
 }
 
 Auth.prototype.getToken = function(callback) {
     let that = this
-    that.loggedIn((token) => {
-        if (token) {
-            callback(token)
-        } else {
-            getTokenWithRefreshToken(function(token) {
-                callback(token)
+    that.loggedIn((error, token) => {
+        if (error) {
+            getTokenWithRefreshToken((error, token) => {
+                if (error) {
+                    callback(error)
+                } else {
+                    callback(null, token)
+                }
             })
+        } else {
+            callback(null, token)
         }
     })
 }
 
 Auth.prototype.loggedIn = function(callback) {
-    redis.get('token', function(err, token) {
-        if (err) {
-            console.error(err)
+    redis.get('token', (error, token) => {
+        if (error) {
+            callback(error)
         } else {
             if (token) {
                 let _token = JSON.parse(token)
                 if (new Date().getTime() < (_token.created_at + _token.expires_in) * 1000) {
                     callback(token)
                 } else {
-                    callback(false)
+                    callback(new Error('token_expired'))
                 }
             } else {
                 callback(false)
