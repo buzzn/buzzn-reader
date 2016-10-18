@@ -20,7 +20,7 @@ describe('Auth', () => {
     })
 
     after(() => {
-        auth.logout(() => {
+        auth.reset(() => {
             mock.cleanAll()
         })
     })
@@ -88,6 +88,19 @@ describe('Auth', () => {
                 console.error(error);
             } else {
                 expect(JSON.parse(response)).to.deep.equal(mockResponse)
+                done()
+            }
+        })
+    })
+
+
+    it('does logout and reset the meter', (done) => {
+        let mockResponse = mock.oauthRevoke()
+        auth.logout((error, response) => {
+            if (error) {
+                console.error(error)
+            } else {
+                expect(response).to.deep.equal(mockResponse)
                 done()
             }
         })

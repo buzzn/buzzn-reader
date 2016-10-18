@@ -23,6 +23,39 @@ Auth.prototype.login = function(options, callback) {
     })
 }
 
+Auth.prototype.logout = function(callback) {
+    let that = this
+    that.getToken((error, token) => {
+        if (error) {
+            callback(error)
+        } else {
+            request
+                .post(host + '/oauth/revoke')
+                .set('Authorization', 'Bearer ' + token.access_token)
+                .send({
+                    token: token.access_token,
+                })
+                .end(function(err, res) {
+                    if (err || !res.ok) {
+                        callback(new Error(err))
+                    } else {
+                        that.reset((error, status) => {
+                            if (error) {
+                                callback(new Error(err))
+                            } else {
+                                callback(null, res.body)
+                            }
+                        })
+                    }
+                })
+        }
+    })
+}
+
+
+
+
+
 Auth.prototype.getToken = function(callback) {
     let that = this
     that.loggedIn((error, token) => {
@@ -142,7 +175,7 @@ function getUser(callback) {
     })
 }
 
-Auth.prototype.logout = function(callback) {
+Auth.prototype.reset = function(callback) {
     var that = this
     var _redis = redis,
         multi
