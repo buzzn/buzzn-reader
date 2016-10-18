@@ -27,6 +27,8 @@ services:
       - '80:3000'
     links:
       - redis
+    environment:
+      - NODE_ENV=production
 
   kue:
     build:
@@ -35,6 +37,8 @@ services:
     restart: always
     links:
       - redis
+    environment:
+      - NODE_ENV=production
 
   serialport:
     build:
@@ -45,3 +49,5 @@ services:
       - redis
     devices:
       - '/dev/ttyUSB0'
+    environment:
+      - NODE_ENV=production

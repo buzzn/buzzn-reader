@@ -1,13 +1,28 @@
-var serialport = require('serialport');
-var SerialPort = serialport.SerialPort;
-var kue = require('kue');
-var queue = kue.createQueue({ redis: { host: 'redis' }});
+'use strict';
 
-var port = new SerialPort('/dev/ttyUSB0', {
-  databits: 7,
-  parser: serialport.parsers.readline('!')
-});
+const config = require('config')
+const SerialPort = require('serialport')
+const Kue = require('kue')
 
-port.on('data', function (data) {
-  queue.create('sml', { sml: data }).removeOnComplete( true ).save()
-});
+let jobs = Kue.createQueue({
+    redis: {
+        host: config.get('redis.host')
+    }
+})
+
+let port = new SerialPort('/dev/ttyUSB0', {
+    dataBits: 7
+})
+
+let readLine = SerialPort.parsers.ReadLine;
+let parser = port.pipe(readLine({
+    delimiter: '!'
+}))
+
+parser.on('data', function(data) {
+    jobs.create('sml', {
+        sml: data
+    }).attempts(5).backoff({
+        type: 'exponential'
+    }).removeOnComplete(true).save()
+})

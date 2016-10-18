@@ -1,5 +1,5 @@
 [![Stories in Ready](https://badge.waffle.io/buzzn/d0-reader.png?label=ready&title=Ready)](https://waffle.io/buzzn/d0-reader)
-[ ![Codeship Status for buzzn/d0-reader](https://codeship.io/projects/16833330-f9ad-0133-be69-0e6ed700efb9/status)](https://codeship.io/projects/151300)
+[![Codeship Status for buzzn/d0-reader](https://codeship.com/projects/16833330-f9ad-0133-be69-0e6ed700efb9/status)](https://codeship.com/projects/151300)
 
 
 # D0 Reader
@@ -12,8 +12,6 @@
   - [SanDisk microSD 16GB / 7,99 € ](http://www.amazon.de/dp/B013UDL5V6)
   - [D0-Head / 25 € ](http://wiki.volkszaehler.org/hardware/controllers/ir-schreib-lesekopf-usb-ausgang#stueckliste_und_preise)
   - [Optional Easymeter Adapter / 3€](http://wiki.volkszaehler.org/hardware/controllers/ir-schreib-lesekopf_easymeter-adapter)
-  - [Optional PowerBank / 9€](https://www.amazon.de/dp/B00MWU1GGI)
-  - [Optional LTE Hotspot / 44,90€](https://www.amazon.de/dp/B00HHREHQ2)
 
 ##### d0-reader app
   The d0-reader consists of following Software parts.
@@ -23,31 +21,32 @@
   - [kue](https://github.com/Automattic/kue). background worker for sending readings.
   - [serialport](https://github.com/EmergingTechnologyAdvisors/node-serialport). reads incoming SMLs from the usb d0-head and send it to kue.
 
+## Development on your Workstation
+  - Fork the repository on Github
+  - Create a named feature branch (like add_component_x)
+  - git checkout add_component_x
+  - Write you changes
+  - Write tests for your changes
+  - Run the tests, ensuring they all pass
+  - Submit a Pull Request using Github
 
-## Create D0ReaderOS
-  - Download, unzip and Flash [Hypriot OS](https://downloads.hypriot.com/hypriotos-rpi-v0.8.0.img.zip)
+## debugging on RaspberryPi
+  - docker-compose up --build | rebuild all images
+  - docker rm $(docker ps -a -q) | Remove all Container
+  - docker rmi $(docker images -a -q) | Remove all Images
+  - docker volume rm $(docker volume ls) | Remove all volumes
+
+## Release
+  - Download, unzip and Flash [Hypriot OS](https://downloads.hypriot.com/hypriotos-rpi-v1.0.0.img.zip)
   - open SDCard on your Workstation and open device-init.yaml
   - change hostname to d0reader
-  - comment out docker(line 3 to 6)
   - if you want to use WLAN set wifi interfaces.
   - save and put SDCard into RaspberryPi
   - start and log into RaspberryPi via ssh pirate@d0reader.local (password is hypriot)
   - git clone https://github.com/buzzn/d0-reader.git
   - cd d0-reader
-  - docker-compose build base
-  - docker-compose up -d
-  - continue with step 'Development' or 'Release'
-
-## Development
-  - Fork the repository on Github
-  - Create a named feature branch (like add_component_x)
-  - pull branch and Write you change
-  - Write tests for your change (if applicable)
-  - Run the tests, ensuring they all pass
-  - Submit a Pull Request using Github
-
-## Release
-  - Insert SD Card to Clone/Release
+  - docker-compose up -d | StartUp all container as daemons
+  - logout and move SDCard from RaspberryPi to your Workstation  
   - diskutil list | Locate SD Card
   - diskutil unmountDisk /dev/disk3 | Unmount the SD Card
   - sudo dd if=/dev/disk3 of=./images/d0-reader-v1.img | Create Image from SD Card
@@ -58,7 +57,7 @@
 ## Production
   - Download and Flash [D0ReaderOS](http://buzzn.s3.amazonaws.com/d0-reader-v1.img.zip)
   - Connect to RaspberryPi ethernet, D0-head, SD Card and Power.
-  - copy access_token from https://app.buzzn.net/access_tokens to http://d0reader.local and click save.
+  - open http://d0reader.local and login.
 
 ## Flash SDCard
   - diskutil list | Locate SD Card
@@ -69,10 +68,9 @@
 ## Troubleshooting on RasPI
   - Does the RasPI start properly? ...
   - Is the IR measuring Head well connected?
-  - TBD
-  - ...
+
+
 
 ## Extra Infos
   - [microSD Card Benchmarks](http://www.pidramble.com/wiki/benchmarks/microsd-cards)
-  - [Powerbank](http://smartphone-aufladen.de/blog/wissenswertes/welche-powerbank-eignet-sich-fuer-den-raspberry-pi)
   - [Docker on ARM](http://blog.hypriot.com/getting-started-with-docker-on-your-arm-device/)
