@@ -18,21 +18,20 @@ router.post('/login', function(req, res) {
             res.redirect('new');
         } else {
             res.redirect('/');
-
         }
     })
-});
+})
 
 router.get('/logout', function(req, res) {
     var auth = new Auth();
-    auth.logout(function(response) {
-        if (response) {
+    auth.logout((error, response) => {
+        if (error) {
             res.redirect('/');
         } else {
-            res.redirect('new');
+            res.redirect('/');
         }
     })
-});
+})
 
 
 module.exports = router;

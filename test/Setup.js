@@ -32,7 +32,7 @@ describe('Setup', () => {
 
 
     after(() => {
-        auth.logout(() => {
+        auth.reset(() => {
             mock.cleanAll()
         })
     })
@@ -126,8 +126,6 @@ describe('Setup', () => {
                     expect(JSON.parse(response)).to.deep.equal(mockResponse.data[0])
                     done()
                 }
-
-
             })
         })
     })

@@ -79,6 +79,19 @@ Mock.prototype.oauthTokenViaRefreshToken = function() {
 }
 
 
+Mock.prototype.oauthRevoke = function() {
+    let response = {}
+    nock('https://app.buzzn.net')
+        .post('/oauth/revoke', {
+            token: newAccessToken,
+        })
+        .reply(200, response)
+
+    return response
+}
+
+
+
 Mock.prototype.usersMe = function() {
     let response = {
         data: {
