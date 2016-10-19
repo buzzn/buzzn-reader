@@ -82,7 +82,8 @@ Auth.prototype.loggedIn = function(callback) {
             let token = JSON.parse(record)
             if (token) {
                 let expiresAt = (token.created_at + token.expires_in) * 1000
-                if (new Date().getTime() < expiresAt - (60 * 1000)) {
+                let beforeExpiresAt = expiresAt - (15 * 60 * 1000)
+                if (new Date().getTime() < beforeExpiresAt) {
                     callback(null, token)
                 } else {
                     callback(new Error('token_expired'))

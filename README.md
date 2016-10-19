@@ -31,10 +31,11 @@
   - Submit a Pull Request using Github
 
 ## debugging on RaspberryPi
+  - docker stop $(docker ps -a -q) | Stop all running Container
   - docker rm $(docker ps -a -q) | Remove all Container
   - docker rmi $(docker images -a -q) | Remove all Images
   - docker volume rm $(docker volume ls) | Remove all volumes
-  - docker-compose up --build | rebuild all images
+  - docker-compose up --build | rebuild images and start containers
 
 ## Release
   - Download, unzip and Flash [Hypriot OS](https://downloads.hypriot.com/hypriotos-rpi-v1.0.0.img.zip)
