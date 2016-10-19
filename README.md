@@ -30,7 +30,7 @@
   - Run the tests, ensuring they all pass
   - Submit a Pull Request using Github
 
-## debugging on RaspberryPi
+## Docker cheat sheet
   - docker stop $(docker ps -a -q) | Stop all running Container
   - docker rm $(docker ps -a -q) | Remove all Container
   - docker rmi $(docker images -a -q) | Remove all Images
