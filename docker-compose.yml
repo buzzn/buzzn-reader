@@ -16,13 +16,14 @@ services:
   base:
     build:
       context: .
+      restart: always
       dockerfile: Dockerfile.base
 
   web:
     build:
       context: .
       dockerfile: Dockerfile.web
-    restart: always
+
     ports:
       - '80:3000'
     links:
@@ -34,7 +35,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.kue
-    restart: always
     links:
       - redis
     environment:
@@ -44,7 +44,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.serialport
-    restart: always
     links:
       - redis
     devices:
