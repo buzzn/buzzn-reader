@@ -30,13 +30,6 @@
   - Run the tests, ensuring they all pass
   - Submit a Pull Request using Github
 
-## Docker cheat sheet
-  - docker stop $(docker ps -a -q) | Stop all running Container
-  - docker rm $(docker ps -a -q) | Remove all Container
-  - docker rmi $(docker images -a -q) | Remove all Images
-  - docker volume rm $(docker volume ls) | Remove all volumes
-  - docker-compose up --build | rebuild images and start containers
-
 ## Release
   - Download, unzip and Flash [Hypriot OS](https://downloads.hypriot.com/hypriotos-rpi-v1.0.0.img.zip)
   - open SDCard on your Workstation and open device-init.yaml
@@ -46,25 +39,33 @@
   - start and log into RaspberryPi via ssh pirate@d0reader.local (password is hypriot)
   - git clone https://github.com/buzzn/d0-reader.git
   - cd d0-reader
+  - remove the D0-head from the smartmeter to prevent storing SML in the que
   - docker-compose up -d | StartUp all container as daemons
   - logout and move SDCard from RaspberryPi to your Workstation  
   - diskutil list | Locate SD Card
   - diskutil unmountDisk /dev/disk3 | Unmount the SD Card
-  - sudo dd if=/dev/disk3 of=./images/d0-reader-v1.img | Create Image from SD Card
+  - sudo dd if=/dev/disk3 of=./images/d0-reader-v2.img | Create Image from SD Card
   - To see progress while it is running just type control-t
   - zip and upload image to aws s3
   - continue with step 'Production'
 
 ## Production
-  - Download and Flash [D0ReaderOS](http://buzzn.s3.amazonaws.com/d0-reader-v1.img.zip)
+  - Download and Flash [D0ReaderOS](http://buzzn-d0reader.s3.amazonaws.com/d0-reader-v2.img.zip)
   - Connect to RaspberryPi ethernet, D0-head, SD Card and Power.
   - open http://d0reader.local and login.
 
 ## Flash SDCard
   - diskutil list | Locate SD Card
   - diskutil unmountDisk /dev/disk3 | Unmount the SD Card
-  - sudo dd bs=1M if=~/Downloads/pi-image.img of=/dev/rdisk3 | Burn Image on SDCard
+  - sudo dd bs=1m if=~/Downloads/pi-image.img of=/dev/rdisk3 | Burn Image on SDCard
   - To see progress while it is running just type control-t
+
+## Docker cheat sheet
+  - docker stop $(docker ps -a -q) | Stop all running Container
+  - docker rm $(docker ps -a -q) | Remove all Container
+  - docker rmi $(docker images -a -q) | Remove all Images
+  - docker volume rm $(docker volume ls) | Remove all volumes
+  - docker-compose up --build | rebuild images and start containers
 
 ## Troubleshooting on RasPI
   - Does the RasPI start properly? ...
