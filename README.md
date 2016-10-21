@@ -1,5 +1,4 @@
-[![Stories in Ready](https://badge.waffle.io/buzzn/d0-reader.png?label=ready&title=Ready)](https://waffle.io/buzzn/d0-reader)
-[![Codeship Status for buzzn/d0-reader](https://codeship.com/projects/16833330-f9ad-0133-be69-0e6ed700efb9/status)](https://codeship.com/projects/151300)
+[![Codeship Status for buzzn/d0-reader](https://codeship.com/projects/70076ce0-60b0-0134-d9ea-1e1ec2b80fe8/status)](https://codeship.com/projects/174615)
 
 
 # D0 Reader
