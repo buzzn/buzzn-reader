@@ -12,11 +12,10 @@ function Sml(rawSml) {
 
 
 Sml.prototype.valueByObisId = function(obisId) {
-    if (Object.keys(this.sml).indexOf(obisId) >= 0) {
+    if (Object.keys(this.sml).indexOf(obisId) >= 0)
         return this.sml[obisId]
-    } else {
+    else
         return null
-    }
 }
 
 
@@ -34,7 +33,7 @@ Sml.prototype.energyMilliwattHour = function(obisIds, slice, multiply) {
             if (multiply) {
                 _energy = _energy * multiply
             }
-            _energy = Math.round(_energy)  // HACK javascript multiply problem
+            _energy = Math.round(_energy) // HACK javascript multiply problem
             energies.push(_energy)
         } else {
             energies.push(null)

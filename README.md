@@ -51,12 +51,12 @@
 ## Production
   - Download and Flash [D0ReaderOS](http://buzzn-d0reader.s3.amazonaws.com/d0-reader-v2.img.zip)
   - Connect to RaspberryPi ethernet, D0-head, SD Card and Power.
-  - open http://d0reader.local and login.
+  - open http://d0reader.local and login via your buzzn account
 
 ## Flash SDCard
   - diskutil list | Locate SD Card
   - diskutil unmountDisk /dev/disk3 | Unmount the SD Card
-  - sudo dd bs=1m if=~/Downloads/pi-image.img of=/dev/rdisk3 | Burn Image on SDCard
+  - sudo dd bs=1m if=~/Downloads/pi-image.img of=/dev/rdisk3 | Burn Image on SDCard (MacOS with bs=1m, linux with bs=1M)
   - To see progress while it is running just type control-t
 
 ## Docker cheat sheet
