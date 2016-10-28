@@ -49,7 +49,7 @@
   - continue with step 'Production'
 
 ## Production
-  - Download and Flash [D0ReaderOS](http://buzzn-d0reader.s3.amazonaws.com/d0-reader-v2.img.zip)
+  - Download and Flash [D0ReaderOS](http://buzzn-d0reader.s3.amazonaws.com/d0-reader-v2-1.img.zip)
   - Connect to RaspberryPi ethernet, D0-head, SD Card and Power.
   - open http://d0reader.local and login via your buzzn account
 
