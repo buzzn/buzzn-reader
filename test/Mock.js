@@ -210,14 +210,14 @@ Mock.prototype.createExistingMeter = function() {
     return response
 }
 
-Mock.prototype.createMeteringPoint = function(mode) {
+Mock.prototype.createRegister = function(mode) {
     let id = mode + "mpmpmp-mpmp-mpmp-mpmp-mpmpmpmpmpmp"
     let response = {
         "data": {
             "id": id,
-            "type": "metering-points",
+            "type": "registers",
             "links": {
-                "self": "https://app.buzzn.net/api/v1/metering-points/" + id
+                "self": "https://app.buzzn.net/api/v1/registers/" + id
             },
             "attributes": {
                 "uid": null,
@@ -229,7 +229,7 @@ Mock.prototype.createMeteringPoint = function(mode) {
         }
     }
     nock('https://app.buzzn.net')
-        .post('/api/v1/metering-points', {
+        .post('/api/v1/registers', {
             name: mode + 'put',
             mode: mode,
             meter_id: "mmmmmmmm-mmmm-mmmm-mmmm-mmmmmmmmmmmm",

@@ -69,7 +69,7 @@ describe('Worker', () => {
         mock.usersMe()
         mock.userMetersEmpty()
         mock.createMeter()
-        mock.createMeteringPoint('in')
+        mock.createRegister('in')
         let mockResponse = mock.createReading()
 
         auth.login({

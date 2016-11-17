@@ -43,11 +43,11 @@ function findOrCreateMeter(callback) {
                         async.parallel([
                             function(callback) {
                                 if (reading.direction == 'in' || reading.direction == 'in_out') {
-                                    createMeteringPoint('in', (error, meteringPoint) => {
+                                    createRegister('in', (error, register) => {
                                         if (error) {
                                             callback(new Error(error))
                                         } else {
-                                            callback(null, meteringPoint)
+                                            callback(null, register)
                                         }
                                     })
                                 } else {
@@ -56,11 +56,11 @@ function findOrCreateMeter(callback) {
                             },
                             function(callback) {
                                 if (reading.direction == 'out' || reading.direction == 'in_out') {
-                                    createMeteringPoint('out', (error, meteringPoint) => {
+                                    createRegister('out', (error, register) => {
                                         if (error) {
                                             callback(new Error(error))
                                         } else {
-                                            callback(null, meteringPoint)
+                                            callback(null, register)
                                         }
                                     })
                                 } else {
@@ -156,8 +156,8 @@ function findMeter(callback) {
     })
 }
 
-function findOrCreateMeteringPoint(callback) {
-    findMeteringPoint((error, meteringPoint) => {
+function findOrCreateRegister(callback) {
+    findRegister((error, register) => {
         if (error) {
             callback(error.message);
         } else {
@@ -166,7 +166,7 @@ function findOrCreateMeteringPoint(callback) {
     })
 }
 
-function createMeteringPoint(mode, callback) {
+function createRegister(mode, callback) {
     redis.mget(['token', 'meter'], function(err, reply) {
         if (err) {
             callback(new Error(err))
@@ -174,7 +174,7 @@ function createMeteringPoint(mode, callback) {
             let token = JSON.parse(reply[0])
             let meter = JSON.parse(reply[1])
             request
-                .post(host + '/api/v1/metering-points')
+                .post(host + '/api/v1/registers')
                 .set('Authorization', 'Bearer ' + token.access_token)
                 .send({
                     name: mode + 'put',
@@ -188,12 +188,12 @@ function createMeteringPoint(mode, callback) {
                         let firstError = err.response.body.errors[0] // really ugly
                         callback(new Error(firstError.detail))
                     } else {
-                        let meteringPoint = JSON.stringify(res.body.data)
-                        redis.set(mode + "MeteringPoint", meteringPoint, function(err, reply) {
+                        let register = JSON.stringify(res.body.data)
+                        redis.set(mode + "Register", register, function(err, reply) {
                             if (err) {
                                 callback(new Error(err))
                             } else {
-                                callback(null, meteringPoint)
+                                callback(null, register)
                             }
                         })
                     }
@@ -202,7 +202,7 @@ function createMeteringPoint(mode, callback) {
     })
 }
 
-function findMeteringPoint(mode, callback) {
+function findRegister(mode, callback) {
     redis.mget(['user', 'token', 'meter'], function(err, reply) {
         if (err) {
             console.error(err)
@@ -211,7 +211,7 @@ function findMeteringPoint(mode, callback) {
             let token = JSON.parse(reply[1])
             let meter = JSON.parse(reply[2])
             request
-                .get(host + '/api/v1/meters/' + meter.id + '/metering-points')
+                .get(host + '/api/v1/meters/' + meter.id + '/registers')
                 .set('Authorization', 'Bearer ' + token.access_token)
                 .query({
                     filter: mode

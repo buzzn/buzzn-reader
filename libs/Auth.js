@@ -185,8 +185,8 @@ Auth.prototype.reset = function(callback) {
         ["del", "token"],
         ["del", "user"],
         ["del", "meter"],
-        ["del", "inMeteringPoint"],
-        ["del", "outMeteringPoint"],
+        ["del", "inRegister"],
+        ["del", "outRegister"],
     ]).exec((error, replies) => {
         if (error) {
             callback(error)
