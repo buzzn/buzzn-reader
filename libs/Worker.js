@@ -4,15 +4,9 @@ const Auth = require('./Auth');
 const Setup = require('./Setup');
 const Reading = require('./Reading');
 const Time = require('time');
-const Redis = require('redis');
-let redis = Redis.createClient(6379, config.get('redis.host'));
 
-const Kue = require('kue');
-const queue = Kue.createQueue({
-    redis: {
-        host: config.get('redis.host')
-    }
-});
+const redis = require('./redis')
+const queue = require('./queue');
 
 function Worker(job, done) {
     let reading = new Reading(job.data.sml)
@@ -30,7 +24,7 @@ function Worker(job, done) {
                             done(error)
                         } else {
                             request
-                                .post('https://app.buzzn.net' + '/api/v1/readings')
+                                .post(config.get('buzzn.host') + '/api/v1/readings')
                                 .set('Authorization', 'Bearer ' + token.access_token)
                                 .send({
                                     timestamp: new Time.Date(parseInt(job.created_at), 'UTC').toString(),

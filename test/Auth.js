@@ -5,8 +5,7 @@ const Mock = require('./Mock')
 const chai = require('chai')
 var expect = chai.expect
 
-const Redis = require('redis')
-let redis = Redis.createClient(6379, config.get('redis.host'))
+const redis = require('../libs/redis')
 
 let username = 'user@email.com'
 let password = 'xxxxxxxx'

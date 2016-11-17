@@ -1,11 +1,8 @@
-const Redis = require('redis')
-const config = require('config')
+const config = require('config');
 const request = require('superagent')
+const redis = require('./redis')
 
-let host = 'https://app.buzzn.net'
-let redis = Redis.createClient(6379, config.get('redis.host'))
-
-function Auth(host) {}
+function Auth() {}
 
 Auth.prototype.login = function(options, callback) {
     getTokenWithPassword(options, (error, token) => {
@@ -30,7 +27,7 @@ Auth.prototype.logout = function(callback) {
             callback(error)
         } else {
             request
-                .post(host + '/oauth/revoke')
+                .post(config.get('buzzn.host') + '/oauth/revoke')
                 .set('Authorization', 'Bearer ' + token.access_token)
                 .send({
                     token: token.access_token,
@@ -97,7 +94,7 @@ Auth.prototype.loggedIn = function(callback) {
 
 function getTokenWithPassword(options, callback) {
     request
-        .post(host + '/oauth/token')
+        .post(config.get('buzzn.host') + '/oauth/token')
         .send({
             grant_type: 'password',
             username: options.username,
@@ -124,7 +121,7 @@ function getTokenWithRefreshToken(callback) {
         } else {
             let _token = JSON.parse(token)
             request
-                .post(host + '/oauth/token')
+                .post(config.get('buzzn.host') + '/oauth/token')
                 .send({
                     grant_type: 'refresh_token',
                     refresh_token: _token.refresh_token
@@ -157,7 +154,7 @@ function getUser(callback) {
             let token = JSON.parse(record)
             if (token) {
                 request
-                    .get(host + '/api/v1/users/me')
+                    .get(config.get('buzzn.host') + '/api/v1/users/me')
                     .set('Authorization', 'Bearer ' + token.access_token)
                     .end((err, res) => {
                         if (err || !res.ok) {

@@ -1,12 +1,10 @@
+const config = require('config');
 const request = require('superagent')
 const async = require('async')
-const Redis = require('redis')
-const config = require('config')
 const Auth = require('./Auth')
 const Reading = require('./Reading')
+const redis = require('./redis')
 
-const redis = Redis.createClient(6379, config.get('redis.host'))
-const host = 'https://app.buzzn.net'
 const auth = new Auth()
 
 let reading, accessToken
@@ -93,7 +91,7 @@ function createMeter(callback) {
         } else {
             let token = JSON.parse(record)
             request
-                .post(host + '/api/v1/meters')
+                .post(config.get('buzzn.host') + '/api/v1/meters')
                 .set('Authorization', 'Bearer ' + token.access_token)
                 .send({
                     manufacturer_name: reading.manufacturerName,
@@ -128,7 +126,7 @@ function findMeter(callback) {
             let user = JSON.parse(reply[0])
             let token = JSON.parse(reply[1])
             request
-                .get(host + '/api/v1/users/' + user.id + '/meters')
+                .get(config.get('buzzn.host') + '/api/v1/users/' + user.id + '/meters')
                 .set('Authorization', 'Bearer ' + token.access_token)
                 .query({
                     filter: reading.meterSerialnumber
@@ -174,7 +172,7 @@ function createRegister(mode, callback) {
             let token = JSON.parse(reply[0])
             let meter = JSON.parse(reply[1])
             request
-                .post(host + '/api/v1/registers')
+                .post(config.get('buzzn.host') + '/api/v1/registers')
                 .set('Authorization', 'Bearer ' + token.access_token)
                 .send({
                     name: mode + 'put',
@@ -211,7 +209,7 @@ function findRegister(mode, callback) {
             let token = JSON.parse(reply[1])
             let meter = JSON.parse(reply[2])
             request
-                .get(host + '/api/v1/meters/' + meter.id + '/registers')
+                .get(config.get('buzzn.host') + '/api/v1/meters/' + meter.id + '/registers')
                 .set('Authorization', 'Bearer ' + token.access_token)
                 .query({
                     filter: mode

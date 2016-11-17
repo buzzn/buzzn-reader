@@ -1,11 +1,11 @@
 const Setup = require('../libs/Setup')
 const Auth = require('../libs/Auth')
 const Worker = require('../libs/Worker')
+const queue = require('../libs/queue')
 const Mock = require('./Mock')
 
 const chai = require('chai')
 const expect = chai.expect
-const queue = require('kue').createQueue()
 const _ = require('lodash')
 
 let username = 'user@email.com'

@@ -3,6 +3,6 @@
     "host": "redis"
   },
   "buzzn": {
-    "host": "https://app.buzzn.net"
+    "host": "https://staging.buzzn.net"
   }
 }
