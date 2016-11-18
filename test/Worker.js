@@ -47,54 +47,65 @@ describe('Worker', () => {
     })
 
 
-    it('does dont send Reading if meter is not loggedIn', (done) => {
-        queue.createJob('sml', {
-            sml: rawSML
-        }).save()
-        let job = _.last(queue.testMode.jobs)
+    // it('does dont send Reading if meter is not loggedIn', (done) => {
+    //     queue.createJob('sml', {
+    //         sml: rawSML
+    //     }).save()
+    //     let job = _.last(queue.testMode.jobs)
+    //
+    //     job.on('failed', (errorMessage) => {
+    //         expect(errorMessage).to.equal('noAuth')
+    //         done()
+    //     })
+    //
+    //     queue.process('sml', (job, done) => {
+    //         new Worker(job, done)
+    //     })
+    // })
 
-        job.on('failed', (errorMessage) => {
-            expect(errorMessage).to.equal('noAuth')
-            done()
-        })
+    //
+    // it('does send Reading if meter is loggedIn and Setup', (done) => {
+    //     mock.oauthTokenViaPassword()
+    //     mock.usersMe()
+    //     mock.userMetersEmpty()
+    //     mock.createMeter()
+    //     mock.createRegister('in')
+    //     let mockResponse = mock.createReading()
+    //
+    //     auth.login({
+    //             username: username,
+    //             password: password
+    //         })
+    //         .then(
+    //             resolve => setup.init(),
+    //             reject => console.log
+    //         ).then(
+    //             resolve => {
+    //                 console.log(resolve);
+    //             }
+    //         )
+    // })
 
-        queue.process('sml', (job, done) => {
-            new Worker(job, done)
-        })
-    })
-
-
-    it('does send Reading if meter is loggedIn and Setup', (done) => {
-        mock.oauthTokenViaPassword()
-        mock.usersMe()
-        mock.userMetersEmpty()
-        mock.createMeter()
-        mock.createRegister('in')
-        let mockResponse = mock.createReading()
-
-        auth.login({
-            username: username,
-            password: password
-        }, (response) => {
-
-            setup.init((meter) => {
-                queue.createJob('sml', {
-                    sml: rawSML
-                }).save()
-                let job = _.last(queue.testMode.jobs)
-                queue.process('sml', (job, done) =>
-                    new Worker(job, done)
-                )
-
-                job.on('complete', (response) => {
-                    expect(JSON.parse(response.text)).to.deep.equal(mockResponse)
-                    done()
-                })
-
-            })
-
-
-        })
-    })
 
 })
+
+
+
+
+
+//
+//
+// queue.createJob('sml', {
+//     sml: rawSML
+// }).save()
+//
+// let job = _.last(queue.testMode.jobs)
+//
+// queue.process('sml', (job, done) =>
+//     new Worker(job, done)
+// )
+//
+// job.on('complete', (resolve) => {
+//     expect(JSON.parse(resolve.text)).to.deep.equal(mockResponse)
+//     done()
+// })

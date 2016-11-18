@@ -19,42 +19,44 @@ describe('Auth', () => {
     })
 
     after(() => {
-        auth.reset(() => {
+        auth.reset((replies) => {
             mock.cleanAll()
         })
     })
 
     it('does not login with incorrect username and password', (done) => {
         let mockResponse = mock.oauthTokenViaPasswordInvalidGrant()
-
         auth.login({
-            username: username,
-            password: password
-        }, (error, response) => {
-            if (error) {
-                expect(error).to.deep.equal(mockResponse)
-                done()
-            } else {
-                console.log(response);
-            }
-        })
+                username: username,
+                password: password
+            })
+            .then(
+                resolve => {},
+                reject => {
+                    expect(reject).to.deep.equal(mockResponse)
+                    done()
+                }
+            )
+
     })
 
 
     it('does login with correct username and password', (done) => {
         mock.oauthTokenViaPassword()
         let mockResponse = mock.usersMe()
+
         auth.login({
-            username: username,
-            password: password
-        }, (error, response) => {
-            if (error) {
-                console.error(error);
-            } else {
-                expect(JSON.parse(response)).to.deep.equal(mockResponse.data)
-                done()
-            }
-        })
+                username: username,
+                password: password
+            })
+            .then(
+                resolve => {
+                    expect(JSON.parse(resolve)).to.deep.equal(mockResponse.data)
+                    done()
+                },
+                reject => {}
+            )
+
     })
 
 
@@ -64,14 +66,15 @@ describe('Auth', () => {
                 console.error(error);
             } else {
                 let token = JSON.parse(record)
-                auth.getToken((error, response) => {
-                    if (error) {
-                        console.error(error);
-                    } else {
-                        expect(response).to.deep.equal(token)
-                        done()
-                    }
-                })
+
+                auth.getToken()
+                    .then(
+                        result => {
+                            expect(result).to.deep.equal(token)
+                            done()
+                        }
+                    )
+
             }
         })
     })
@@ -82,24 +85,27 @@ describe('Auth', () => {
             date: new Date(2016, 8, 20, 2)
         })
         let mockResponse = mock.oauthTokenViaRefreshToken()
-        auth.getToken((error, response) => {
-            if (error) {
-                console.error(error);
-            } else {
-                expect(JSON.parse(response)).to.deep.equal(mockResponse)
-                done()
-            }
-        })
+
+        auth.getToken()
+            .then(
+                result => {
+                    expect(JSON.parse(result)).to.deep.equal(mockResponse)
+                    done()
+                }
+            )
+
     })
 
 
     it('does logout and reset the meter', (done) => {
+        mock.oauthTokenViaRefreshToken()
         let mockResponse = mock.oauthRevoke()
+
         auth.logout((error, response) => {
             if (error) {
                 console.error(error)
             } else {
-                expect(response).to.deep.equal(mockResponse)
+                expect(JSON.parse(response)).to.deep.equal(mockResponse)
                 done()
             }
         })

@@ -40,14 +40,14 @@ describe('Setup', () => {
 
     it('does not init Setup with loggedIn false', (done) => {
         setup = new Setup(rawSML)
-        setup.init((error, response) => {
-            if (error) {
-                expect(error.message).to.equal('noAuth')
-                done()
-            } else {
-                console.log(response);
-            }
-        })
+        setup.init()
+            .then(
+                resolved => {},
+                rejected => {
+                    expect(rejected.message).to.equal('noAuth')
+                    done()
+                }
+            )
     })
 
 
@@ -59,25 +59,25 @@ describe('Setup', () => {
         let mockResponse = mock.createMeter()
         mock.createRegister('in')
 
-        auth.login({
-            username: username,
-            password: password
-        }, (error, response) => {
-            if (error) {
-                console.error(error);
-            } else {
-                setup = new Setup(rawSML)
-                setup.init((error, response) => {
-                    if (error) {
-                        console.error(error)
-                    } else {
-                        expect(JSON.parse(response)).to.deep.equal(mockResponse.data)
-                        done()
-                    }
-                })
-            }
 
-        })
+        auth.login({
+                username: username,
+                password: password
+            })
+            .then(
+                resolve => {
+                    setup = new Setup(rawSML)
+                    setup.init()
+                        .then(
+                            resolved => {
+                                expect(JSON.parse(resolved)).to.deep.equal(mockResponse.data)
+                                done()
+                            }
+                        )
+                }
+            )
+
+
     })
 
 
@@ -89,23 +89,26 @@ describe('Setup', () => {
         let mockResponse = mock.createExistingMeter()
 
         auth.login({
-            username: username,
-            password: password
-        }, (error, response) => {
-            if (error) {
-                console.error(error)
-            } else {
-                setup = new Setup(rawSML)
-                setup.init((error, response) => {
-                    if (error) {
-                        let firstError = mockResponse.errors[0] // really ugly
-                        expect(error.message).to.deep.equal(firstError.detail)
-                        done()
-                    }
-                })
-            }
-        })
+                username: username,
+                password: password
+            })
+            .then(
+                resolve => {
+                    setup = new Setup(rawSML)
+                    setup.init()
+                        .then(
+                            resolved => {},
+                            rejected => {
+                                let firstError = mockResponse.errors[0] // really ugly
+                                expect(rejected.message).to.deep.equal(firstError.detail)
+                                done()
+                            }
+                        )
+                }
+            )
     })
+
+
 
 
     it('does init Setup with loggedIn true and with existing meter', (done) => {
@@ -115,20 +118,24 @@ describe('Setup', () => {
         mock.createReading()
 
         auth.login({
-            username: username,
-            password: password
-        }, (response) => {
-            setup = new Setup(rawSML)
-            setup.init((error, response) => {
-                if (error) {
-                    console.error(error)
-                } else {
-                    expect(JSON.parse(response)).to.deep.equal(mockResponse.data[0])
-                    done()
-                }
+                username: username,
+                password: password
             })
-        })
+            .then(
+                resolve => {
+                    setup = new Setup(rawSML)
+                    setup.init()
+                        .then(
+                            resolved => {
+                                expect(JSON.parse(resolved)).to.deep.equal(mockResponse.data[0])
+                                done()
+                            }
+                        )
+
+                }
+            )
     })
+
 
 
 

@@ -14,18 +14,20 @@ function Setup(rawSML) {
 }
 
 Setup.prototype.init = function(callback) {
-    auth.loggedIn((error, token) => {
-        if (error) {
-            callback(error)
-        } else {
-            findOrCreateMeter((error, meter) => {
-                if (error) {
-                    callback(error)
-                } else {
-                    callback(null, meter)
-                }
-            })
-        }
+    return new Promise((resolve, reject) => {
+        auth.loggedIn()
+            .then(
+                resolved => {
+                    findOrCreateMeter((error, meter) => {
+                        if (error) {
+                            reject(error)
+                        } else {
+                            resolve(meter)
+                        }
+                    })
+                },
+                reject
+            )
     })
 }
 
