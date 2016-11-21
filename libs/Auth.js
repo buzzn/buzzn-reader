@@ -1,6 +1,5 @@
 const config = require('config');
-const request = require('superagent')
-const request2 = require('./request')
+const request = require('./request')
 const redis = require('./redis')
 
 function Auth() {}
@@ -24,7 +23,7 @@ Auth.prototype.logout = function(callback) {
         .then(
             resolve => {
                 let token = JSON.parse(resolve)
-                request2.oauthRevoke(token)
+                request.oauthRevoke(token)
                     .then(result => {
                         callback(null, result)
                     })
@@ -82,24 +81,22 @@ Auth.prototype.loggedIn = function() {
 
 function getTokenWithPassword(options) {
     return new Promise((resolve, reject) => {
-        request
-            .post(config.get('buzzn.host') + '/oauth/token')
-            .send({
+
+        return request.oauthToken({
                 grant_type: 'password',
                 username: options.username,
                 password: options.password,
                 scope: 'smartmeter'
             })
-            .end((err, res) => {
-                if (err || !res.ok) {
-                    reject(res.body)
-                } else {
-                    let token = JSON.stringify(res.body)
+            .then(
+                token => {
                     redis.set("token", token, (err, reply) =>
                         resolve(token)
                     )
-                }
-            })
+                },
+                reject
+            )
+
     })
 }
 
@@ -109,7 +106,7 @@ function getTokenWithRefreshToken() {
         redis.getAsync('token')
             .then(record => {
                 let token = JSON.parse(record)
-                return request2.oauthToken({
+                return request.oauthToken({
                     grant_type: "refresh_token",
                     refresh_token: token.refresh_token
                 })
@@ -122,7 +119,7 @@ function getUser() {
     return new Promise((resolve, reject) => {
         redis.getAsync('token')
             .then(res => {
-                return request2.usersMe(JSON.parse(res))
+                return request.usersMe(JSON.parse(res))
             })
             .then(res => {
                 redis.setAsync("user", res)
@@ -160,7 +157,7 @@ function getUser() {
     return new Promise((resolve, reject) => {
         redis.getAsync('token')
             .then(res => {
-                return request2.usersMe(JSON.parse(res))
+                return request.usersMe(JSON.parse(res))
             })
             .then(res => {
                 redis.setAsync("user", res)

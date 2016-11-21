@@ -52,35 +52,6 @@ describe('Setup', () => {
 
 
 
-    it('does init Setup with loggedIn true and created meter and inRegister', (done) => {
-        mock.oauthTokenViaPassword()
-        mock.usersMe()
-        mock.userMetersEmpty()
-        let mockResponse = mock.createMeter()
-        mock.createRegister('in')
-
-
-        auth.login({
-                username: username,
-                password: password
-            })
-            .then(
-                resolve => {
-                    setup = new Setup(rawSML)
-                    setup.init()
-                        .then(
-                            resolved => {
-                                expect(JSON.parse(resolved)).to.deep.equal(mockResponse.data)
-                                done()
-                            }
-                        )
-                }
-            )
-
-
-    })
-
-
 
     it('does not init Setup with loggedIn true and foreign existing meter', (done) => {
         mock.oauthTokenViaPassword()
@@ -108,6 +79,32 @@ describe('Setup', () => {
             )
     })
 
+
+
+    it('does init Setup with loggedIn true and created meter and inRegister', (done) => {
+        mock.oauthTokenViaPassword()
+        mock.usersMe()
+        mock.userMetersEmpty()
+        let mockResponse = mock.createMeter()
+        mock.createRegister('in')
+
+        auth.login({
+                username: username,
+                password: password
+            })
+            .then(
+                resolve => {
+                    setup = new Setup(rawSML)
+                    setup.init()
+                        .then(
+                            resolved => {
+                                expect(JSON.parse(resolved)).to.deep.equal(mockResponse.data)
+                                done()
+                            }
+                        )
+                }
+            )
+    })
 
 
 

@@ -10,7 +10,7 @@ const request = {
                 .send(options)
                 .end(function(err, res) {
                     if (err || !res.ok) {
-                        reject(err)
+                        reject(res.body)
                     } else {
                         resolve(JSON.stringify(res.body))
                     }
@@ -28,7 +28,7 @@ const request = {
                 })
                 .end(function(err, res) {
                     if (err || !res.ok) {
-                        reject(err)
+                        reject(res.body)
                     } else {
                         resolve(JSON.stringify(res.body))
                     }
@@ -43,13 +43,111 @@ const request = {
                 .set('Authorization', 'Bearer ' + token.access_token)
                 .end((err, res) => {
                     if (err || !res.ok) {
-                        reject(err)
+                        reject(res.body)
                     } else {
                         resolve(JSON.stringify(res.body.data))
                     }
                 })
         })
+    },
+
+    createMeter: function(token, reading) {
+        return new Promise((resolve, reject) => {
+            superagent
+                .post(config.get('buzzn.host') + '/api/v1/meters')
+                .set('Authorization', 'Bearer ' + token.access_token)
+                .send({
+                    manufacturer_name: reading.manufacturerName,
+                    manufacturer_product_name: reading.productName,
+                    manufacturer_product_serialnumber: reading.meterSerialnumber,
+                    smart: true
+                })
+                .end(function(err, res) {
+                    if (err || !res.ok) {
+                        let firstError = err.response.body.errors[0] // really ugly
+                        reject(new Error(firstError.detail))
+                    } else {
+                        let meter = JSON.stringify(res.body.data)
+                        resolve(meter)
+                    }
+                })
+        })
+    },
+
+
+    userMeters: function(token, user, reading) {
+        return new Promise((resolve, reject) => {
+            superagent
+                .get(config.get('buzzn.host') + '/api/v1/users/' + user.id + '/meters')
+                .set('Authorization', 'Bearer ' + token.access_token)
+                .query({
+                    filter: reading.meterSerialnumber
+                })
+                .end(function(err, res) {
+                    if (err || !res.ok) {
+                        reject(res.body)
+                    } else {
+                        if (res.body.data.length > 0) {
+                            let meter = JSON.stringify(res.body.data[0])
+                            resolve(meter)
+                        } else {
+                            reject('no meter found')
+                        }
+                    }
+                })
+        })
+    },
+
+
+    findRegister: function(token, meter, mode) {
+        return new Promise((resolve, reject) => {
+            superagent
+                .get(config.get('buzzn.host') + '/api/v1/meters/' + meter.id + '/registers')
+                .set('Authorization', 'Bearer ' + token.access_token)
+                .query({
+                    filter: mode
+                })
+                .end(function(err, res) {
+                    if (err || !res.ok) {
+                        reject(res.body)
+                    } else {
+                        if (res.body.data.length > 0) {
+                            let register = JSON.stringify(res.body.data[0])
+                            resolve(register)
+                        } else {
+                            reject('no register found')
+                        }
+                    }
+                })
+        })
+    },
+
+    createRegister: function(token, meter, mode) {
+        return new Promise((resolve, reject) => {
+            superagent
+                .post(config.get('buzzn.host') + '/api/v1/registers')
+                .set('Authorization', 'Bearer ' + token.access_token)
+                .send({
+                    name: mode + 'put',
+                    mode: mode,
+                    meter_id: meter.id,
+                    readable: 'friends'
+                })
+                .end(function(err, res) {
+                    if (err || !res.ok) {
+                        let firstError = err.response.body.errors[0] // really ugly
+                        reject(new Error(firstError.detail))
+                    } else {
+                        let register = JSON.stringify(res.body.data)
+                        resolve(register)
+                    }
+                })
+        })
     }
+
+
+
+
 }
 
 module.exports = request

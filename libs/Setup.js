@@ -1,5 +1,4 @@
-const config = require('config');
-const request = require('superagent')
+const request = require('./request')
 const async = require('async')
 const Auth = require('./Auth')
 const Reading = require('./Reading')
@@ -92,30 +91,16 @@ function createMeter(callback) {
             callback(new Error(err))
         } else {
             let token = JSON.parse(record)
-            request
-                .post(config.get('buzzn.host') + '/api/v1/meters')
-                .set('Authorization', 'Bearer ' + token.access_token)
-                .send({
-                    manufacturer_name: reading.manufacturerName,
-                    manufacturer_product_name: reading.productName,
-                    manufacturer_product_serialnumber: reading.meterSerialnumber,
-                    smart: true
-                })
-                .end(function(err, res) {
-                    if (err || !res.ok) {
-                        let firstError = err.response.body.errors[0] // really ugly
-                        callback(new Error(firstError.detail))
-                    } else {
-                        let meter = JSON.stringify(res.body.data)
-                        redis.set("meter", meter, function(err, reply) {
-                            if (err) {
-                                callback(new Error(err))
-                            } else {
-                                callback(null, meter)
-                            }
-                        })
+            request.createMeter(token, reading)
+                .then(
+                    meter => {
+                        redis.setAsync("meter", meter)
+                        callback(null, meter)
+                    },
+                    rejected => {
+                        callback(rejected)
                     }
-                })
+                )
         }
     })
 }
@@ -127,31 +112,16 @@ function findMeter(callback) {
         } else {
             let user = JSON.parse(reply[0])
             let token = JSON.parse(reply[1])
-            request
-                .get(config.get('buzzn.host') + '/api/v1/users/' + user.id + '/meters')
-                .set('Authorization', 'Bearer ' + token.access_token)
-                .query({
-                    filter: reading.meterSerialnumber
-                })
-                .end(function(err, res) {
-                    if (err || !res.ok) {
-                        callback(new Error(err))
-                    } else {
-                        if (res.body.data.length > 0) {
-                            let meter = JSON.stringify(res.body.data[0])
-                            redis.set("meter", meter, function(err, reply) {
-                                if (err) {
-                                    callback(new Error(err))
-                                } else {
-                                    callback(null, meter)
-                                }
-                            })
-                        } else {
-                            callback(new Error('no meter found'))
-                        }
-
+            request.userMeters(token, user, reading)
+                .then(
+                    meter => {
+                        redis.setAsync("meter", meter)
+                        callback(null, meter)
+                    },
+                    rejected => {
+                        callback(new Error('no meter found'))
                     }
-                })
+                )
         }
     })
 }
@@ -166,6 +136,7 @@ function findOrCreateRegister(callback) {
     })
 }
 
+
 function createRegister(mode, callback) {
     redis.mget(['token', 'meter'], function(err, reply) {
         if (err) {
@@ -173,31 +144,23 @@ function createRegister(mode, callback) {
         } else {
             let token = JSON.parse(reply[0])
             let meter = JSON.parse(reply[1])
-            request
-                .post(config.get('buzzn.host') + '/api/v1/registers')
-                .set('Authorization', 'Bearer ' + token.access_token)
-                .send({
-                    name: mode + 'put',
-                    mode: mode,
-                    meter_id: meter.id,
-                    readable: 'friends'
-                })
-                .end(function(err, res) {
-                    if (err || !res.ok) {
-                        console.log(err);
-                        let firstError = err.response.body.errors[0] // really ugly
-                        callback(new Error(firstError.detail))
-                    } else {
-                        let register = JSON.stringify(res.body.data)
-                        redis.set(mode + "Register", register, function(err, reply) {
-                            if (err) {
-                                callback(new Error(err))
-                            } else {
-                                callback(null, register)
-                            }
-                        })
+            request.createRegister(token, meter, mode)
+                .then(
+                    register => {
+                        redis.setAsync("register" + mode, register)
+                        return register
+                    },
+                    rejected => {
+                        callback(new Error(rejected))
                     }
-                })
+                ).then(
+                    register => {
+                        callback(null, register)
+                    },
+                    rejected => {
+                        callback(rejected)
+                    }
+                )
         }
     })
 }
@@ -210,31 +173,21 @@ function findRegister(mode, callback) {
             let user = JSON.parse(reply[0])
             let token = JSON.parse(reply[1])
             let meter = JSON.parse(reply[2])
-            request
-                .get(config.get('buzzn.host') + '/api/v1/meters/' + meter.id + '/registers')
-                .set('Authorization', 'Bearer ' + token.access_token)
-                .query({
-                    filter: mode
-                })
-                .end(function(err, res) {
-                    if (err || !res.ok) {
-                        callback(new Error(err))
-                    } else {
-                        if (res.body.data.length > 0) {
-                            let meter = JSON.stringify(res.body.data[0])
-                            redis.set("meter", meter, function(err, reply) {
-                                if (err) {
-                                    callback(new Error(err))
-                                } else {
-                                    callback(null, meter)
-                                }
-                            })
-                        } else {
-                            callback(new Error('no meter found'))
-                        }
+            request.findRegister(token, meter, mode)
+                .then(
+                    register => {
+                        redis.setAsync("register" + mode, register)
+                        return register
+                    },
+                    reject
+                ).then(
+                    register => {
+                        callback(null, register)
+                    },
+                    rejected => {
+                        callback(rejected)
                     }
-                })
-
+                )
         }
     })
 }
