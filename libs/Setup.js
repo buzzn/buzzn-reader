@@ -4,64 +4,25 @@ const Auth = require('./Auth')
 const Reading = require('./Reading')
 const redis = require('./redis')
 
-const auth = new Auth()
+let reading
 
-let reading, accessToken
-
-function Setup(rawSML) {
-    reading = new Reading(rawSML)
-}
-
-Setup.prototype.init = function() {
-    return new Promise((resolve, reject) => {
-        auth.loggedIn()
-            .then(
-                token => findOrCreateMeter(),
-                reject
-            )
-            .then(resolve, reject)
-    })
-}
-
-
-function findOrCreateMeter() {
-    return new Promise((resolve, reject) => {
-        findMeter()
-            .then(
-                meter => resolve(meter),
-                rejected => createMeter()
-            )
-            .then(resolve, reject)
-    })
+const setup = {
+    init: function(rawSML) {
+        return new Promise((resolve, reject) => {
+            reading = new Reading(rawSML)
+            const auth = new Auth()
+            auth.loggedIn()
+                .then(
+                    token => findOrCreateMeter(),
+                    reject
+                )
+                .then(resolve, reject)
+        })
+    }
 }
 
 
-function findMeter() {
-    return new Promise((resolve, reject) => {
-        redis.multi().mget('token', 'user').execAsync()
-            .then(
-                records => [].concat.apply([], records)
-            )
-            .then(
-                records => {
-                    let token = JSON.parse(records[0])
-                    let user = JSON.parse(records[1])
-                    return request.findMeter(token, user, reading)
-                }
-            )
-            .then(
-                meter => {
-                    redis.setAsync("meter", meter)
-                    resolve(meter)
-                },
-                rejected => {
-                    reject(rejected)
-                }
-            )
-    })
-}
-
-function createMeter(callback) {
+function createMeter() {
     return new Promise((resolve, reject) => {
         redis.getAsync('token')
             .then(
@@ -117,8 +78,6 @@ function createMeter(callback) {
     })
 }
 
-
-
 function createRegister(mode) {
     return new Promise((resolve, reject) => {
         redis.multi().mget('token', 'meter').execAsync()
@@ -134,7 +93,7 @@ function createRegister(mode) {
             )
             .then(
                 register => {
-                    redis.setAsync("register" + mode, register)
+                    redis.setAsync("register" + mode, register.toString())
                     resolve(register)
                 },
                 reject
@@ -143,10 +102,44 @@ function createRegister(mode) {
 }
 
 
+function findMeter() {
+    return new Promise((resolve, reject) => {
+        redis.multi().mget('token', 'user').execAsync()
+            .then(
+                records => [].concat.apply([], records)
+            )
+            .then(
+                records => {
+                    let token = JSON.parse(records[0])
+                    let user = JSON.parse(records[1])
+                    return request.findMeter(token, user, reading)
+                }
+            )
+            .then(
+                meter => {
+                    redis.setAsync("meter", meter.toString())
+                    resolve(meter)
+                },
+                rejected => {
+                    reject(rejected)
+                }
+            )
+    })
+}
+
+
+function findOrCreateMeter() {
+    return new Promise((resolve, reject) => {
+        findMeter()
+            .then(
+                meter => resolve(meter),
+                rejected => createMeter()
+            )
+            .then(resolve, reject)
+    })
+}
 
 
 
 
-
-
-module.exports = Setup
+module.exports = setup

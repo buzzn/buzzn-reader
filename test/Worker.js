@@ -1,4 +1,4 @@
-const Setup = require('../libs/Setup')
+const setup = require('../libs/setup')
 const Auth = require('../libs/Auth')
 const Worker = require('../libs/Worker')
 const queue = require('../libs/queue')
@@ -12,7 +12,7 @@ let username = 'user@email.com'
 let password = 'xxxxxxxx'
 
 describe('Worker', () => {
-    let auth, setup, mock, rawSML
+    let auth, mock, rawSML
 
     before(() => {
         queue.testMode.enter(true)
@@ -31,7 +31,6 @@ describe('Worker', () => {
       !"
 
         auth = new Auth()
-        setup = new Setup(rawSML)
         mock = new Mock()
     })
 
@@ -47,65 +46,61 @@ describe('Worker', () => {
     })
 
 
-    // it('does dont send Reading if meter is not loggedIn', (done) => {
-    //     queue.createJob('sml', {
-    //         sml: rawSML
-    //     }).save()
-    //     let job = _.last(queue.testMode.jobs)
-    //
-    //     job.on('failed', (errorMessage) => {
-    //         expect(errorMessage).to.equal('noAuth')
-    //         done()
-    //     })
-    //
-    //     queue.process('sml', (job, done) => {
-    //         new Worker(job, done)
-    //     })
-    // })
 
-    //
-    // it('does send Reading if meter is loggedIn and Setup', (done) => {
-    //     mock.oauthTokenViaPassword()
-    //     mock.usersMe()
-    //     mock.userMetersEmpty()
-    //     mock.createMeter()
-    //     mock.createRegister('in')
-    //     let mockResponse = mock.createReading()
-    //
-    //     auth.login({
-    //             username: username,
-    //             password: password
-    //         })
-    //         .then(
-    //             resolve => setup.init(),
-    //             reject => console.log
-    //         ).then(
-    //             resolve => {
-    //                 console.log(resolve);
-    //             }
-    //         )
-    // })
+
+    it('does dont send Reading if meter is not loggedIn', (done) => {
+        queue.createJob('sml', {
+            sml: rawSML
+        }).save()
+        let job = _.last(queue.testMode.jobs)
+
+        job.on('failed', (errorMessage) => {
+            expect(errorMessage).to.equal('noAuth')
+            done()
+        })
+
+        queue.process('sml', (job, done) => {
+            new Worker(job, done)
+        })
+    })
+
+
+    it('does send Reading if meter is loggedIn and Setup', (done) => {
+        mock.oauthTokenViaPassword()
+        mock.usersMe()
+        mock.userMetersEmpty()
+        mock.createMeter()
+        mock.createRegister('in')
+        let mockResponse = mock.createReading()
+
+        auth.login({
+                username: username,
+                password: password
+            })
+            .then(
+                resolve => setup.init(rawSML)
+            ).then(
+                resolve => {
+                    queue.createJob('sml', {
+                        sml: rawSML
+                    }).save()
+
+                    let job = _.last(queue.testMode.jobs)
+
+                    queue.process('sml', (job, done) => {
+                        new Worker(job, done)
+                    })
+
+                    job.on('complete', (response) => {
+                        expect(response).to.deep.equal(mockResponse.data)
+                        done()
+                    })
+                }
+            )
+    })
+
+
+
 
 
 })
-
-
-
-
-
-//
-//
-// queue.createJob('sml', {
-//     sml: rawSML
-// }).save()
-//
-// let job = _.last(queue.testMode.jobs)
-//
-// queue.process('sml', (job, done) =>
-//     new Worker(job, done)
-// )
-//
-// job.on('complete', (resolve) => {
-//     expect(JSON.parse(resolve.text)).to.deep.equal(mockResponse)
-//     done()
-// })

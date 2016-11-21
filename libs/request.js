@@ -142,9 +142,31 @@ const request = {
                     }
                 })
         })
+    },
+
+    createReading: function(token, meter, reading, timestamp) {
+        return new Promise((resolve, reject) => {
+            superagent
+                .post(config.get('buzzn.host') + '/api/v1/readings')
+                .set('Authorization', 'Bearer ' + token.access_token)
+                .send({
+                    timestamp: timestamp,
+                    meter_id: meter.id,
+                    energy_a_milliwatt_hour: reading.energyAMilliwattHour,
+                    energy_b_milliwatt_hour: reading.energyBMilliwattHour,
+                    power_a_milliwatt: reading.powerAMilliwatt,
+                    power_b_milliwatt: reading.powerBMilliwatt
+                })
+                .end((err, res) => {
+                    if (err || !res.ok) {
+                        reject(res.body)
+                    } else {
+                        let reading = res.body.data
+                        resolve(reading)
+                    }
+                })
+        })
     }
-
-
 
 
 }

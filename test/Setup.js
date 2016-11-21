@@ -1,4 +1,4 @@
-const Setup = require('../libs/Setup')
+const setup = require('../libs/setup')
 const Auth = require('../libs/Auth')
 const Mock = require('./Mock')
 
@@ -9,7 +9,7 @@ let username = 'user@email.com'
 let password = 'xxxxxxxx'
 
 describe('Setup', () => {
-    var auth, setup, mock, rawSML
+    var auth, mock, rawSML
 
     before(() => {
         auth = new Auth()
@@ -39,8 +39,7 @@ describe('Setup', () => {
 
 
     it('does not init Setup with loggedIn false', (done) => {
-        setup = new Setup(rawSML)
-        setup.init()
+        setup.init(rawSML)
             .then(
                 resolved => {},
                 rejected => {
@@ -65,7 +64,7 @@ describe('Setup', () => {
             })
             .then(
                 resolve => {
-                    return new Setup(rawSML).init()
+                    return setup.init(rawSML)
                 }
             )
             .then(
@@ -94,15 +93,12 @@ describe('Setup', () => {
                 password: password
             })
             .then(
-                resolve => {
-                    setup = new Setup(rawSML)
-                    setup.init()
-                        .then(
-                            resolved => {
-                                expect(JSON.parse(resolved)).to.deep.equal(mockResponse.data)
-                                done()
-                            }
-                        )
+                resolve => setup.init(rawSML)
+            )
+            .then(
+                resolved => {
+                    expect(JSON.parse(resolved)).to.deep.equal(mockResponse.data)
+                    done()
                 }
             )
     })
@@ -120,16 +116,12 @@ describe('Setup', () => {
                 password: password
             })
             .then(
-                resolve => {
-                    setup = new Setup(rawSML)
-                    setup.init()
-                        .then(
-                            resolved => {
-                                expect(JSON.parse(resolved)).to.deep.equal(mockResponse.data[0])
-                                done()
-                            }
-                        )
-
+                resolve => setup.init(rawSML)
+            )
+            .then(
+                resolved => {
+                    expect(JSON.parse(resolved)).to.deep.equal(mockResponse.data[0])
+                    done()
                 }
             )
     })
