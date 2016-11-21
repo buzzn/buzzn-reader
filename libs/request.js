@@ -75,7 +75,7 @@ const request = {
     },
 
 
-    userMeters: function(token, user, reading) {
+    findMeter: function(token, user, reading) {
         return new Promise((resolve, reject) => {
             superagent
                 .get(config.get('buzzn.host') + '/api/v1/users/' + user.id + '/meters')

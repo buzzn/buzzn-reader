@@ -112,7 +112,7 @@ function findMeter(callback) {
         } else {
             let user = JSON.parse(reply[0])
             let token = JSON.parse(reply[1])
-            request.userMeters(token, user, reading)
+            request.findMeter(token, user, reading)
                 .then(
                     meter => {
                         redis.setAsync("meter", meter)
