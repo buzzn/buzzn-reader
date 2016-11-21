@@ -65,16 +65,17 @@ describe('Setup', () => {
             })
             .then(
                 resolve => {
-                    setup = new Setup(rawSML)
-                    setup.init()
-                        .then(
-                            resolved => {},
-                            rejected => {
-                                let firstError = mockResponse.errors[0] // really ugly
-                                expect(rejected.message).to.deep.equal(firstError.detail)
-                                done()
-                            }
-                        )
+                    return new Setup(rawSML).init()
+                }
+            )
+            .then(
+                resolved => {
+                    console.log(resolved);
+                },
+                rejected => {
+                    let firstError = mockResponse.errors[0] // really ugly
+                    expect(rejected.message).to.deep.equal(firstError.detail)
+                    done()
                 }
             )
     })

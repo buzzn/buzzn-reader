@@ -1,6 +1,5 @@
 const config = require('config');
 const superagent = require('superagent')
-const redis = require('./redis');
 
 const request = {
     oauthToken: function(options) {
@@ -91,7 +90,7 @@ const request = {
                             let meter = JSON.stringify(res.body.data[0])
                             resolve(meter)
                         } else {
-                            reject('no meter found')
+                            reject('noMeterFoundForUser')
                         }
                     }
                 })
