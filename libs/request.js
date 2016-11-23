@@ -25,8 +25,9 @@ const request = {
                 .send({
                     token: token.access_token,
                 })
-                .end(function(err, res) {
+                .end((err, res) => {
                     if (err || !res.ok) {
+                        console.log(err);
                         reject(res.body)
                     } else {
                         resolve(JSON.stringify(res.body))
@@ -86,40 +87,35 @@ const request = {
                     if (err || !res.ok) {
                         reject(res.body)
                     } else {
-                        if (res.body.data.length > 0) {
-                            let meter = JSON.stringify(res.body.data[0])
-                            resolve(meter)
-                        } else {
-                            reject('noMeterFoundForUser')
-                        }
+                        resolve(res.body.data)
                     }
                 })
         })
     },
 
 
-    findRegister: function(token, meter, mode) {
-        return new Promise((resolve, reject) => {
-            superagent
-                .get(config.get('buzzn.host') + '/api/v1/meters/' + meter.id + '/registers')
-                .set('Authorization', 'Bearer ' + token.access_token)
-                .query({
-                    filter: mode
-                })
-                .end(function(err, res) {
-                    if (err || !res.ok) {
-                        reject(res.body)
-                    } else {
-                        if (res.body.data.length > 0) {
-                            let register = JSON.stringify(res.body.data[0])
-                            resolve(register)
-                        } else {
-                            reject('no register found')
-                        }
-                    }
-                })
-        })
-    },
+    // findRegister: function(token, meter, mode) {
+    //     return new Promise((resolve, reject) => {
+    //         superagent
+    //             .get(config.get('buzzn.host') + '/api/v1/meters/' + meter.id + '/registers')
+    //             .set('Authorization', 'Bearer ' + token.access_token)
+    //             .query({
+    //                 filter: mode
+    //             })
+    //             .end(function(err, res) {
+    //                 if (err || !res.ok) {
+    //                     reject(res.body)
+    //                 } else {
+    //                     if (res.body.data.length > 0) {
+    //                         let register = JSON.stringify(res.body.data[0])
+    //                         resolve(register)
+    //                     } else {
+    //                         reject('no register found')
+    //                     }
+    //                 }
+    //             })
+    //     })
+    // },
 
     createRegister: function(token, meter, mode) {
         return new Promise((resolve, reject) => {

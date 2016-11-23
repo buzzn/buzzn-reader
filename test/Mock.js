@@ -13,9 +13,9 @@ let password = 'xxxxxxxx'
 let options = {}
 let date = new Time.Date(2016, 8, 20)
 
+
 function Mock(options) {
     options = options || {};
-
     date.setTimezone('UTC')
     options.date = options.date || date
     clock = sinon.useFakeTimers(options.date.getTime())
@@ -84,10 +84,9 @@ Mock.prototype.oauthRevoke = function() {
     let response = {}
     nock(config.get('buzzn.host'))
         .post('/oauth/revoke', {
-            token: newAccessToken,
+            token: accessToken,
         })
         .reply(200, response)
-
     return response
 }
 
@@ -283,4 +282,4 @@ Mock.prototype.cleanAll = function() {
 }
 
 
-module.exports = Mock = Mock
+module.exports = Mock

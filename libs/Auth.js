@@ -16,23 +16,20 @@ Auth.prototype.login = function(options) {
 }
 
 
-Auth.prototype.logout = function(callback) {
-    let that = this
-
-    that.getToken()
-        .then(
-            resolve => {
-                let token = JSON.parse(resolve)
-                request.oauthRevoke(token)
-                    .then(result => {
-                        callback(null, result)
-                    })
-            },
-            reject => {
-                callback(error)
-            }
-        )
-
+Auth.prototype.logout = function() {
+    return new Promise((resolve, reject) => {
+        let that = this
+        that.getToken()
+            .then(
+                token => request.oauthRevoke(token),
+                reject
+            )
+            .then(
+                resolved => that.reset(),
+                reject
+            )
+            .then(resolve, reject)
+    })
 }
 
 
@@ -45,9 +42,7 @@ Auth.prototype.getToken = function() {
                 reject => {
                     getTokenWithRefreshToken()
                         .then(
-                            token => {
-                                resolve(token)
-                            }
+                            token => resolve(token)
                         )
                 }
             )
@@ -63,11 +58,10 @@ Auth.prototype.loggedIn = function() {
                     let token = JSON.parse(record)
                     if (token) {
                         let expiresAt = (token.created_at + token.expires_in) * 1000
-                        let beforeExpiresAt = expiresAt - (15 * 60 * 1000)
-                        if (new Date().getTime() < beforeExpiresAt) {
+                        if (new Date().getTime() < expiresAt) {
                             resolve(token)
                         } else {
-                            reject(new Error('token_expired'))
+                            reject(token)
                         }
                     } else {
                         reject(new Error('noAuth'))
@@ -104,13 +98,15 @@ function getTokenWithPassword(options) {
 function getTokenWithRefreshToken() {
     return new Promise((resolve, reject) => {
         redis.getAsync('token')
-            .then(record => {
-                let token = JSON.parse(record)
-                return request.oauthToken({
-                    grant_type: "refresh_token",
-                    refresh_token: token.refresh_token
-                })
-            })
+            .then(
+                record => {
+                    let token = JSON.parse(record)
+                    return request.oauthToken({
+                        grant_type: "refresh_token",
+                        refresh_token: token.refresh_token
+                    })
+                }
+            )
             .then(resolve)
     })
 }
@@ -131,60 +127,24 @@ function getUser() {
 
 
 
-Auth.prototype.reset = function(callback) {
-    var that = this
-    var _redis = redis,
-        multi
-    _redis.multi([
-        ["del", "token"],
-        ["del", "user"],
-        ["del", "meter"],
-        ["del", "inRegister"],
-        ["del", "outRegister"],
-    ]).exec((error, replies) => {
-        if (error) {
-            callback(error)
-        } else {
-            callback(null, replies)
-        }
-    })
-}
-
-
-
-
-function getUser() {
+Auth.prototype.reset = function() {
     return new Promise((resolve, reject) => {
-        redis.getAsync('token')
-            .then(res => {
-                return request.usersMe(JSON.parse(res))
-            })
-            .then(res => {
-                redis.setAsync("user", res)
-                return res
-            })
-            .then(resolve)
-    })
-}
-
-
-
-Auth.prototype.reset = function(callback) {
-    var that = this
-    var _redis = redis,
-        multi
-    _redis.multi([
-        ["del", "token"],
-        ["del", "user"],
-        ["del", "meter"],
-        ["del", "inRegister"],
-        ["del", "outRegister"],
-    ]).exec((error, replies) => {
-        if (error) {
-            callback(error)
-        } else {
-            callback(null, replies)
-        }
+        var that = this
+        var _redis = redis,
+            multi
+        _redis.multi([
+            ["del", "token"],
+            ["del", "user"],
+            ["del", "meter"],
+            ["del", "inRegister"],
+            ["del", "outRegister"],
+        ]).exec((error, replies) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(replies)
+            }
+        })
     })
 }
 

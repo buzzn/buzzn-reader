@@ -14,13 +14,44 @@ const setup = {
             auth.loggedIn()
                 .then(
                     token => findOrCreateMeter(),
-                    reject
+                    rejected => {
+                        console.log(rejected);
+                        reject(rejected)
+                    }
                 )
                 .then(resolve, reject)
         })
     }
 }
 
+function findMeter() {
+    return new Promise((resolve, reject) => {
+        redis.multi().mget('token', 'user').execAsync()
+            .then(
+                records => [].concat.apply([], records)
+            )
+            .then(
+                records => {
+                    let token = JSON.parse(records[0])
+                    let user = JSON.parse(records[1])
+                    return request.findMeter(token, user, reading)
+                }
+            )
+            .then(
+                meters => {
+                    if (meters.length > 0) {
+                        meter = meters[0]
+                        redis.setAsync("meter", JSON.stringify(meter))
+
+                        resolve(meter)
+                    } else {
+                        reject('no meter fround for user')
+                    }
+                },
+                reject
+            )
+    })
+}
 
 function createMeter() {
     return new Promise((resolve, reject) => {
@@ -102,30 +133,7 @@ function createRegister(mode) {
 }
 
 
-function findMeter() {
-    return new Promise((resolve, reject) => {
-        redis.multi().mget('token', 'user').execAsync()
-            .then(
-                records => [].concat.apply([], records)
-            )
-            .then(
-                records => {
-                    let token = JSON.parse(records[0])
-                    let user = JSON.parse(records[1])
-                    return request.findMeter(token, user, reading)
-                }
-            )
-            .then(
-                meter => {
-                    redis.setAsync("meter", meter.toString())
-                    resolve(meter)
-                },
-                rejected => {
-                    reject(rejected)
-                }
-            )
-    })
-}
+
 
 
 function findOrCreateMeter() {
