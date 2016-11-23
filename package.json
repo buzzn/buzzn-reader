@@ -5,7 +5,7 @@
   "scripts": {
     "autotest": "NODE_ENV='test' ./node_modules/.bin/supervisor -q -n exit -x ./node_modules/.bin/mocha -- -b",
     "test": "NODE_ENV='test' mocha",
-    "start": "node ./bin/www"
+    "start": "NODE_ENV='development' node ./bin/www"
   },
   "engines": {
     "node": "6.7.0"

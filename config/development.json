@@ -3,6 +3,6 @@
     "host": "localhost"
   },
   "buzzn": {
-    "host": "http://localhost"
+    "host": "https://app.buzzn.net"
   }
 }
