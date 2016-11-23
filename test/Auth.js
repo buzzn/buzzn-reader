@@ -97,8 +97,8 @@ describe('Auth', () => {
                 resolve => auth.getToken()
             )
             .then(
-                token => {
-                    expect(token).to.deep.equal(oauthTokenViaPassword)
+                resolved => {
+                    expect(resolved).to.deep.equal(oauthTokenViaPassword)
                     done()
                 }
             )

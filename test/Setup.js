@@ -1,4 +1,5 @@
 const setup = require('../libs/setup')
+const redis = require('../libs/redis')
 const Auth = require('../libs/Auth')
 const Mock = require('./Mock')
 
@@ -31,100 +32,146 @@ describe('Setup', () => {
     })
 
 
-    after(() => {
+    afterEach(done => {
         auth.reset()
             .then(
-                resolved => mock.cleanAll(),
+                resolve => {
+                    //mock.cleanAll()
+                    done()
+                },
                 rejected => {}
             )
     })
 
 
-    // it('does not init Setup with loggedIn false', (done) => {
-    //     setup.init(rawSML)
-    //         .then(
-    //             resolved => {},
-    //             rejected => {
-    //                 console.log(rejected);
-    //                 // expect(rejected.message).to.equal('noAuth')
-    //                 done()
-    //             }
-    //         )
-    // })
+
+    describe('without login', () => {
+        it('does not init Setup', done => {
+            setup.init(rawSML)
+                .then(
+                    resolved => {},
+                    rejected => {
+                        expect(rejected.message).to.equal('noAuth')
+                        return redis.multi().mget('token', 'user', 'meter', 'inRegister', 'outRegister').execAsync()
+                    }
+                )
+                .then(
+                    records => [].concat.apply([], records)
+                )
+                .then(
+                    records => {
+                        expect(records).to.deep.equal([null, null, null, null, null])
+                        done()
+                    }
+                )
+
+        })
+    })
 
 
+    describe('with login', () => {
 
-    it('does not init Setup with loggedIn true and foreign existing meter', (
-        done) => {
-        mock.oauthTokenViaPassword()
-        mock.usersMe()
-        mock.userMetersEmpty()
-        let mockResponse = mock.createExistingMeter()
+        it('does not init Setup with foreign existing meter', done => {
+            let oauthTokenViaPassword = mock.oauthTokenViaPassword()
+            let usersMe = mock.usersMe()
+            let userMetersEmpty = mock.userMetersEmpty()
+            let createExistingMeter = mock.createExistingMeter()
 
-        auth.login({
-                username: username,
-                password: password
-            })
-            .then(
-                resolve => setup.init(rawSML)
-            )
-            .then(
-                resolved => {},
-                rejected => {
-                    let firstError = mockResponse.errors[0] // really ugly
-                    expect(rejected.message).to.deep.equal(firstError.detail)
-                    done()
-                }
-            )
+            auth.login({
+                    username: username,
+                    password: password
+                })
+                .then(
+                    resolve => setup.init(rawSML)
+                )
+                .then(
+                    resolved => {},
+                    rejected => {
+                        let firstError = createExistingMeter.errors[0] // really ugly
+                        expect(rejected.message).to.deep.equal(firstError.detail)
+                        return redis.multi().mget('token', 'user', 'meter', 'inRegister', 'outRegister').execAsync()
+
+                    }
+                )
+                .then(
+                    records => [].concat.apply([], records)
+                )
+                .then(
+                    records => {
+                        expect(records).to.deep.equal([
+                            JSON.stringify(oauthTokenViaPassword),
+                            JSON.stringify(usersMe.data),
+                            null, null, null
+                        ])
+                        done()
+                    }
+                )
+        })
+
+        it('does init Setup and created meter and register', done => {
+            let oauthTokenViaPassword = mock.oauthTokenViaPassword()
+            let usersMe = mock.usersMe()
+            let userMetersEmpty = mock.userMetersEmpty()
+            let createMeter = mock.createMeter()
+            let createRegister = mock.createRegister('in')
+
+            auth.login({
+                    username: username,
+                    password: password
+                })
+                .then(
+                    resolve => setup.init(rawSML)
+                )
+                .then(
+                    resolved => {
+                        expect(JSON.parse(resolved)).to.deep.equal(createMeter.data)
+                        return redis.multi().mget('token', 'user', 'meter', 'inRegister', 'outRegister').execAsync()
+
+                    }
+                )
+                .then(
+                    records => [].concat.apply([], records)
+                )
+                .then(
+                    records => {
+                        expect(records).to.deep.equal([
+                            JSON.stringify(oauthTokenViaPassword),
+                            JSON.stringify(usersMe.data),
+                            JSON.stringify(createMeter.data),
+                            null, null
+                        ])
+                        done()
+                    }
+                )
+        })
+
+
+        it('does init Setup with existing meter', (done) => {
+            mock.oauthTokenViaPassword()
+            mock.usersMe()
+            let mockResponse = mock.userMeters()
+            mock.createReading()
+
+            auth.login({
+                    username: username,
+                    password: password
+                })
+                .then(
+                    resolve => setup.init(rawSML)
+                )
+                .then(
+                    resolved => {
+                        expect(resolved).to.deep.equal(mockResponse.data[0])
+                        done()
+                    }
+                )
+        })
+
     })
 
 
 
-    it('does init Setup with loggedIn true and created meter and inRegister', (
-        done) => {
-        mock.oauthTokenViaPassword()
-        mock.usersMe()
-        mock.userMetersEmpty()
-        let mockResponse = mock.createMeter()
-        mock.createRegister('in')
 
-        auth.login({
-                username: username,
-                password: password
-            })
-            .then(
-                resolve => setup.init(rawSML)
-            )
-            .then(
-                resolved => {
-                    expect(JSON.parse(resolved)).to.deep.equal(mockResponse.data)
-                    done()
-                }
-            )
-    })
-
-
-
-    it('does init Setup with loggedIn true and with existing meter', (done) => {
-        mock.oauthTokenViaPassword()
-        mock.usersMe()
-        let mockResponse = mock.userMeters()
-        mock.createReading()
-
-        auth.login({
-                username: username,
-                password: password
-            })
-            .then(
-                resolve => setup.init(rawSML)
-            )
-            .then(
-                resolved => {
-                    expect(resolved).to.deep.equal(mockResponse.data[0])
-                    done()
-                }
-            )
-    })
 
 
 

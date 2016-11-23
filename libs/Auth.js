@@ -39,13 +39,9 @@ Auth.prototype.getToken = function() {
         that.loggedIn()
             .then(
                 resolve,
-                reject => {
-                    getTokenWithRefreshToken()
-                        .then(
-                            token => resolve(token)
-                        )
-                }
+                rejected => getTokenWithRefreshToken()
             )
+            .then(resolve,reject)
     })
 }
 
@@ -100,14 +96,19 @@ function getTokenWithRefreshToken() {
         redis.getAsync('token')
             .then(
                 record => {
-                    let token = JSON.parse(record)
-                    return request.oauthToken({
-                        grant_type: "refresh_token",
-                        refresh_token: token.refresh_token
-                    })
+                    if (record) {
+                        let token = JSON.parse(record)
+                        return request.oauthToken({
+                            grant_type: "refresh_token",
+                            refresh_token: token.refresh_token
+                        })
+                    } else {
+                        reject(record)
+                    }
+
                 }
             )
-            .then(resolve)
+            .then(resolve, reject)
     })
 }
 

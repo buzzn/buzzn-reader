@@ -11,7 +11,6 @@ const queue = require('./queue');
 function Worker(job, done) {
     let reading = new Reading(job.data.sml)
     if (reading.valid()) {
-
         redis.get('meter', (error, record) => {
             if (error) {
                 done(error);

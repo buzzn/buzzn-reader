@@ -14,14 +14,22 @@ const setup = {
             auth.loggedIn()
                 .then(
                     token => findOrCreateMeter(),
-                    rejected => {
-                        console.log(rejected);
-                        reject(rejected)
-                    }
+                    reject
                 )
                 .then(resolve, reject)
         })
     }
+}
+
+function findOrCreateMeter() {
+    return new Promise((resolve, reject) => {
+        findMeter()
+            .then(
+                meter => resolve(meter),
+                rejected => createMeter()
+            )
+            .then(resolve, reject)
+    })
 }
 
 function findMeter() {
@@ -42,7 +50,6 @@ function findMeter() {
                     if (meters.length > 0) {
                         meter = meters[0]
                         redis.setAsync("meter", JSON.stringify(meter))
-
                         resolve(meter)
                     } else {
                         reject('no meter fround for user')
@@ -60,9 +67,7 @@ function createMeter() {
                 token => {
                     return request.createMeter(token, reading)
                 },
-                err => {
-                    callback(new Error(err))
-                }
+                reject
             )
             .then(
                 meter => {
@@ -124,7 +129,7 @@ function createRegister(mode) {
             )
             .then(
                 register => {
-                    redis.setAsync("register" + mode, register.toString())
+                    redis.setAsync(mode + "Register", JSON.stringify(register))
                     resolve(register)
                 },
                 reject
@@ -136,16 +141,6 @@ function createRegister(mode) {
 
 
 
-function findOrCreateMeter() {
-    return new Promise((resolve, reject) => {
-        findMeter()
-            .then(
-                meter => resolve(meter),
-                rejected => createMeter()
-            )
-            .then(resolve, reject)
-    })
-}
 
 
 
