@@ -22,7 +22,7 @@ Auth.prototype.logout = function() {
         that.getToken()
             .then(
                 token => request.oauthRevoke(token),
-                reject
+                rejected => {} // TODO handle noToken Error 
             )
             .then(
                 resolved => that.reset(),
@@ -41,7 +41,7 @@ Auth.prototype.getToken = function() {
                 resolve,
                 rejected => getTokenWithRefreshToken()
             )
-            .then(resolve,reject)
+            .then(resolve, reject)
     })
 }
 
@@ -62,7 +62,6 @@ Auth.prototype.loggedIn = function() {
                     } else {
                         reject(new Error('noAuth'))
                     }
-
                 }
             )
             .then(resolve)
@@ -71,7 +70,6 @@ Auth.prototype.loggedIn = function() {
 
 function getTokenWithPassword(options) {
     return new Promise((resolve, reject) => {
-
         return request.oauthToken({
                 grant_type: 'password',
                 username: options.username,
@@ -103,12 +101,12 @@ function getTokenWithRefreshToken() {
                             refresh_token: token.refresh_token
                         })
                     } else {
-                        reject(record)
+                        throw new Error("noToken");
                     }
-
                 }
             )
-            .then(resolve, reject)
+            .then(resolve,reject)
+
     })
 }
 

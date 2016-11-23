@@ -62,6 +62,9 @@ describe('Setup', () => {
                     records => {
                         expect(records).to.deep.equal([null, null, null, null, null])
                         done()
+                    },
+                    rejected => {
+                      console.log('xxxxxxx'+rejected);
                     }
                 )
 
