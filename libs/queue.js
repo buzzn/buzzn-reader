@@ -1,3 +1,5 @@
+"use strict"
+
 const config = require('config');
 const Kue = require('kue');
 const queue = Kue.createQueue({

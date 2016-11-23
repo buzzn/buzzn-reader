@@ -1,3 +1,5 @@
+"use strict"
+
 function Sml(rawSml) {
     this.rawSml = rawSml
 

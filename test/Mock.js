@@ -1,3 +1,5 @@
+"use strict"
+
 const config = require('config');
 const nock = require('nock')
 const sinon = require('sinon')
@@ -12,7 +14,7 @@ let username = 'user@email.com'
 let password = 'xxxxxxxx'
 let options = {}
 let date = new Time.Date(2016, 8, 20)
-
+let clock
 
 function Mock(options) {
     options = options || {};

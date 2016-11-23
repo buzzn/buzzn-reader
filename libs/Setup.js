@@ -1,3 +1,5 @@
+"use strict"
+
 const request = require('./request')
 const async = require('async')
 const Auth = require('./Auth')
@@ -48,7 +50,7 @@ function findMeter() {
             .then(
                 meters => {
                     if (meters.length > 0) {
-                        meter = meters[0]
+                        let meter = meters[0]
                         redis.setAsync("meter", JSON.stringify(meter))
                         resolve(meter)
                     } else {

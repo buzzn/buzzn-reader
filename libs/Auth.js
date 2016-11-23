@@ -1,3 +1,5 @@
+"use strict"
+
 const config = require('config');
 const request = require('./request')
 const redis = require('./redis')
@@ -22,7 +24,7 @@ Auth.prototype.logout = function() {
         that.getToken()
             .then(
                 token => request.oauthRevoke(token),
-                rejected => {} // TODO handle noToken Error 
+                rejected => {} // TODO handle noToken Error
             )
             .then(
                 resolved => that.reset(),

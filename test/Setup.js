@@ -1,4 +1,6 @@
-const setup = require('../libs/setup.js')
+"use strict"
+
+const setup = require('../libs/setup')
 const redis = require('../libs/redis')
 const Auth = require('../libs/Auth')
 const Mock = require('./Mock')

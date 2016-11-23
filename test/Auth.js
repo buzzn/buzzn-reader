@@ -1,3 +1,5 @@
+"use strict"
+
 const config = require('config')
 const Auth = require('../libs/Auth')
 const Mock = require('./Mock')

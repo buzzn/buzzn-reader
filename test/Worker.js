@@ -1,3 +1,5 @@
+"use strict"
+
 const setup = require('../libs/setup')
 const Auth = require('../libs/Auth')
 const Worker = require('../libs/Worker')
