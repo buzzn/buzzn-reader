@@ -11,7 +11,7 @@ var expect = chai.expect
 let username = 'user@email.com'
 let password = 'xxxxxxxx'
 
-describe('Setup', () => {
+describe('setup', () => {
     var auth, mock, rawSML
 
     before(() => {
@@ -64,9 +64,6 @@ describe('Setup', () => {
                     records => {
                         expect(records).to.deep.equal([null, null, null, null, null])
                         done()
-                    },
-                    rejected => {
-                      console.log('xxxxxxx'+rejected);
                     }
                 )
 
