@@ -8,7 +8,7 @@ const redis = require('./redis')
 
 let reading
 
-const setup = {
+const setuper = {
     init: function(rawSML) {
         return new Promise((resolve, reject) => {
             reading = new Reading(rawSML)
@@ -147,4 +147,4 @@ function createRegister(mode) {
 
 
 
-module.exports = setup
+module.exports = setuper

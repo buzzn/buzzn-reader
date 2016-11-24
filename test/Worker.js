@@ -1,6 +1,6 @@
 "use strict"
 
-const setup = require('../libs/setup')
+const setuper = require('../libs/setuper')
 const Auth = require('../libs/Auth')
 const Worker = require('../libs/Worker')
 const queue = require('../libs/queue')
@@ -79,7 +79,7 @@ describe('Worker', () => {
 
     describe('with login', () => {
 
-        it('does send Reading if Setup', done => {
+        it('does send Reading if setuper', done => {
             mock.oauthTokenViaPassword()
             mock.usersMe()
             mock.userMetersEmpty()
@@ -92,7 +92,7 @@ describe('Worker', () => {
                     password: password
                 })
                 .then(
-                    resolve => setup.init(rawSML)
+                    resolve => setuper.init(rawSML)
                 ).then(
                     resolve => {
                         queue.createJob('sml', {

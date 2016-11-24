@@ -1,6 +1,6 @@
 "use strict"
 
-const setup = require('../libs/setup')
+const setuper = require('../libs/setuper')
 const redis = require('../libs/redis')
 const Auth = require('../libs/Auth')
 const Mock = require('./Mock')
@@ -11,7 +11,7 @@ var expect = chai.expect
 let username = 'user@email.com'
 let password = 'xxxxxxxx'
 
-describe('setup', () => {
+describe('setuper', () => {
     var auth, mock, rawSML
 
     before(() => {
@@ -48,8 +48,8 @@ describe('setup', () => {
 
 
     describe('without login', () => {
-        it('does not init Setup', done => {
-            setup.init(rawSML)
+        it('does not init setuper', done => {
+            setuper.init(rawSML)
                 .then(
                     resolved => {},
                     rejected => {
@@ -73,7 +73,7 @@ describe('setup', () => {
 
     describe('with login', () => {
 
-        it('does not init Setup with foreign existing meter', done => {
+        it('does not init setuper with foreign existing meter', done => {
             let oauthTokenViaPassword = mock.oauthTokenViaPassword()
             let usersMe = mock.usersMe()
             let userMetersEmpty = mock.userMetersEmpty()
@@ -84,7 +84,7 @@ describe('setup', () => {
                     password: password
                 })
                 .then(
-                    resolve => setup.init(rawSML)
+                    resolve => setuper.init(rawSML)
                 )
                 .then(
                     resolved => {},
@@ -110,7 +110,7 @@ describe('setup', () => {
                 )
         })
 
-        it('does init Setup and created meter and register', done => {
+        it('does init setuper and created meter and register', done => {
             let oauthTokenViaPassword = mock.oauthTokenViaPassword()
             let usersMe = mock.usersMe()
             let userMetersEmpty = mock.userMetersEmpty()
@@ -122,7 +122,7 @@ describe('setup', () => {
                     password: password
                 })
                 .then(
-                    resolve => setup.init(rawSML)
+                    resolve => setuper.init(rawSML)
                 )
                 .then(
                     resolved => {
@@ -148,7 +148,7 @@ describe('setup', () => {
         })
 
 
-        it('does init Setup with existing meter', (done) => {
+        it('does init setuper with existing meter', (done) => {
             mock.oauthTokenViaPassword()
             mock.usersMe()
             let mockResponse = mock.userMeters()
@@ -159,7 +159,7 @@ describe('setup', () => {
                     password: password
                 })
                 .then(
-                    resolve => setup.init(rawSML)
+                    resolve => setuper.init(rawSML)
                 )
                 .then(
                     resolved => {

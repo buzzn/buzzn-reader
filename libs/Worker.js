@@ -3,7 +3,7 @@
 const config = require('config');
 const request = require('./request');
 const Auth = require('./Auth');
-const setup = require('./setup');
+const setuper = require('./setuper');
 const Reading = require('./Reading');
 const Time = require('time');
 
@@ -33,7 +33,7 @@ function Worker(job, done) {
                             error => done(error)
                         )
                 } else {
-                    setup.init(job.data.sml)
+                    setuper.init(job.data.sml)
                         .then(
                             resolved => done(null, resolved),
                             error => done(error)
