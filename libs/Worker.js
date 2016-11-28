@@ -1,23 +1,18 @@
+"use strict"
+
 const config = require('config');
-const request = require('superagent');
+const request = require('./request');
 const Auth = require('./Auth');
-const Setup = require('./Setup');
+const setuper = require('./setuper');
 const Reading = require('./Reading');
 const Time = require('time');
-const Redis = require('redis');
-let redis = Redis.createClient(6379, config.get('redis.host'));
 
-const Kue = require('kue');
-const queue = Kue.createQueue({
-    redis: {
-        host: config.get('redis.host')
-    }
-});
+const redis = require('./redis')
+const queue = require('./queue');
 
 function Worker(job, done) {
     let reading = new Reading(job.data.sml)
     if (reading.valid()) {
-
         redis.get('meter', (error, record) => {
             if (error) {
                 done(error);
@@ -25,51 +20,31 @@ function Worker(job, done) {
                 let meter = JSON.parse(record)
                 if (meter) {
                     let auth = new Auth()
-                    auth.getToken((error, token) => {
-                        if (error) {
-                            done(error)
-                        } else {
-                            request
-                                .post('https://app.buzzn.net' + '/api/v1/readings')
-                                .set('Authorization', 'Bearer ' + token.access_token)
-                                .send({
-                                    timestamp: new Time.Date(parseInt(job.created_at), 'UTC').toString(),
-                                    meter_id: meter.id,
-                                    energy_a_milliwatt_hour: reading.energyAMilliwattHour,
-                                    energy_b_milliwatt_hour: reading.energyBMilliwattHour,
-                                    power_a_milliwatt: reading.powerAMilliwatt,
-                                    power_b_milliwatt: reading.powerBMilliwatt
-                                })
-                                .end((err, res) => {
-                                    if (err || !res.ok) {
-                                        console.error(err);
-                                        done(err);
-                                    } else {
-                                        done(null, res);
-                                    }
-                                })
-                        }
-                    })
+                    auth.getToken()
+                        .then(
+                            token => {
+                                let timestamp = new Time.Date(parseInt(job.created_at), 'UTC').toString()
+                                return request.createReading(token, meter, reading, timestamp)
+                            },
+                            rejected => done(error)
+                        )
+                        .then(
+                            reading => done(null, reading),
+                            error => done(error)
+                        )
                 } else {
-                    let setup = new Setup(job.data.sml)
-                    setup.init((error, response) => {
-                        if (error) {
-                            done(error)
-                        } else {
-                            done(null, response);
-                        }
-                    })
+                    setuper.init(job.data.sml)
+                        .then(
+                            resolved => done(null, resolved),
+                            error => done(error)
+                        )
                 }
-
             }
         })
-
-
     } else {
         done();
     }
-
-
 }
+
 
 module.exports = Worker;

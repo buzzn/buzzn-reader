@@ -1,3 +1,6 @@
+"use strict"
+
+const config = require('config');
 const nock = require('nock')
 const sinon = require('sinon')
 const Time = require('time');
@@ -11,10 +14,10 @@ let username = 'user@email.com'
 let password = 'xxxxxxxx'
 let options = {}
 let date = new Time.Date(2016, 8, 20)
+let clock
 
 function Mock(options) {
     options = options || {};
-
     date.setTimezone('UTC')
     options.date = options.date || date
     clock = sinon.useFakeTimers(options.date.getTime())
@@ -26,7 +29,7 @@ Mock.prototype.oauthTokenViaPasswordInvalidGrant = function(options) {
         error: "invalid_grant",
         error_description: "The provided authorization grant is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client."
     }
-    nock('https://app.buzzn.net')
+    nock(config.get('buzzn.host'))
         .post('/oauth/token', {
             grant_type: 'password',
             username: username,
@@ -48,7 +51,7 @@ Mock.prototype.oauthTokenViaPassword = function() {
         scope: 'smartmeter',
         created_at: new Date().getTime() / 1000
     }
-    nock('https://app.buzzn.net')
+    nock(config.get('buzzn.host'))
         .post('/oauth/token', {
             grant_type: 'password',
             username: username,
@@ -69,7 +72,7 @@ Mock.prototype.oauthTokenViaRefreshToken = function() {
         scope: 'smartmeter',
         created_at: new Date().getTime() / 1000
     }
-    nock('https://app.buzzn.net')
+    nock(config.get('buzzn.host'))
         .post('/oauth/token', {
             grant_type: 'refresh_token',
             refresh_token: refreshToken
@@ -81,12 +84,11 @@ Mock.prototype.oauthTokenViaRefreshToken = function() {
 
 Mock.prototype.oauthRevoke = function() {
     let response = {}
-    nock('https://app.buzzn.net')
+    nock(config.get('buzzn.host'))
         .post('/oauth/revoke', {
-            token: newAccessToken,
+            token: accessToken,
         })
         .reply(200, response)
-
     return response
 }
 
@@ -102,7 +104,7 @@ Mock.prototype.usersMe = function() {
             },
         }
     }
-    nock('https://app.buzzn.net')
+    nock(config.get('buzzn.host'))
         .get('/api/v1/users/me')
         .reply(200, response)
 
@@ -117,7 +119,7 @@ Mock.prototype.userMetersEmpty = function() {
             total_pages: 1
         }
     }
-    nock('https://app.buzzn.net')
+    nock(config.get('buzzn.host'))
         .get('/api/v1/users/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/meters')
         .query({
             filter: '60327685'
@@ -148,7 +150,7 @@ Mock.prototype.userMeters = function() {
             total_pages: 1
         }
     }
-    nock('https://app.buzzn.net')
+    nock(config.get('buzzn.host'))
         .get('/api/v1/users/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/meters')
         .query({
             filter: '60327685'
@@ -176,7 +178,7 @@ Mock.prototype.createMeter = function() {
             }
         }
     }
-    nock('https://app.buzzn.net')
+    nock(config.get('buzzn.host'))
         .post('/api/v1/meters', {
             manufacturer_name: 'easy_meter',
             manufacturer_product_name: '5q3',
@@ -198,7 +200,7 @@ Mock.prototype.createExistingMeter = function() {
             "detail": "manufacturer_product_serialnumber ist bereits vergeben"
         }]
     }
-    nock('https://app.buzzn.net')
+    nock(config.get('buzzn.host'))
         .post('/api/v1/meters', {
             manufacturer_name: 'easy_meter',
             manufacturer_product_name: '5q3',
@@ -228,7 +230,7 @@ Mock.prototype.createRegister = function(mode) {
             }
         }
     }
-    nock('https://app.buzzn.net')
+    nock(config.get('buzzn.host'))
         .post('/api/v1/registers', {
             name: mode + 'put',
             mode: mode,
@@ -259,7 +261,7 @@ Mock.prototype.createReading = function() {
             }
         }
     }
-    nock('https://app.buzzn.net')
+    nock(config.get('buzzn.host'))
         .post('/api/v1/readings', {
             timestamp: date.toString(),
             meter_id: "mmmmmmmm-mmmm-mmmm-mmmm-mmmmmmmmmmmm",
@@ -282,4 +284,4 @@ Mock.prototype.cleanAll = function() {
 }
 
 
-module.exports = Mock = Mock
+module.exports = Mock

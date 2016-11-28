@@ -1,3 +1,5 @@
+"use strict"
+
 const Sml = require('../libs/Sml')
 
 

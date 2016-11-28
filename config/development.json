@@ -1,5 +1,8 @@
 {
   "redis": {
     "host": "localhost"
+  },
+  "buzzn": {
+    "host": "https://app.buzzn.net"
   }
 }

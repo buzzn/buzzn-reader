@@ -1,3 +1,5 @@
+"use strict"
+
 const Reading = require('../libs/Reading')
 const chai = require('chai')
 

@@ -13,24 +13,21 @@ router.post('/login', function(req, res) {
         username: req.body.username,
         password: req.body.password
     };
-    auth.login(options, (error, response) => {
-        if (error) {
-            res.redirect('new');
-        } else {
-            res.redirect('/');
-        }
-    })
+    auth.login(options)
+      .then(
+        resolved => res.redirect('/'),
+        rejected => res.redirect('new')
+      )
+
 })
 
 router.get('/logout', function(req, res) {
     var auth = new Auth();
-    auth.logout((error, response) => {
-        if (error) {
-            res.redirect('/');
-        } else {
-            res.redirect('/');
-        }
-    })
+    auth.logout()
+      .then(
+        resolved => res.redirect('/'),
+        rejected => res.redirect('/')
+      )
 })
 
 
