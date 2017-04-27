@@ -2,7 +2,7 @@
 require('dotenv').config()
 const SerialPort = require('serialport')
 const mqtt = require('mqtt')
-const Reading = require('../libs/Reading')
+const Reading = require('./libs/Reading')
 
 const mqttClient = mqtt.connect(process.env.MQTT_BROKER_HOST)
 mqttClient.on('connect', () => {
