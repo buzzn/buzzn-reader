@@ -11,16 +11,16 @@ mqttClient.on('connect', () => {
   let readLine = SerialPort.parsers.ReadLine;
   let parser = port.pipe(readLine({delimiter: '!'}))
   parser.on('data', function(data) {
-    let reading = new Reading(data.sml)
+    let reading = new Reading(data)
     if (reading.valid()) {
-      let reading = {
-        meterSerialnumber: meter.meterSerialnumber,
+      let r = {
+        meterSerialnumber: reading.meterSerialnumber,
         energyAMilliwattHour: reading.energyAMilliwattHour,
         energyBMilliwattHour: reading.energyBMilliwattHour,
         powerAMilliwatt: reading.powerAMilliwatt,
         powerBMilliwatt: reading.powerBMilliwatt
       }
-      mqttClient.publish(process.env.MQTT_TOPIC, reading.toString())
-    }
+    mqttClient.publish(process.env.MQTT_TOPIC, JSON.stringify(r))
+   }
   })
 })
