@@ -12,8 +12,11 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package.json /usr/src/app/
-RUN apt-get install -y build-essential node-gyp redis-server
+RUN apt-get install -y build-essential node-gyp
 RUN npm install
 
 # Bundle app source
 COPY . /usr/src/app
+
+EXPOSE 3000
+CMD [ "npm", "start" ]

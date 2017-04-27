@@ -1,53 +1,14 @@
 version: '2'
 
-volumes:
-  redis-data:
-    driver: local
 
 services:
-  redis:
-    image: hypriot/rpi-redis
-    restart: always
-    ports:
-      - '6379:6379'
-    volumes:
-      - redis-data:/data
-
-  base:
-    build:
-      context: .
-      dockerfile: Dockerfile.base
-
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile.web
-    restart: always
-    ports:
-      - '80:3000'
-    links:
-      - redis
-    environment:
-      - NODE_ENV=production
-
-  kue:
-    build:
-      context: .
-      dockerfile: Dockerfile.kue
-    restart: always
-    links:
-      - redis
-    environment:
-      - NODE_ENV=production
 
   serialport:
     build:
       context: .
-      dockerfile: Dockerfile.serialport
     restart: always
-    links:
-      - redis
     devices:
       - '/dev/ttyUSB0'
     environment:
-      - NODE_ENV=production
+      - MQTT_BROKER_HOST=mqtt://iot.eclipse.org
+      - MQTT_TOPIC=metering
