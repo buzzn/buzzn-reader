@@ -2,28 +2,26 @@
 
 const config = require('config')
 const SerialPort = require('serialport')
-const Kue = require('kue')
+const mqtt = require('mqtt')
 
-let jobs = Kue.createQueue({
-    redis: {
-        host: config.get('redis.host')
-    }
+const mqttClient = mqtt.connect(process.env.MQTT_BROKER_HOST)
+mqttClient.on('connect', () => {
+  mqttClient.subscribe(process.env.MQTT_TOPIC)
+  let port = new SerialPort('/dev/ttyUSB0', {dataBits: 7})
+  let readLine = SerialPort.parsers.ReadLine;
+  let parser = port.pipe(readLine({delimiter: '!'}))
 })
-
-let port = new SerialPort('/dev/ttyUSB0', {
-    dataBits: 7
-})
-
-let readLine = SerialPort.parsers.ReadLine;
-let parser = port.pipe(readLine({
-    delimiter: '!'
-}))
 
 parser.on('data', function(data) {
-    jobs.create('sml', {
-        sml: data
-    }).attempts(10).backoff({
-        delay: 60 * 1000,
-        type: 'exponential'
-    }).removeOnComplete(true).save()
+  let reading = new Reading(data.sml)
+  if (reading.valid()) {
+    let reading = {
+      meterSerialnumber: meter.meterSerialnumber,
+      energyAMilliwattHour: reading.energyAMilliwattHour,
+      energyBMilliwattHour: reading.energyBMilliwattHour,
+      powerAMilliwatt: reading.powerAMilliwatt,
+      powerBMilliwatt: reading.powerBMilliwatt
+    }
+    mqttClient.publish(process.env.MQTT_TOPIC, reading.toString())
+  }
 })
