@@ -1,8 +1,9 @@
 {
   "name": "d0reader",
   "version": "0.4.0",
-  "private": true,
   "scripts": {
+    "autotest": "NODE_ENV='test' ./node_modules/.bin/supervisor -q -n exit -x ./node_modules/.bin/mocha -- -b",
+    "test": "NODE_ENV='test' mocha",
     "start": "node index.js"
   },
   "engines": {
@@ -10,19 +11,12 @@
   },
   "dependencies": {
     "async": "2.0.1",
-    "bluebird": "^3.4.6",
-    "body-parser": "1.13.2",
+    "bluebird": "3.4.6",
     "dotenv": "4.0.0",
-    "kue": "0.11.1",
-    "kue-ui": "0.1.0",
     "lodash": "4.16.3",
     "morgan": "1.6.1",
     "mqtt": "^2.6.2",
-    "nock": "8.0.0",
-    "redis": "2.6.2",
-    "serialport": "5.0.0-beta1",
-    "superagent": "2.2.0",
-    "time": "0.11.4"
+    "serialport": "5.0.0-beta1"
   },
   "devDependencies": {
     "supervisor": "^0.12.0",
